@@ -56,6 +56,23 @@
 
 ---
 
+## Phase 1 Decisions (from /discuss-phase 1 — 2026-02-23)
+
+### Scope
+- Rule source: IS 2190:2024 (fresh rules extracted directly from PDF, not nbc_rules.json)
+- MVP check: number and types of extinguishers only (NOT placement/travel distance)
+- Building scope: Commercial buildings only for MVP
+
+### Approach
+- Chose: Option A — Minimal structured input (buildingType, floorArea, floors, occupancy, hazardClass)
+- Reason: Testable in isolation before Phase 2 AI vision is wired in; deterministic and reliable
+
+### Constraints
+- nbc_rules.json to be rebuilt fresh from IS 2190:2024 PDF (previous nbc_rules.json was in a different project)
+- Rule engine must be structured so each rule references its IS 2190 clause and table number
+
+---
+
 ## ADR-005: Platform = Next.js Web App on Vercel
 
 **Date**: 2026-02-23

@@ -1,0 +1,553 @@
+{
+  "_metadata": {
+    "standard": "IS 2190:2024",
+    "title": "Selection, Installation and Maintenance of First-Aid Fire Extinguishers — Portable and Mobile — Code of Practice (Fifth Revision)",
+    "version": "2024",
+    "created": "2026-02-23",
+    "description": "Structured fire extinguisher rules for the FireRuleX rule engine. All rules are sourced directly from IS 2190:2024.",
+    "ruleEngine": {
+      "inputFields": ["buildingType", "totalFloorArea", "floorAreas", "numberOfFloors", "occupantCount", "buildingHeight", "hazardType", "fireClasses", "hasKitchen", "cookingAreaM2", "hasFlammableLiquids", "flammableLiquidsLitres", "hasFlammableGases", "flammableGasesLitres", "hasCombustibleMetals", "hasElectricalHazards"],
+      "outputFields": ["requiredExtinguishers", "violations", "complianceScore", "clauseReferences"]
+    }
+  },
+
+  "fireClasses": {
+    "description": "Classification of fire types per IS 2190:2024 clause 3.4",
+    "classes": {
+      "A": "Fires involving solid combustible materials (wood, paper, rubber, plastics). Cooling effect needed.",
+      "B": "Fires involving flammable liquids or liquefiable solids. Blanketing effect needed.",
+      "C": "Fires involving flammable gases under pressure. Inhibition needed.",
+      "D": "Fires involving combustible metals (magnesium, aluminium, zinc, sodium, potassium). Special media needed.",
+      "F": "Fires involving cooking media (vegetable or animal oils/fats). Also called kitchen fire."
+    }
+  },
+
+  "hazardClassification": {
+    "clause": "3.6 and Annex B (Table 6)",
+    "description": "Hazard type classification based on building characteristics",
+    "types": {
+      "low": {
+        "label": "Low (Light) Hazard",
+        "description": "Minor quantity of Class A combustibles. Offices, classrooms, churches, assembly halls, hotel guest rooms.",
+        "criteria": {
+          "buildingHeightM": { "max": 15 },
+          "occupantCount": { "max": 14 },
+          "floorAreaM2": { "max": 299 },
+          "flammableGasesLitres": { "max": 499 },
+          "flammableLiquidsLitres": { "max": 249 },
+          "combustibleLiquidsLitres": { "max": 499 }
+        },
+        "examples": ["offices", "classrooms", "churches", "assembly_halls", "hotel_guest_rooms"]
+      },
+      "moderate": {
+        "label": "Ordinary (Moderate) Hazard",
+        "description": "Greater amounts of Class A combustibles and Class B flammables. Dining areas, mercantile shops, light manufacturing, auto showrooms, workshops.",
+        "criteria": {
+          "buildingHeightM": { "note": "Not applicable as a standalone criterion" },
+          "occupantCount": { "min": 15, "max": 250 },
+          "floorAreaM2": { "min": 300, "max": 3000 },
+          "flammableGasesLitres": { "min": 500, "max": 3000 },
+          "flammableLiquidsLitres": { "min": 250, "max": 1000 },
+          "combustibleLiquidsLitres": { "min": 500, "max": 2000 }
+        },
+        "examples": ["dining_areas", "mercantile_shops", "storage", "light_manufacturing", "research_labs", "auto_showrooms", "parking_garages", "workshops"]
+      },
+      "high": {
+        "label": "High Hazard",
+        "description": "Large amounts of Class A combustibles and Class B flammables. Woodworking, vehicle repair, aircraft servicing, cooking areas, painting, dipping, coating.",
+        "criteria": {
+          "buildingHeightM": { "min": 15 },
+          "occupantCount": { "min": 251 },
+          "floorAreaM2": { "min": 3001 },
+          "flammableGasesLitres": { "min": 3001 },
+          "flammableLiquidsLitres": { "min": 1001 },
+          "combustibleLiquidsLitres": { "min": 2001 }
+        },
+        "examples": ["woodworking", "vehicle_repair", "aircraft_servicing", "cooking_areas", "painting", "dipping", "coating", "flammable_liquid_handling", "warehousing"]
+      }
+    }
+  },
+
+  "extinguisherTypes": {
+    "description": "Types of portable fire extinguishers and their applicable fire classes",
+    "types": {
+      "water": {
+        "label": "Water Type",
+        "applicableClasses": ["A"],
+        "notSuitableFor": ["B", "C", "D", "F", "electrical"],
+        "standard": "IS 15683"
+      },
+      "foam_afff": {
+        "label": "Foam (AFFF/FFFP) Type",
+        "applicableClasses": ["A", "B"],
+        "notSuitableFor": ["water_soluble_flammables", "electrical"],
+        "note": "Not for water-soluble flammable/combustible liquids unless specifically rated",
+        "standard": "IS 15683"
+      },
+      "dcp_abc": {
+        "label": "Dry Chemical Powder (ABC Type)",
+        "applicableClasses": ["A", "B", "C"],
+        "notSuitableFor": ["D"],
+        "note": "Residue may damage delicate electronic equipment",
+        "standard": "IS 4308"
+      },
+      "dcp_bc": {
+        "label": "Dry Chemical Powder (BC Type)",
+        "applicableClasses": ["B", "C"],
+        "notSuitableFor": ["A", "D"],
+        "standard": "IS 4308"
+      },
+      "co2": {
+        "label": "Carbon Dioxide (CO2) Type",
+        "applicableClasses": ["B", "C", "electrical"],
+        "notSuitableFor": ["D"],
+        "note": "Metal horns not safe for energized electrical equipment. Suitable for clean environments (no residue).",
+        "standard": "IS 15683"
+      },
+      "clean_agent": {
+        "label": "Clean Agent Type",
+        "applicableClasses": ["A", "B", "C", "electrical"],
+        "notSuitableFor": ["D"],
+        "note": "Use where clean medium is required (server rooms, archives). Regulated by Montreal Protocol.",
+        "standard": "IS 15683"
+      },
+      "dry_powder_d": {
+        "label": "Dry Powder (Class D Type)",
+        "applicableClasses": ["D"],
+        "notSuitableFor": ["A", "B", "C", "F"],
+        "standard": "IS 4308"
+      },
+      "wet_chemical_f": {
+        "label": "Wet Chemical (Class F Type)",
+        "applicableClasses": ["F"],
+        "notSuitableFor": ["A", "B", "C", "D"],
+        "standard": "IS 15683"
+      },
+      "water_mist": {
+        "label": "Water Mist Type",
+        "applicableClasses": ["A", "electrical"],
+        "standard": "IS 15683"
+      }
+    }
+  },
+
+  "placementRules": {
+    "classA": {
+      "clause": "7.2 and Table 1",
+      "description": "Placement requirements for Class A fire extinguishers (solid combustibles — wood, paper, rubber, plastics)",
+      "generalRules": [
+        {
+          "id": "A-GEN-01",
+          "clause": "7.2.2",
+          "rule": "At least 2 extinguishers per floor level. Exception: floors with area < 100 m² may have 1 extinguisher.",
+          "minimumPerFloor": 2,
+          "exceptionFloorAreaM2": 100
+        },
+        {
+          "id": "A-GEN-02",
+          "clause": "7.2.3",
+          "rule": "Higher-rated extinguishers may be used provided max travel distance and max floor area per unit are not exceeded."
+        }
+      ],
+      "byHazardType": {
+        "low": {
+          "minimumRating": "2A",
+          "maxTravelDistanceM": 20,
+          "maxAreaPerExtinguisherM2": 300
+        },
+        "moderate": {
+          "minimumRating": "3A",
+          "maxTravelDistanceM": 20,
+          "maxAreaPerExtinguisherM2": 150,
+          "note": "Two 2A water-type extinguishers installed adjacent may substitute one 3A."
+        },
+        "high": {
+          "minimumRating": "4A",
+          "maxTravelDistanceM": 15,
+          "maxAreaPerExtinguisherM2": 100,
+          "note": "Two 2A water-type extinguishers installed adjacent may substitute one 4A."
+        }
+      }
+    },
+
+    "classBandC": {
+      "clause": "7.3 and Table 2",
+      "description": "Placement requirements for Class B (flammable liquids shallow depth ≤6mm) and Class C (flammable gas) hazards",
+      "generalRules": [
+        {
+          "id": "BC-GEN-01",
+          "clause": "7.3.4",
+          "rule": "At least 2 extinguishers per floor level. Exception: floors with area < 100 m² may have 1 extinguisher.",
+          "minimumPerFloor": 2,
+          "exceptionFloorAreaM2": 100
+        },
+        {
+          "id": "BC-GEN-02",
+          "clause": "7.3.2",
+          "rule": "Two or more extinguishers of lower rating shall NOT be combined to meet Table 2 requirement. Exception: up to 3 AFFF-type extinguishers may be combined if sum of ratings meets minimum."
+        },
+        {
+          "id": "BC-GEN-03",
+          "clause": "7.1.6",
+          "rule": "Buildings with Class B/C hazards must also have a standard complement of Class A extinguishers. Class B/C extinguishers are additional."
+        }
+      ],
+      "byHazardType": {
+        "low": {
+          "minimumRating": "55B",
+          "maxTravelDistanceM": 15,
+          "maxAreaPerExtinguisherM2": 300
+        },
+        "moderate": {
+          "minimumRating": "144B",
+          "maxTravelDistanceM": 15,
+          "maxAreaPerExtinguisherM2": 150
+        },
+        "high": {
+          "minimumRating": "233B",
+          "maxTravelDistanceM": 15,
+          "maxAreaPerExtinguisherM2": 100
+        }
+      }
+    },
+
+    "classBDeepFlammable": {
+      "clause": "7.4",
+      "description": "For flammable liquid hazards of appreciable depth (>6mm) — dip tanks, quench tanks",
+      "generalRules": [
+        {
+          "id": "BD-GEN-01",
+          "clause": "7.4.1",
+          "rule": "At least 144 numerical units of Class B extinguishing potential per m² of maximum fire area.",
+          "unitsPerM2": 144
+        },
+        {
+          "id": "BD-GEN-02",
+          "clause": "7.4.1",
+          "rule": "AFFF extinguishers may use 89B protection per m² of hazard (instead of 144B).",
+          "afffUnitsPerM2": 89
+        },
+        {
+          "id": "BD-GEN-03",
+          "clause": "7.4.4",
+          "rule": "Travel distance to extinguishers shall not exceed 15 m.",
+          "maxTravelDistanceM": 15
+        }
+      ]
+    },
+
+    "classD": {
+      "clause": "7.6",
+      "description": "Combustible metal hazards (magnesium, aluminium, zinc, sodium, potassium)",
+      "generalRules": [
+        {
+          "id": "D-GEN-01",
+          "clause": "7.6.1",
+          "rule": "Class D extinguishers shall be provided for hazards involving combustible metals."
+        },
+        {
+          "id": "D-GEN-02",
+          "clause": "7.6.2",
+          "rule": "Travel distance shall not exceed 20 m.",
+          "maxTravelDistanceM": 20
+        },
+        {
+          "id": "D-GEN-03",
+          "clause": "7.6.3",
+          "rule": "Size and number shall be determined by specific combustible metal, physical particle size, and area. Consult fire professional."
+        }
+      ]
+    },
+
+    "classF": {
+      "clause": "7.7 and Table 3",
+      "description": "Class F: cooking media fires (vegetable or animal oils/fats) in cooking appliances",
+      "generalRules": [
+        {
+          "id": "F-GEN-01",
+          "clause": "7.7.1",
+          "rule": "Class F extinguishers shall be provided for any cooking appliance area."
+        },
+        {
+          "id": "F-GEN-02",
+          "clause": "7.7.2",
+          "rule": "Travel distance shall not exceed 10 m.",
+          "maxTravelDistanceM": 10
+        },
+        {
+          "id": "F-GEN-03",
+          "clause": "7.7.3",
+          "rule": "Size and number based on total cooking area per Table 3."
+        }
+      ],
+      "byRating": [
+        { "minimumRating": "5F",  "maxCookingAreaM2": 0.03 },
+        { "minimumRating": "15F", "maxCookingAreaM2": 0.05 },
+        { "minimumRating": "25F", "maxCookingAreaM2": 0.08 },
+        { "minimumRating": "75F", "maxCookingAreaM2": 0.25 }
+      ]
+    },
+
+    "electrical": {
+      "clause": "7.5 and 6.3.7",
+      "description": "Electrical equipment hazards",
+      "generalRules": [
+        {
+          "id": "E-GEN-01",
+          "clause": "7.5.2",
+          "rule": "Electrical hazards are themselves Class A or Class B — size on that basis."
+        },
+        {
+          "id": "E-GEN-02",
+          "clause": "7.5.3 and 6.3.7",
+          "rule": "Must use extinguishers suitable for energized electrical equipment: CO2, ABC powder, clean agent, or water-mist types.",
+          "suitableTypes": ["co2", "dcp_abc", "clean_agent", "water_mist"],
+          "prohibited": ["water", "foam_afff"],
+          "note": "CO2 with metal horns NOT safe for energized electrical equipment."
+        }
+      ]
+    }
+  },
+
+  "installationRequirements": {
+    "clause": "5",
+    "rules": [
+      {
+        "id": "INST-01",
+        "clause": "5.1",
+        "rule": "Extinguishers shall be fully charged, operable, and kept in designated places at all times."
+      },
+      {
+        "id": "INST-02",
+        "clause": "5.2",
+        "rule": "Extinguishers shall be conspicuously located along normal paths of travel, including exits."
+      },
+      {
+        "id": "INST-03",
+        "clause": "5.3",
+        "rule": "Cabinets housing extinguishers shall not be locked, unless vandalism risk exists — in that case, emergency access means are required."
+      },
+      {
+        "id": "INST-04",
+        "clause": "5.4",
+        "rule": "Extinguishers shall not be obstructed or obscured from view. Location signs required where visual obstruction cannot be avoided."
+      },
+      {
+        "id": "INST-05",
+        "clause": "5.5",
+        "rule": "Extinguishers shall be installed on hangers, brackets, or in cabinets. Floor stands allowed where wall mounting is not possible."
+      },
+      {
+        "id": "INST-06",
+        "clause": "5.8",
+        "rule": "Portable extinguishers (≤17 kg) — top of extinguisher shall not be more than 1.5 m above floor. Clearance from floor shall not be less than 30 mm.",
+        "maxHeightM": 1.5,
+        "minClearanceFromFloorMM": 30
+      },
+      {
+        "id": "INST-07",
+        "clause": "5.9",
+        "rule": "Operating instructions shall face outwards or toward the most likely direction of access."
+      },
+      {
+        "id": "INST-08",
+        "clause": "5.11",
+        "rule": "Extinguishers shall not be installed in areas where temperatures are outside the range marked on the extinguisher."
+      }
+    ]
+  },
+
+  "inspectionAndMaintenance": {
+    "inspection": {
+      "clause": "8.3",
+      "frequency": "Every 90 days (quarterly)",
+      "initialCheck": "When first placed in service",
+      "rules": [
+        {
+          "id": "INSP-01",
+          "clause": "8.3.1",
+          "rule": "Extinguisher must be checked when initially placed in service and approximately every 90 days thereafter."
+        },
+        {
+          "id": "INSP-02",
+          "clause": "8.3.2",
+          "checks": [
+            "Located in designated place",
+            "Unobstructed and visible, operating instructions facing outward",
+            "Operating instructions legible",
+            "Seals and tamper indicators not broken or missing",
+            "Full (verify by weighing or hefting)",
+            "Not damaged, corroded, or leaking; nozzle not clogged",
+            "Pressure gauge in operable range",
+            "Hanger/bracket/cabinet secure and properly mounted",
+            "Inspection tag, ID number, and HPT tag intact",
+            "Hose retention band secure",
+            "Exterior cleaned and returned to designated place"
+          ]
+        }
+      ]
+    },
+    "maintenance": {
+      "clause": "8.4.1",
+      "frequency": "Annually (once a year, not less than 6 months apart)",
+      "additionalAt5Years": "Extended maintenance per Table 5 (Categories 1, 2, 5)",
+      "rules": [
+        {
+          "id": "MAINT-01",
+          "clause": "8.4.1",
+          "rule": "All extinguishers must be maintained at least once a year (not less than 6 months apart), at time of hydrostatic testing, and when indicated by inspection."
+        },
+        {
+          "id": "MAINT-02",
+          "clause": "8.2.4",
+          "rule": "Extinguishers out of service for maintenance or recharge shall be replaced immediately by spare extinguishers of same type and at least equal classification/rating."
+        }
+      ]
+    }
+  },
+
+  "refillSchedule": {
+    "clause": "Annex E",
+    "rules": [
+      {
+        "id": "REFILL-01",
+        "clause": "E-1.1",
+        "frequency": "Every 3 years",
+        "types": [
+          "Water type (gas cartridge, 9 litres)",
+          "Mechanical foam type (cartridge, 9 litres)",
+          "Wheeled water type (gas cartridge, 50 litres)",
+          "Wheeled mechanical foam (IS 16018)",
+          "DCP ABC/BC (cartridge type)",
+          "Water type (stored pressure)",
+          "Foam type (stored pressure)",
+          "135 litre mechanical foam (IS 14951)"
+        ]
+      },
+      {
+        "id": "REFILL-02",
+        "clause": "E-1.2",
+        "frequency": "Every 5 years",
+        "types": [
+          "CO2 type (portable and wheeled)",
+          "DCP (stored pressure, portable and wheeled)",
+          "Clean agent (stored pressure)"
+        ]
+      }
+    ]
+  },
+
+  "hydrostaticTestSchedule": {
+    "clause": "Annex F",
+    "schedule": [
+      {
+        "type": "Water type",
+        "testIntervalYears": 3,
+        "minTestPressureKgCm2": 35,
+        "pressureHoldSeconds": 150
+      },
+      {
+        "type": "Foam type",
+        "testIntervalYears": 3,
+        "minTestPressureKgCm2": 35,
+        "pressureHoldSeconds": 150
+      },
+      {
+        "type": "Dry powder type",
+        "testIntervalYears": 5,
+        "minTestPressureKgCm2": 35,
+        "pressureHoldSeconds": 150
+      },
+      {
+        "type": "Carbon dioxide type",
+        "testIntervalYears": 5,
+        "minTestPressureKgCm2": 225,
+        "pressureHoldSeconds": 30
+      },
+      {
+        "type": "Clean agent",
+        "testIntervalYears": 5,
+        "minTestPressureKgCm2": 35,
+        "pressureHoldSeconds": 150
+      }
+    ]
+  },
+
+  "extinguisherLifetime": {
+    "clause": "Annex G",
+    "note": "Lifetime measured from date of manufacture. Extinguisher failing hydrostatic pressure test must be discarded immediately.",
+    "lifetimes": [
+      { "type": "Water based",    "lifetimeYears": 10 },
+      { "type": "Foam based",     "lifetimeYears": 10 },
+      { "type": "Powder based",   "lifetimeYears": 10 },
+      { "type": "Carbon dioxide", "lifetimeYears": 15 },
+      { "type": "Clean agent",    "lifetimeYears": 10 }
+    ]
+  },
+
+  "obsoleteExtinguishers": {
+    "clause": "Annex D",
+    "description": "These types MUST be removed from service immediately",
+    "types": [
+      "Soda acid types",
+      "Chemical foam types",
+      "Chlorobromomethane or carbon tetrachloride types",
+      "Non-rechargeable types more than 5 years old",
+      "Inverting types",
+      "Copper or brass shell types joined by soft solder or rivets; steel shell types joined by rivets"
+    ]
+  },
+
+  "commercialBuildingRules": {
+    "description": "Derived rules specifically for commercial buildings (MVP scope). Commercial buildings typically fall under Moderate hazard with Class A fire potential and possibly Class B (flammable storage/goods).",
+    "hazardDetermination": {
+      "method": "Use Table 6 (Annex B) criteria: building height, occupant count, floor area, flammable material quantities",
+      "commercialDefault": "Moderate hazard unless criteria indicate Low or High",
+      "clause": "3.6, Annex B"
+    },
+    "mandatoryChecks": [
+      {
+        "id": "COMM-01",
+        "check": "Class A extinguishers required",
+        "rule": "All commercial buildings with combustible construction or contents require Class A extinguishers",
+        "clause": "7.1.2, 7.1.3"
+      },
+      {
+        "id": "COMM-02",
+        "check": "Minimum 2 extinguishers per floor",
+        "rule": "At least 2 Class A extinguishers per floor level. If floor area < 100 m², 1 is acceptable.",
+        "clause": "7.2.2"
+      },
+      {
+        "id": "COMM-03",
+        "check": "Extinguisher count by area",
+        "rule": "Number of Class A extinguishers = ceiling(floorArea / maxAreaPerExtinguisher). Use Table 1 values by hazard type.",
+        "clause": "7.2.1, Table 1"
+      },
+      {
+        "id": "COMM-04",
+        "check": "Class B extinguishers if flammable liquids present",
+        "rule": "If flammable liquids are present (e.g., generator room, paint storage, kitchen fuel), additional Class B extinguishers needed per Table 2. PLUS standard Class A complement is still required.",
+        "clause": "7.1.6, 7.3, Table 2"
+      },
+      {
+        "id": "COMM-05",
+        "check": "CO2/clean agent for electrical panels",
+        "rule": "Where energized electrical equipment is present (UPS rooms, server rooms, electrical panels), CO2, ABC powder, clean agent, or water-mist extinguishers required.",
+        "clause": "7.5, 6.3.7"
+      },
+      {
+        "id": "COMM-06",
+        "check": "Class F extinguisher for kitchen/canteen",
+        "rule": "Any cooking area with vegetable/animal oil appliances requires Class F extinguisher. Travel distance ≤ 10 m. Sized by cooking area per Table 3.",
+        "clause": "7.7"
+      },
+      {
+        "id": "COMM-07",
+        "check": "Extinguisher rating adequacy",
+        "rule": "Minimum ratings per hazard type — Low: 2A/55B, Moderate: 3A/144B, High: 4A/233B",
+        "clause": "Table 1, Table 2"
+      }
+    ]
+  }
+}

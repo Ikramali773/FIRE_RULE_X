@@ -20,23 +20,17 @@
 ## Phases
 
 ### Phase 1: Foundation & Rule Engine
-**Status**: ⬜ Not Started
+**Status**: ✅ Complete
 **Objective**: Set up the project scaffold and build the core IS 2190:2024 rule engine that evaluates building data against fire extinguisher requirements.
 **Deliverable**: A working rule engine that, given structured building data (type, area, floors, occupancy, hazard indicators), returns required extinguisher types/counts and violations with IS 2190 clause references.
 **Requirements**: SPEC Goals 1, 2
 **Scope (from /discuss-phase 1)**: Check number and types of extinguishers only (NOT placement/travel distance). Commercial buildings only. Option A input (minimal structured data).
 
 **Tasks**:
-- [x] Create `nbc_rules.json` — fresh from IS 2190:2024 PDF (fire classes, hazard classification, Tables 1-3, installation requirements, commercial mandatories)
-- [ ] Initialize Next.js project with Tailwind CSS at project root
-- [ ] Build rule engine service (`lib/ruleEngine.ts`) that:
-  - Determines hazard type (low/moderate/high) from building inputs using Table 6 criteria
-  - Calculates required Class A extinguisher count per floor (Table 1)
-  - Calculates required Class B/C extinguisher count if flammable liquids present (Table 2)
-  - Checks for Class F requirement if kitchen/cooking area present (Table 3)
-  - Checks for CO2/clean agent requirement if electrical hazard present
-  - Returns: required extinguishers per floor, violations, IS 2190 clause references
-- [ ] Unit test rule engine with known commercial building scenarios (low/moderate/high hazard)
+- [x] Create `nbc_rules.json` — fresh from IS 2190:2024 PDF
+- [x] Initialize Next.js project with Tailwind CSS at project root
+- [x] Build rule engine service (`lib/ruleEngine.ts`)
+- [x] Unit test rule engine (19/19 pass)
 - [ ] Set up Vercel deployment pipeline
 
 ---

@@ -1,16 +1,16 @@
 # STATE.md — FireRuleX Project State
 
-> **Last Updated**: 2026-02-23
-> **Current Phase**: Phase 1 — ✅ Complete
-> **Overall Status**: 🟢 Phase 1 Complete — Ready for Phase 2
+> **Last Updated**: 2026-02-24
+> **Current Phase**: Phase 2 — Planning Complete
+> **Overall Status**: 🟡 Phase 2 Planned — Ready for Execution
 
 ---
 
 ## Current Position
 
 - **Milestone**: v1.0 MVP
-- **Active Phase**: Phase 1 — Foundation & Rule Engine (COMPLETE)
-- **Next Action**: `/plan 2` to create Phase 2 execution plans
+- **Active Phase**: Phase 2 — AI Vision Extraction Pipeline (PLANNED)
+- **Next Action**: `/execute 2` to run all 3 plans
 
 ---
 
@@ -20,41 +20,33 @@
 - [x] ROADMAP.md created (4 phases)
 - [x] GSD project structure initialized
 - [x] IS 2190:2024 rules extracted and structured in `src/data/nbc_rules.json`
-- [x] **Phase 1 executed** — 3 plans, 2 waves, all verified:
-  - Plan 1.1: Next.js 16.1.6 scaffold (App Router + Tailwind v4)
-  - Plan 1.2: Hazard classifier (Table 6) + Class A checker (Table 1)
-  - Plan 1.3: All fire class checkers + orchestrator + 19 unit tests (all pass)
+- [x] **Phase 1** — Foundation & Rule Engine (✅ Complete, 19/19 tests pass)
+- [x] **Phase 2 Planning** — 3 plans created, research completed
 
 ---
 
-## Phase 1 Plan Summary
+## Phase 2 Plan Summary
 
-| Plan | Name | Status |
-|------|------|--------|
-| 1.1  | Next.js scaffold | ✅ Complete |
-| 1.2  | Hazard classifier + Class A | ✅ Complete |
-| 1.3  | All classes + tests | ✅ Complete |
+| Plan | Name | Wave | Status |
+|------|------|------|--------|
+| 2.1  | API Route + Gemini Extraction | 1 | ⬜ Ready |
+| 2.2  | Confidence Scoring + Manual Override | 1 | ⬜ Ready |
+| 2.3  | Integration Tests + Live Validation | 2 | ⬜ Ready |
 
 ---
 
 ## What's Next
 
-1. `/plan 2` — Create Phase 2 plan (API Routes + AI Vision)
+1. `/execute 2` — Execute Phase 2 plans
 
 ---
 
-## Key Files Created (Phase 1)
+## Key Decisions (Phase 2)
 
-| File | Purpose |
-|------|---------|
-| `src/types/index.ts` | BuildingInput, AnalysisResult, Violation, ExtinguisherRequirement |
-| `src/lib/hazardClassifier.ts` | IS 2190 Annex B Table 6 |
-| `src/lib/classAChecker.ts` | IS 2190 Table 1 |
-| `src/lib/classBCChecker.ts` | IS 2190 Table 2 |
-| `src/lib/classFChecker.ts` | IS 2190 Table 3 |
-| `src/lib/electricalChecker.ts` | cl 7.5 + 6.3.7 |
-| `src/lib/ruleEngine.ts` | Main orchestrator |
-| `src/data/nbc_rules.json` | 832 lines of structured IS 2190 rules |
+- AI Provider: Gemini 2.5 Flash (`@google/genai` SDK)
+- File Upload: In-memory processing, no storage
+- APIs: `/api/analyze` (AI) + `/api/analyze-manual` (fallback)
+- Confidence: penalty-based scoring, needsConfirmation if < 70
 
 ---
 

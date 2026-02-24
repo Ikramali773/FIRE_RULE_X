@@ -83,3 +83,46 @@
 **Decision**: Next.js with Tailwind CSS deployed to Vercel. Serverless API routes for backend logic.
 
 **Consequences**: Fast deployment, free tier covers MVP traffic, excellent DX for solo developer.
+
+---
+
+# Phase 2 Decisions (from /plan 2 — 2026-02-24)
+
+## ADR-006: AI Provider = Gemini 2.5 Flash
+
+**Date**: 2026-02-24
+**Status**: Accepted
+
+**Context**: Need AI vision to extract building metadata from floor plan images/PDFs. Options: Gemini 2.5 Flash, GPT-4o-vision, Gemini 1.5 Pro.
+
+**Decision**: Gemini 2.5 Flash via `@google/genai` SDK. Uses structured JSON output with schema enforcement to match BuildingInput shape.
+
+**Consequences**: Cheapest per-call cost (meets ₹5 target). Structured output eliminates unreliable JSON parsing. Preview model may change — SDK calls are isolated in `gemini.ts`.
+
+---
+
+## ADR-007: File Upload = In-Memory, No Storage
+
+**Date**: 2026-02-24
+**Status**: Accepted
+
+**Context**: MVP needs to handle PDF/image uploads for analysis. Options: Vercel Blob storage, Cloudinary, in-memory processing.
+
+**Decision**: In-memory processing only. File → Buffer → base64 → Gemini API. No persistent file storage for MVP.
+
+**Consequences**: Zero storage cost, simpler architecture, no cleanup needed. Tradeoff: no upload history (acceptable for MVP). Max 10MB file size.
+
+---
+
+## ADR-008: Dual API Endpoints (AI + Manual Fallback)
+
+**Date**: 2026-02-24
+**Status**: Accepted
+
+**Context**: ADR-003 requires a fallback when AI confidence is low.
+
+**Decision**: Two endpoints returning identical `AnalyzeResponse` shape:
+- `/api/analyze` — multipart file upload → Gemini extraction → rule engine
+- `/api/analyze-manual` — JSON BuildingInput → rule engine (skip AI)
+
+**Consequences**: Frontend can swap endpoints without changing response handling. Confidence scoring determines which path to take.

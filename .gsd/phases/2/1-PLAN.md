@@ -4,318 +4,330 @@ plan: 1
 wave: 1
 ---
 
-# Plan 2.1: API Route + Gemini Vision Extraction
+# Plan 2.1: File Conversion Service + Pluggable AI Interface
 
 ## Objective
-Create the `/api/analyze` Next.js API route that accepts a PDF or image file upload, sends it to **Gemini 2.5 Flash** for building metadata extraction, and returns structured `BuildingInput` data. This is the core pipeline — file in, structured data out.
+Set up GroupDocs Cloud API for DWG/PDF → PNG conversion, create a pluggable AI provider interface, and implement the GPT-4o provider. These are the two building blocks that Plan 2.2 wires together.
 
 ## Context
-- `src/types/index.ts` — `BuildingInput` interface defines our extraction target shape
-- `.gsd/DECISIONS.md` — ADR-003: AI Vision with User Confirmation Fallback
-- `.gsd/SPEC.md` — MVP accepts PDF, JPG, PNG; commercial buildings only
-- No file storage needed — in-memory processing (base64 → Gemini → JSON)
+- `src/types/index.ts` — `BuildingInput` interface (extraction target shape)
+- `.gsd/phases/2/RESEARCH.md` — Two-stage pipeline architecture
+- `.gsd/DECISIONS.md` — ADR-003: fallback if AI confidence low
 
 ## Tasks
 
 <task type="auto">
-  <name>Install dependencies and set up environment configuration</name>
+  <name>Install dependencies and configure environment</name>
   <files>
     package.json,
     .env.local,
     .env.example,
-    src/lib/gemini.ts
+    .gitignore
   </files>
   <action>
-    ### 1. Install @google/genai SDK
+    ### 1. Install dependencies
     ```powershell
-    npm install @google/genai
+    npm install openai groupdocs-conversion-cloud
     ```
 
-    ### 2. Create .env.example (committed) and .env.local (gitignored)
+    ### 2. Update .env.example and .env.local
     ```
-    # .env.example
-    GEMINI_API_KEY=your_gemini_api_key_here
+    # .env.example (committed)
+    OPENAI_API_KEY=your_openai_api_key_here
+    GROUPDOCS_CLIENT_ID=your_groupdocs_client_id
+    GROUPDOCS_CLIENT_SECRET=your_groupdocs_client_secret
+
+    # .env.local (gitignored) — actual keys
+    OPENAI_API_KEY=sk-...
+    GROUPDOCS_CLIENT_ID=...
+    GROUPDOCS_CLIENT_SECRET=...
     ```
 
+    ### 3. Verify .gitignore includes .env*.local
+    Next.js default .gitignore already excludes this. Verify it does.
+  </action>
+  <verify>
+    ```powershell
+    npx tsc --noEmit
+    Select-String -Path ".gitignore" -Pattern "env"
     ```
-    # .env.local — DO NOT COMMIT
-    GEMINI_API_KEY=<actual key from https://aistudio.google.com/apikey>
-    ```
+  </verify>
+  <done>
+    - openai + groupdocs-conversion-cloud installed
+    - .env.example created with all required keys
+    - .gitignore confirmed to exclude .env*.local
+  </done>
+</task>
 
-    Verify `.env*.local` is already in .gitignore (Next.js default).
-
-    ### 3. Create src/lib/gemini.ts — Gemini client singleton
+<task type="auto">
+  <name>Create file conversion service (GroupDocs DWG/PDF → PNG)</name>
+  <files>
+    src/lib/fileConverter.ts
+  </files>
+  <action>
+    Create `src/lib/fileConverter.ts` that:
+    1. Accepts a file buffer + mime type
+    2. If already JPG/PNG — skip conversion, return as-is
+    3. If DWG/DXF/PDF — upload to GroupDocs, convert to PNG, download result
+    4. Returns PNG buffer + metadata
 
     ```typescript
-    // src/lib/gemini.ts
-    import { GoogleGenAI } from '@google/genai';
+    // src/lib/fileConverter.ts
+    import * as groupdocs from 'groupdocs-conversion-cloud';
 
-    if (!process.env.GEMINI_API_KEY) {
-      throw new Error('GEMINI_API_KEY environment variable is required');
+    const PASSTHROUGH_MIMES = ['image/png', 'image/jpeg', 'image/jpg'];
+    const CONVERTIBLE_MIMES: Record<string, string> = {
+      'application/pdf': 'pdf',
+      'image/vnd.dwg': 'dwg',
+      'application/acad': 'dwg',
+      'application/x-dwg': 'dwg',
+      'application/dxf': 'dxf',
+    };
+
+    export interface ConversionResult {
+      imageBuffer: Buffer;
+      originalFormat: string;
+      wasConverted: boolean;
+      error?: string;
     }
 
-    export const genai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+    export async function convertToPng(
+      fileBuffer: Buffer,
+      mimeType: string,
+      fileName: string
+    ): Promise<ConversionResult> {
+      // If already an image, pass through
+      if (PASSTHROUGH_MIMES.includes(mimeType)) {
+        return { imageBuffer: fileBuffer, originalFormat: mimeType, wasConverted: false };
+      }
 
-    export const GEMINI_MODEL = 'gemini-2.5-flash';
+      const sourceFormat = CONVERTIBLE_MIMES[mimeType];
+      if (!sourceFormat) {
+        return {
+          imageBuffer: Buffer.from(''),
+          originalFormat: mimeType,
+          wasConverted: false,
+          error: `Unsupported file type: ${mimeType}. Accepted: PDF, DWG, DXF, JPG, PNG.`,
+        };
+      }
+
+      // GroupDocs conversion
+      const config = new groupdocs.Configuration(
+        process.env.GROUPDOCS_CLIENT_ID!,
+        process.env.GROUPDOCS_CLIENT_SECRET!
+      );
+      const fileApi = groupdocs.FileApi.fromConfig(config);
+      const convertApi = groupdocs.ConvertApi.fromConfig(config);
+
+      // Upload file
+      const uploadPath = `uploads/${Date.now()}_${fileName}`;
+      const uploadRequest = new groupdocs.UploadFileRequest(uploadPath, fileBuffer);
+      await fileApi.uploadFile(uploadRequest);
+
+      // Convert to PNG
+      const settings = new groupdocs.ConvertSettings();
+      settings.filePath = uploadPath;
+      settings.format = 'png';
+      settings.outputPath = `converted/${Date.now()}_output.png`;
+
+      const convertRequest = new groupdocs.ConvertDocumentRequest(settings);
+      const result = await convertApi.convertDocument(convertRequest);
+
+      // Download converted file
+      const downloadRequest = new groupdocs.DownloadFileRequest(result[0].path);
+      const downloadResult = await fileApi.downloadFile(downloadRequest);
+
+      // Clean up uploaded file
+      const deleteRequest = new groupdocs.DeleteFileRequest(uploadPath);
+      await fileApi.deleteFile(deleteRequest);
+
+      return {
+        imageBuffer: Buffer.from(downloadResult),
+        originalFormat: sourceFormat,
+        wasConverted: true,
+      };
+    }
     ```
 
-    IMPORTANT: Use `@google/genai` (the new unified SDK), NOT the deprecated `@google/generative-ai`.
+    IMPORTANT:
+    - GroupDocs uses cloud storage internally (their server, not ours)
+    - Clean up uploaded files after conversion
+    - The SDK may have slightly different APIs — adjust during implementation
+    - For DWG files without proper MIME type, also check file extension
   </action>
   <verify>
     ```powershell
     npx tsc --noEmit
     ```
-    Must compile without errors. Also verify .env.example exists.
   </verify>
   <done>
-    - @google/genai installed in package.json
-    - .env.example committed, .env.local gitignored
-    - src/lib/gemini.ts exports genai client and model name
+    - fileConverter.ts handles PNG/JPG passthrough
+    - fileConverter.ts converts DWG/DXF/PDF → PNG via GroupDocs
+    - Unsupported file types return clear error
     - TypeScript compiles clean
   </done>
 </task>
 
 <task type="auto">
-  <name>Create /api/analyze route with Gemini extraction</name>
+  <name>Create pluggable AI provider interface + GPT-4o implementation</name>
   <files>
-    src/app/api/analyze/route.ts,
-    src/lib/extractBuildingData.ts
+    src/lib/ai/types.ts,
+    src/lib/ai/openaiProvider.ts,
+    src/lib/ai/index.ts
   </files>
   <action>
-    ### 1. src/lib/extractBuildingData.ts — Extraction logic
-
-    Sends an image/PDF to Gemini with a structured prompt and enforces `BuildingInput` JSON schema.
+    ### 1. src/lib/ai/types.ts — Provider interface
 
     ```typescript
-    // src/lib/extractBuildingData.ts
-    import { genai, GEMINI_MODEL } from './gemini';
     import type { BuildingInput } from '@/types';
 
-    // Supported MIME types
-    const SUPPORTED_MIME: Record<string, string> = {
-      'application/pdf': 'application/pdf',
-      'image/jpeg': 'image/jpeg',
-      'image/jpg': 'image/jpeg',
-      'image/png': 'image/png',
-    };
-
-    // JSON Schema for structured output (matches BuildingInput)
-    const BUILDING_INPUT_SCHEMA = {
-      type: 'object' as const,
-      properties: {
-        buildingName:           { type: 'string' as const, description: 'Name or identifier of the building' },
-        buildingType:           { type: 'string' as const, enum: ['commercial'], description: 'Must be commercial for MVP' },
-        totalFloorArea:         { type: 'number' as const, description: 'Total floor area in m²' },
-        numberOfFloors:         { type: 'number' as const, description: 'Total number of floors including ground' },
-        floorAreas:             { type: 'array' as const, items: { type: 'number' as const }, description: 'Area of each floor in m², index 0 = ground floor' },
-        buildingHeight:         { type: 'number' as const, description: 'Building height in metres' },
-        occupantCount:          { type: 'number' as const, description: 'Estimated max occupant count' },
-        hasKitchen:             { type: 'boolean' as const, description: 'Whether building has a kitchen or cooking area' },
-        cookingAreaM2:          { type: 'number' as const, description: 'Cooking appliance area in m², if hasKitchen is true' },
-        hasFlammableLiquids:    { type: 'boolean' as const, description: 'Whether flammable liquids are stored on premises' },
-        flammableLiquidsLitres: { type: 'number' as const, description: 'Litres of flammable liquids, if present' },
-        hasFlammableGases:      { type: 'boolean' as const, description: 'Whether flammable gases are present' },
-        flammableGasesLitres:   { type: 'number' as const, description: 'Litres of flammable gases, if present' },
-        hasCombustibleMetals:   { type: 'boolean' as const, description: 'Whether combustible metals are handled' },
-        hasElectricalHazards:   { type: 'boolean' as const, description: 'Whether there are server rooms, electrical panels, or HV equipment' },
-      },
-      required: [
-        'buildingName', 'buildingType', 'totalFloorArea', 'numberOfFloors',
-        'floorAreas', 'buildingHeight', 'occupantCount', 'hasKitchen',
-        'hasFlammableLiquids', 'hasFlammableGases', 'hasCombustibleMetals',
-        'hasElectricalHazards',
-      ],
-    };
-
-    const EXTRACTION_PROMPT = `You are a fire safety engineering assistant. Analyze this building floor plan and extract the following building metadata for IS 2190:2024 fire extinguisher compliance checking.
-
-RULES:
-1. Extract ONLY what you can see or reasonably infer from the floor plan.
-2. If the building type is not commercial (e.g., residential, industrial), set buildingType to "commercial" anyway — the system only supports commercial buildings.
-3. For occupantCount, estimate based on visible rooms and industry standards (1 person per 10m² for offices, 1 per 3m² for assembly).
-4. For buildingHeight, estimate from floor count × 3.5m per floor if not shown.
-5. Set boolean flags (hasKitchen, hasFlammableLiquids, etc.) based on visible room labels or area types.
-6. If you cannot determine a numeric value with any confidence, use 0.
-7. floorAreas array must have exactly numberOfFloors entries.
-
-Respond with ONLY the structured JSON, no explanations.`;
-
-    export interface ExtractionResult {
+    export interface AIExtractionResult {
       success: boolean;
       data: BuildingInput | null;
       rawResponse: string;
+      provider: string;
       error?: string;
     }
 
-    export async function extractBuildingData(
-      fileBuffer: Buffer,
-      mimeType: string
-    ): Promise<ExtractionResult> {
-      const validMime = SUPPORTED_MIME[mimeType];
-      if (!validMime) {
-        return {
-          success: false,
-          data: null,
-          rawResponse: '',
-          error: `Unsupported file type: ${mimeType}. Accepted: PDF, JPG, PNG.`,
-        };
-      }
-
-      const base64Data = fileBuffer.toString('base64');
-
-      try {
-        const response = await genai.models.generateContent({
-          model: GEMINI_MODEL,
-          contents: [
-            {
-              role: 'user',
-              parts: [
-                { text: EXTRACTION_PROMPT },
-                {
-                  inlineData: {
-                    mimeType: validMime,
-                    data: base64Data,
-                  },
-                },
-              ],
-            },
-          ],
-          config: {
-            responseMimeType: 'application/json',
-            responseSchema: BUILDING_INPUT_SCHEMA,
-          },
-        });
-
-        const text = response.text ?? '';
-
-        const parsed: BuildingInput = JSON.parse(text);
-
-        // Validate critical fields
-        if (!parsed.floorAreas || parsed.floorAreas.length === 0) {
-          parsed.floorAreas = [parsed.totalFloorArea];
-          parsed.numberOfFloors = 1;
-        }
-
-        // Force commercial for MVP
-        parsed.buildingType = 'commercial';
-
-        return {
-          success: true,
-          data: parsed,
-          rawResponse: text,
-        };
-      } catch (err) {
-        const message = err instanceof Error ? err.message : 'Unknown AI extraction error';
-        return {
-          success: false,
-          data: null,
-          rawResponse: '',
-          error: message,
-        };
-      }
+    export interface AIProvider {
+      name: string;
+      analyzeFloorPlan(imageBase64: string, mimeType?: string): Promise<AIExtractionResult>;
     }
     ```
 
-    ### 2. src/app/api/analyze/route.ts — Upload endpoint
+    ### 2. src/lib/ai/openaiProvider.ts — GPT-4o implementation
 
     ```typescript
-    // src/app/api/analyze/route.ts
-    import { NextRequest, NextResponse } from 'next/server';
-    import { extractBuildingData } from '@/lib/extractBuildingData';
-    import { runRuleEngine } from '@/lib/ruleEngine';
+    import OpenAI from 'openai';
+    import type { AIProvider, AIExtractionResult } from './types';
+    import type { BuildingInput } from '@/types';
 
-    const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+    const EXTRACTION_PROMPT = `You are a fire safety engineering assistant analyzing a building floor plan image.
 
-    export async function POST(request: NextRequest) {
-      try {
-        const formData = await request.formData();
-        const file = formData.get('file') as File | null;
+    Extract the following building metadata for IS 2190:2024 fire extinguisher compliance checking.
+    
+    RULES:
+    1. Extract ONLY what you can see or reasonably infer.
+    2. Set buildingType to "commercial".
+    3. Estimate occupantCount: 1 person per 10m² for offices, 1 per 3m² for assembly.
+    4. Estimate buildingHeight: floor count × 3.5m if not visible.
+    5. Set boolean flags based on visible room labels (kitchen, server room, storage, etc.).
+    6. Use 0 for any value you cannot determine.
+    7. floorAreas must have exactly numberOfFloors entries.`;
 
-        if (!file) {
-          return NextResponse.json(
-            { error: 'No file provided. Upload a PDF or image.' },
-            { status: 400 }
-          );
-        }
+    // JSON schema for structured output
+    const BUILDING_INPUT_SCHEMA = {
+      name: 'building_input',
+      strict: true,
+      schema: {
+        type: 'object',
+        properties: {
+          buildingName:           { type: 'string', description: 'Name or identifier' },
+          buildingType:           { type: 'string', enum: ['commercial'] },
+          totalFloorArea:         { type: 'number', description: 'Total area in m²' },
+          numberOfFloors:         { type: 'number', description: 'Total floors' },
+          floorAreas:             { type: 'array', items: { type: 'number' }, description: 'm² per floor' },
+          buildingHeight:         { type: 'number', description: 'Height in metres' },
+          occupantCount:          { type: 'number', description: 'Max occupants' },
+          hasKitchen:             { type: 'boolean' },
+          cookingAreaM2:          { type: 'number', description: 'Cooking area m²' },
+          hasFlammableLiquids:    { type: 'boolean' },
+          flammableLiquidsLitres: { type: 'number' },
+          hasFlammableGases:      { type: 'boolean' },
+          flammableGasesLitres:   { type: 'number' },
+          hasCombustibleMetals:   { type: 'boolean' },
+          hasElectricalHazards:   { type: 'boolean' },
+        },
+        required: ['buildingName', 'buildingType', 'totalFloorArea', 'numberOfFloors',
+                    'floorAreas', 'buildingHeight', 'occupantCount', 'hasKitchen',
+                    'cookingAreaM2', 'hasFlammableLiquids', 'flammableLiquidsLitres',
+                    'hasFlammableGases', 'flammableGasesLitres', 'hasCombustibleMetals',
+                    'hasElectricalHazards'],
+        additionalProperties: false,
+      },
+    };
 
-        if (file.size > MAX_FILE_SIZE) {
-          return NextResponse.json(
-            { error: `File too large (${(file.size / 1024 / 1024).toFixed(1)}MB). Maximum is 10MB.` },
-            { status: 400 }
-          );
-        }
+    export class OpenAIProvider implements AIProvider {
+      name = 'gpt-4o';
+      private client: OpenAI;
 
-        // Convert file to buffer
-        const arrayBuffer = await file.arrayBuffer();
-        const buffer = Buffer.from(arrayBuffer);
+      constructor() {
+        this.client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+      }
 
-        // Step 1: Extract building data via Gemini
-        const extraction = await extractBuildingData(buffer, file.type);
-
-        if (!extraction.success || !extraction.data) {
-          return NextResponse.json(
-            {
-              error: extraction.error || 'Failed to extract building data from the uploaded file.',
-              step: 'extraction',
+      async analyzeFloorPlan(imageBase64: string, mimeType = 'image/png'): Promise<AIExtractionResult> {
+        try {
+          const response = await this.client.chat.completions.create({
+            model: 'gpt-4o',
+            messages: [
+              {
+                role: 'user',
+                content: [
+                  { type: 'text', text: EXTRACTION_PROMPT },
+                  {
+                    type: 'image_url',
+                    image_url: { url: `data:${mimeType};base64,${imageBase64}` },
+                  },
+                ],
+              },
+            ],
+            response_format: {
+              type: 'json_schema',
+              json_schema: BUILDING_INPUT_SCHEMA,
             },
-            { status: 422 }
-          );
+          });
+
+          const text = response.choices[0]?.message?.content ?? '';
+          const parsed: BuildingInput = JSON.parse(text);
+          parsed.buildingType = 'commercial'; // force MVP
+
+          return { success: true, data: parsed, rawResponse: text, provider: this.name };
+        } catch (err) {
+          return {
+            success: false,
+            data: null,
+            rawResponse: '',
+            provider: this.name,
+            error: err instanceof Error ? err.message : 'Unknown error',
+          };
         }
-
-        // Step 2: Run rule engine on extracted data
-        const analysisResult = runRuleEngine(extraction.data);
-
-        // Step 3: Return combined result
-        return NextResponse.json({
-          extraction: extraction.data,
-          analysis: analysisResult,
-          meta: {
-            fileName: file.name,
-            fileSize: file.size,
-            fileType: file.type,
-            analyzedAt: new Date().toISOString(),
-          },
-        });
-      } catch (err) {
-        console.error('Analysis error:', err);
-        return NextResponse.json(
-          { error: 'Internal server error during analysis.' },
-          { status: 500 }
-        );
       }
     }
     ```
 
-    IMPORTANT:
-    - Do NOT use `bodyParser: false` — App Router handles this natively
-    - Do NOT install multer/formidable — NextRequest.formData() is sufficient
-    - The endpoint performs extraction AND rule engine check in one call
+    ### 3. src/lib/ai/index.ts — Factory for current provider
+
+    ```typescript
+    import type { AIProvider } from './types';
+    import { OpenAIProvider } from './openaiProvider';
+
+    export type { AIProvider, AIExtractionResult } from './types';
+
+    // Default provider — swap here to change globally
+    export function getAIProvider(): AIProvider {
+      return new OpenAIProvider();
+    }
+    ```
+
+    This is the pluggable design: to add Gemini later, just create
+    `geminiProvider.ts` implementing AIProvider and swap in index.ts.
   </action>
   <verify>
     ```powershell
     npx tsc --noEmit
     ```
-    Must compile without errors.
-
-    Then manually test with curl (requires GEMINI_API_KEY in .env.local):
-    ```powershell
-    npm run dev
-    # In another terminal:
-    curl -X POST http://localhost:3000/api/analyze -F "file=@test_floorplan.jpg"
-    ```
   </verify>
   <done>
-    - /api/analyze route created and compiles
-    - extractBuildingData.ts sends file to Gemini and parses structured JSON
-    - Route performs extraction → rule engine → response in one call
-    - Error handling for: missing file, oversized file, unsupported type, AI failure
-    - npx tsc --noEmit clean
+    - AIProvider interface defined with analyzeFloorPlan method
+    - OpenAIProvider implements GPT-4o with structured JSON output
+    - getAIProvider() factory returns current provider (swappable)
+    - TypeScript compiles clean
   </done>
 </task>
 
 ## Success Criteria
-- [ ] `npx tsc --noEmit` compiles clean after all files created
-- [ ] /api/analyze accepts POST with multipart file
-- [ ] Gemini returns structured BuildingInput matching our schema
-- [ ] Rule engine runs on extracted data and returns AnalysisResult
-- [ ] Error responses have clear messages for all failure modes
+- [ ] GroupDocs + OpenAI SDKs installed
+- [ ] fileConverter.ts handles passthrough (PNG/JPG) and conversion (DWG/PDF)
+- [ ] AIProvider interface is clean and swappable
+- [ ] GPT-4o provider uses structured output with JSON schema
+- [ ] `npx tsc --noEmit` compiles clean

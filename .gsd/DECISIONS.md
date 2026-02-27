@@ -86,18 +86,18 @@
 
 ---
 
-# Phase 2 Decisions (from /plan 2 — 2026-02-24)
+# Phase 2 Decisions (revised 2026-02-27)
 
-## ADR-006: AI Provider = Gemini 2.5 Flash
+## ADR-006: AI Provider = GPT-4o (Pluggable)
 
-**Date**: 2026-02-24
-**Status**: Accepted
+**Date**: 2026-02-27 (revised from 2026-02-24)
+**Status**: Accepted (supersedes Gemini 2.5 Flash decision)
 
-**Context**: Need AI vision to extract building metadata from floor plan images/PDFs. Options: Gemini 2.5 Flash, GPT-4o-vision, Gemini 1.5 Pro.
+**Context**: Need AI vision for floor plan extraction. Evaluated Gemini Flash, Apryse CAD SDK, CADViewer API.
 
-**Decision**: Gemini 2.5 Flash via `@google/genai` SDK. Uses structured JSON output with schema enforcement to match BuildingInput shape.
+**Decision**: GPT-4o as primary via `openai` SDK. Pluggable `AIProvider` interface so providers can be swapped (Gemini, Claude) without app changes.
 
-**Consequences**: Cheapest per-call cost (meets ₹5 target). Structured output eliminates unreliable JSON parsing. Preview model may change — SDK calls are isolated in `gemini.ts`.
+**Consequences**: Best vision accuracy for floor plans. Structured output with JSON schema. Pluggable design future-proofs provider choices.
 
 ---
 
@@ -106,23 +106,32 @@
 **Date**: 2026-02-24
 **Status**: Accepted
 
-**Context**: MVP needs to handle PDF/image uploads for analysis. Options: Vercel Blob storage, Cloudinary, in-memory processing.
+**Context**: MVP needs to handle file uploads. Options: Vercel Blob, Cloudinary, in-memory.
 
-**Decision**: In-memory processing only. File → Buffer → base64 → Gemini API. No persistent file storage for MVP.
+**Decision**: In-memory processing. File → Buffer → convert → base64 → AI API. No persistent storage.
 
-**Consequences**: Zero storage cost, simpler architecture, no cleanup needed. Tradeoff: no upload history (acceptable for MVP). Max 10MB file size.
+**Consequences**: Zero storage cost. Max 10MB file size. No upload history (acceptable for MVP).
 
 ---
 
 ## ADR-008: Dual API Endpoints (AI + Manual Fallback)
 
-**Date**: 2026-02-24
+**Date**: 2026-02-27 (revised)
 **Status**: Accepted
 
-**Context**: ADR-003 requires a fallback when AI confidence is low.
-
 **Decision**: Two endpoints returning identical `AnalyzeResponse` shape:
-- `/api/analyze` — multipart file upload → Gemini extraction → rule engine
+- `/api/analyze` — file upload → GroupDocs convert → GPT-4o → confidence → rule engine
 - `/api/analyze-manual` — JSON BuildingInput → rule engine (skip AI)
 
-**Consequences**: Frontend can swap endpoints without changing response handling. Confidence scoring determines which path to take.
+---
+
+## ADR-009: File Conversion = GroupDocs Cloud API
+
+**Date**: 2026-02-27
+**Status**: Accepted
+
+**Context**: Need DWG/PDF → PNG conversion for AI vision input. Options: Apryse (expensive, native binaries), CADViewer ($4K, own server), GroupDocs Cloud (REST API), ConvertAPI.
+
+**Decision**: GroupDocs Conversion Cloud API. REST-based, 150 free calls/month, $30/1K after. Converts DWG/DXF/PDF → PNG. Serverless-compatible.
+
+**Consequences**: DWG support from day 1 without heavy CAD SDK. Pay-as-you-go fits startup budget. Clean PNG output improves AI accuracy.

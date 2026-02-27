@@ -4,199 +4,107 @@ plan: 3
 wave: 2
 ---
 
-# Plan 2.3: Integration Tests + End-to-End Validation
+# Plan 2.3: Unit Tests + Integration Validation
 
 ## Objective
-Write integration tests for the full analysis pipeline (extraction → rule engine → response), test the manual override endpoint, and validate with a real floor plan image if available. Ensure the system handles edge cases gracefully (bad files, missing data, oversized uploads).
+Write unit tests for confidence scoring, test manual analysis path, and validate the full pipeline with a live API test (if keys available).
 
 ## Context
-- `src/app/api/analyze/route.ts` — From Plan 2.1
-- `src/app/api/analyze-manual/route.ts` — From Plan 2.2
-- `src/lib/extractBuildingData.ts` — Gemini extraction + confidence scoring
-- `vitest.config.ts` — Already configured from Phase 1
-- `.env.local` — Must have GEMINI_API_KEY for live AI tests
+- `src/lib/confidenceScorer.ts` — From Plan 2.2
+- `src/lib/ruleEngine.ts` — Phase 1 (19 tests already passing)
+- `vitest.config.ts` — Vitest already configured from Phase 1
+- All Phase 2 source files from Plans 2.1 and 2.2
 
 ## Tasks
 
 <task type="auto">
-  <name>Write unit tests for confidence scoring and manual endpoint</name>
+  <name>Write unit tests for confidence scoring and manual analysis</name>
   <files>
-    src/lib/__tests__/extractBuildingData.test.ts,
+    src/lib/__tests__/confidenceScorer.test.ts,
     src/lib/__tests__/analyzeManual.test.ts
   </files>
   <action>
-    ### 1. src/lib/__tests__/extractBuildingData.test.ts
+    ### 1. src/lib/__tests__/confidenceScorer.test.ts
 
-    Test `scoreConfidence` function independently (export it for testing).
+    Test the scoreConfidence function across all branches:
 
-    ```typescript
-    import { describe, it, expect } from 'vitest';
-    import { scoreConfidence } from '../extractBuildingData';
-
-    const completeInput = {
-      buildingName: 'Test Office',
-      buildingType: 'commercial' as const,
-      totalFloorArea: 500,
-      numberOfFloors: 2,
-      floorAreas: [250, 250],
-      buildingHeight: 7,
-      occupantCount: 50,
-      hasKitchen: false,
-      hasFlammableLiquids: false,
-      hasFlammableGases: false,
-      hasCombustibleMetals: false,
-      hasElectricalHazards: false,
-    };
-
-    describe('scoreConfidence', () => {
-      it('returns high confidence for complete data', () => {
-        const result = scoreConfidence(completeInput);
-        expect(result.overall).toBe('high');
-        expect(result.score).toBeGreaterThanOrEqual(70);
-        expect(result.flags).toHaveLength(0);
-      });
-
-      it('returns low confidence when floor area is zero', () => {
-        const result = scoreConfidence({ ...completeInput, totalFloorArea: 0 });
-        expect(result.score).toBeLessThan(70);
-        expect(result.flags).toContain('Total floor area missing or zero');
-      });
-
-      it('returns low confidence when floor areas mismatch floor count', () => {
-        const result = scoreConfidence({ ...completeInput, numberOfFloors: 3 });
-        expect(result.flags.some(f => f.includes("doesn't match"))).toBe(true);
-      });
-
-      it('flags unusually large buildings', () => {
-        const result = scoreConfidence({ ...completeInput, totalFloorArea: 60000 });
-        expect(result.flags.some(f => f.includes('50,000'))).toBe(true);
-      });
-
-      it('returns medium confidence when only occupant count is missing', () => {
-        const result = scoreConfidence({ ...completeInput, occupantCount: 0 });
-        expect(result.overall).toBe('high'); // Only -10 points, still 90
-        expect(result.score).toBe(90);
-      });
-    });
-    ```
+    - Complete valid input → high confidence (100)
+    - Missing totalFloorArea → score drops by 30
+    - Missing floor count → score drops by 20
+    - Floor areas mismatch → flag generated
+    - Implausible values (area > 50K) → flag generated
+    - Missing only occupant count → still high (90 → above 70)
+    - Multiple missing critical fields → low confidence
 
     ### 2. src/lib/__tests__/analyzeManual.test.ts
 
-    Test that the manual analysis path works end-to-end (rule engine integration):
+    Test the manual analysis path end-to-end:
 
-    ```typescript
-    import { describe, it, expect } from 'vitest';
-    import { runRuleEngine } from '../ruleEngine';
-
-    describe('Manual analysis path', () => {
-      it('produces valid AnalysisResult from manual BuildingInput', () => {
-        const input = {
-          buildingName: 'User Office',
-          buildingType: 'commercial' as const,
-          totalFloorArea: 300,
-          numberOfFloors: 1,
-          floorAreas: [300],
-          buildingHeight: 4,
-          occupantCount: 20,
-          hasKitchen: false,
-          hasFlammableLiquids: false,
-          hasFlammableGases: false,
-          hasCombustibleMetals: false,
-          hasElectricalHazards: false,
-        };
-
-        const result = runRuleEngine(input);
-        expect(result.hazardType).toBe('moderate'); // 300m² and 20 occupants → moderate
-        expect(result.complianceScore).toBe(100);
-        expect(result.requiredExtinguishers.length).toBeGreaterThan(0);
-        expect(result.requiredExtinguishers[0].clauseRef).toContain('IS 2190');
-      });
-
-      it('handles all hazard types from manual input', () => {
-        const highInput = {
-          buildingName: 'Warehouse',
-          buildingType: 'commercial' as const,
-          totalFloorArea: 5000,
-          numberOfFloors: 1,
-          floorAreas: [5000],
-          buildingHeight: 18,
-          occupantCount: 300,
-          hasKitchen: true,
-          cookingAreaM2: 0.1,
-          hasFlammableLiquids: true,
-          flammableLiquidsLitres: 2000,
-          hasFlammableGases: false,
-          hasCombustibleMetals: false,
-          hasElectricalHazards: true,
-        };
-
-        const result = runRuleEngine(highInput);
-        expect(result.hazardType).toBe('high');
-        expect(result.requiredExtinguishers.some(r => r.fireClass === 'A')).toBe(true);
-        expect(result.requiredExtinguishers.some(r => r.fireClass === 'B')).toBe(true);
-        expect(result.requiredExtinguishers.some(r => r.fireClass === 'F')).toBe(true);
-        expect(result.requiredExtinguishers.some(r => r.fireClass === 'C')).toBe(true);
-      });
-    });
-    ```
+    - Valid commercial input → moderate hazard → correct compliance
+    - High-hazard warehouse → all extinguisher classes present
+    - Input with all hazard flags → violations for combustible metals
+    - Missing floorAreas or totalFloorArea → error handling
   </action>
   <verify>
     ```powershell
     npm test
     ```
-    All existing Phase 1 tests (19) + new Phase 2 tests must pass.
+    Phase 1 (19 tests) + Phase 2 tests must all pass.
   </verify>
   <done>
-    - scoreConfidence tests: 5 tests covering all branches
-    - Manual analysis tests: 2 tests covering moderate and high hazard
-    - Total test count: 19 (Phase 1) + 7 (Phase 2) = 26+ tests
+    - confidenceScorer tests: 7+ test cases covering all scoring branches
+    - analyzeManual tests: 4+ test cases for manual input path
+    - Total: 19 (Phase 1) + 11+ (Phase 2) = 30+ tests
     - npm test passes with 0 failures
   </done>
 </task>
 
 <task type="checkpoint:human-verify">
-  <name>Test live Gemini extraction with a real floor plan</name>
+  <name>Live end-to-end test with real API keys</name>
   <files>none (manual test)</files>
   <action>
-    This test requires a real GEMINI_API_KEY and a sample floor plan.
+    Requires real API keys in .env.local:
+    - OPENAI_API_KEY (for GPT-4o)
+    - GROUPDOCS_CLIENT_ID + GROUPDOCS_CLIENT_SECRET (for file conversion)
 
-    ### Steps:
-    1. Ensure `.env.local` has a valid `GEMINI_API_KEY`
-    2. Start dev server: `npm run dev`
-    3. Test with a real image:
-       ```powershell
-       curl -X POST http://localhost:3000/api/analyze -F "file=@path/to/floor_plan.jpg"
-       ```
-    4. Verify the response contains:
-       - `extraction` with all BuildingInput fields populated
-       - `analysis` with hazardType, complianceScore, requiredExtinguishers
-       - `confidence` with a score and any flags
-       - `needsConfirmation` boolean
-
-    ### What to look for:
-    - Does Gemini extract reasonable values for floor area, floors, occupancy?
-    - Does the confidence score reflect the quality of extraction?
-    - Does the rule engine produce sensible results from the AI data?
-
-    If no real floor plan is available, test with the manual endpoint instead:
+    ### Test 1: Manual endpoint (no API keys needed)
     ```powershell
-    $body = '{"buildingName":"Test","buildingType":"commercial","totalFloorArea":500,"numberOfFloors":2,"floorAreas":[250,250],"buildingHeight":7,"occupantCount":50,"hasKitchen":true,"cookingAreaM2":0.04,"hasFlammableLiquids":false,"hasFlammableGases":false,"hasCombustibleMetals":false,"hasElectricalHazards":true}'
-    Invoke-WebRequest -Uri "http://localhost:3000/api/analyze-manual" -Method POST -ContentType "application/json" -Body $body
+    npm run dev
+    # In another terminal:
+    $body = '{"buildingName":"Test Office","buildingType":"commercial","totalFloorArea":500,"numberOfFloors":2,"floorAreas":[250,250],"buildingHeight":7,"occupantCount":50,"hasKitchen":true,"cookingAreaM2":0.04,"hasFlammableLiquids":false,"hasFlammableGases":false,"hasCombustibleMetals":false,"hasElectricalHazards":true}'
+    Invoke-WebRequest -Uri "http://localhost:3000/api/analyze-manual" -Method POST -ContentType "application/json" -Body $body | Select-Object -ExpandProperty Content
     ```
+
+    ### Test 2: File upload with AI (requires API keys)
+    ```powershell
+    curl -X POST http://localhost:3000/api/analyze -F "file=@path/to/floor_plan.jpg"
+    ```
+
+    ### Test 3: DWG conversion (requires GroupDocs keys)
+    ```powershell
+    curl -X POST http://localhost:3000/api/analyze -F "file=@path/to/floor_plan.dwg"
+    ```
+
+    ### What to verify:
+    - Response has extraction, analysis, confidence, needsConfirmation fields
+    - Confidence score reflects extraction quality
+    - Rule engine output has correct hazardType and extinguisher requirements
+    - DWG files get converted to PNG before AI analysis
   </action>
   <verify>
-    User visually confirms the extraction makes sense for the floor plan provided.
+    User confirms end-to-end pipeline works with real floor plan.
   </verify>
   <done>
-    - Live test completed with real or synthetic floor plan
-    - Extraction values verified as reasonable
-    - Rule engine produced valid compliance results
+    - Manual endpoint returns valid compliance results
+    - AI endpoint extracts reasonable building data from floor plan
+    - DWG conversion + AI analysis pipeline works
+    - Confidence scoring flags unreliable extractions
   </done>
 </task>
 
 ## Success Criteria
-- [ ] All unit tests pass (npm test — 26+ total including Phase 1 tests)
-- [ ] scoreConfidence correctly classifies high/medium/low
+- [ ] All unit tests pass (`npm test` → 30+ total)
+- [ ] Confidence scorer correctly assigns high/medium/low
 - [ ] Manual endpoint returns valid AnalysisResult
-- [ ] Live Gemini test (if API key available) returns structured extraction
-- [ ] Full pipeline: file upload → AI extraction → confidence → rule engine → response works
+- [ ] Live AI test (if keys available) extracts structured data
+- [ ] DWG → PNG → GPT-4o → JSON → rule engine pipeline works

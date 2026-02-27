@@ -4,32 +4,32 @@ plan: 2
 wave: 1
 ---
 
-# Plan 2.2: Confidence Scoring + Manual Override Endpoint
+# Plan 2.2: API Routes + Confidence Scoring + Manual Fallback
 
 ## Objective
-Add a confidence scoring system to the AI extraction to determine if user confirmation is needed (ADR-003). Create a `/api/analyze-manual` endpoint that accepts user-corrected `BuildingInput` directly (bypassing AI). This enables the fallback flow: AI extracts → low confidence → show form → user corrects → re-analyze.
+Wire the conversion service and AI provider into Next.js API routes. Add confidence scoring for AI extractions. Create the manual fallback endpoint for user-corrected data. This completes the full pipeline: upload → convert → analyze → score → rule engine → response.
 
 ## Context
-- `src/lib/extractBuildingData.ts` — From Plan 2.1 (returns raw extraction)
-- `src/types/index.ts` — `BuildingInput` interface
+- `src/lib/fileConverter.ts` — From Plan 2.1 (DWG/PDF → PNG)
+- `src/lib/ai/index.ts` — From Plan 2.1 (pluggable AI provider)
 - `src/lib/ruleEngine.ts` — Phase 1 rule engine
-- `.gsd/DECISIONS.md` — ADR-003: show confirmation form if AI confidence is low
+- `src/types/index.ts` — BuildingInput, AnalysisResult
 
 ## Tasks
 
 <task type="auto">
-  <name>Add confidence scoring to extraction and enhance types</name>
+  <name>Add extraction types and confidence scoring</name>
   <files>
-    src/lib/extractBuildingData.ts,
-    src/types/index.ts
+    src/types/index.ts,
+    src/lib/confidenceScorer.ts
   </files>
   <action>
-    ### 1. Add extraction-related types to src/types/index.ts
+    ### 1. Append to src/types/index.ts
 
-    Append to the existing types file:
+    Add the Phase 2 types after the existing content:
 
     ```typescript
-    // --- Phase 2: Extraction Types ---
+    // --- Phase 2: Extraction & API Types ---
 
     export type ConfidenceLevel = 'high' | 'medium' | 'low';
 
@@ -37,14 +37,6 @@ Add a confidence scoring system to the AI extraction to determine if user confir
       overall: ConfidenceLevel;
       score: number;              // 0-100
       flags: string[];            // reasons for low confidence
-    }
-
-    export interface ExtractionResult {
-      success: boolean;
-      data: BuildingInput | null;
-      confidence: ExtractionConfidence;
-      rawResponse: string;
-      error?: string;
     }
 
     export interface AnalyzeResponse {
@@ -56,21 +48,29 @@ Add a confidence scoring system to the AI extraction to determine if user confir
         fileName: string;
         fileSize: number;
         fileType: string;
+        originalFormat: string;
+        wasConverted: boolean;
+        aiProvider: string;
         analyzedAt: string;
       };
     }
     ```
 
-    ### 2. Add confidence scoring to extractBuildingData.ts
+    Update the `analysisMethod` field in `AnalysisResult`:
+    ```typescript
+    analysisMethod: 'structured_input' | 'ai_vision' | 'manual_override';
+    ```
 
-    After Gemini returns the parsed data, score it:
+    ### 2. Create src/lib/confidenceScorer.ts
 
     ```typescript
-    function scoreConfidence(data: BuildingInput): ExtractionConfidence {
+    import type { BuildingInput, ExtractionConfidence, ConfidenceLevel } from '@/types';
+
+    export function scoreConfidence(data: BuildingInput): ExtractionConfidence {
       const flags: string[] = [];
       let score = 100;
 
-      // Critical field checks
+      // Critical fields
       if (!data.totalFloorArea || data.totalFloorArea <= 0) {
         flags.push('Total floor area missing or zero');
         score -= 30;
@@ -83,12 +83,13 @@ Add a confidence scoring system to the AI extraction to determine if user confir
         flags.push('Floor areas array empty');
         score -= 25;
       }
-      if (data.floorAreas && data.numberOfFloors && data.floorAreas.length !== data.numberOfFloors) {
+      if (data.floorAreas && data.numberOfFloors &&
+          data.floorAreas.length !== data.numberOfFloors) {
         flags.push(`Floor areas count (${data.floorAreas.length}) doesn't match numberOfFloors (${data.numberOfFloors})`);
         score -= 15;
       }
       if (!data.occupantCount || data.occupantCount <= 0) {
-        flags.push('Occupant count missing — will default to area-based estimate');
+        flags.push('Occupant count missing — using area-based estimate');
         score -= 10;
       }
       if (!data.buildingHeight || data.buildingHeight <= 0) {
@@ -98,11 +99,11 @@ Add a confidence scoring system to the AI extraction to determine if user confir
 
       // Plausibility checks
       if (data.totalFloorArea > 50000) {
-        flags.push('Total area > 50,000 m² — unusually large, verify');
+        flags.push('Total area > 50,000 m² — unusually large');
         score -= 10;
       }
       if (data.numberOfFloors > 20) {
-        flags.push('More than 20 floors — verify this is correct');
+        flags.push('More than 20 floors — verify');
         score -= 5;
       }
       if (data.occupantCount > 5000) {
@@ -111,65 +112,136 @@ Add a confidence scoring system to the AI extraction to determine if user confir
       }
 
       score = Math.max(0, score);
-      const overall: ConfidenceLevel = score >= 70 ? 'high' : score >= 40 ? 'medium' : 'low';
+      const overall: ConfidenceLevel =
+        score >= 70 ? 'high' :
+        score >= 40 ? 'medium' : 'low';
 
       return { overall, score, flags };
     }
     ```
-
-    Update `extractBuildingData` to return confidence alongside data. Move the `ExtractionResult` interface from this file into types/index.ts (use the one from types).
-
-    Update the /api/analyze route (from Plan 2.1) to include `needsConfirmation: confidence.score < 70` in the response.
   </action>
   <verify>
     ```powershell
     npx tsc --noEmit
     ```
-    Must compile clean.
   </verify>
   <done>
-    - ExtractionConfidence type added to types/index.ts
-    - scoreConfidence function checks critical fields + plausibility
-    - /api/analyze response includes `confidence` and `needsConfirmation` fields
-    - confidence.score >= 70 → needsConfirmation: false (auto-proceed)
-    - confidence.score < 70 → needsConfirmation: true (show form)
+    - ExtractionConfidence, AnalyzeResponse types added
+    - scoreConfidence checks critical fields + plausibility
+    - threshold: high ≥70, medium 40-69, low <40
   </done>
 </task>
 
 <task type="auto">
-  <name>Create /api/analyze-manual endpoint for user-corrected input</name>
+  <name>Create /api/analyze and /api/analyze-manual routes</name>
   <files>
+    src/app/api/analyze/route.ts,
     src/app/api/analyze-manual/route.ts
   </files>
   <action>
-    Create a POST endpoint that accepts a JSON body directly as `BuildingInput` (no file upload).
-    This is the fallback path when AI confidence is low and the user corrects the data.
+    ### 1. src/app/api/analyze/route.ts — Full pipeline
 
     ```typescript
-    // src/app/api/analyze-manual/route.ts
+    import { NextRequest, NextResponse } from 'next/server';
+    import { convertToPng } from '@/lib/fileConverter';
+    import { getAIProvider } from '@/lib/ai';
+    import { scoreConfidence } from '@/lib/confidenceScorer';
+    import { runRuleEngine } from '@/lib/ruleEngine';
+    import type { AnalyzeResponse } from '@/types';
+
+    const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+
+    export async function POST(request: NextRequest) {
+      try {
+        const formData = await request.formData();
+        const file = formData.get('file') as File | null;
+
+        if (!file) {
+          return NextResponse.json({ error: 'No file provided.' }, { status: 400 });
+        }
+        if (file.size > MAX_FILE_SIZE) {
+          return NextResponse.json(
+            { error: `File too large (${(file.size / 1024 / 1024).toFixed(1)}MB). Max 10MB.` },
+            { status: 400 }
+          );
+        }
+
+        const buffer = Buffer.from(await file.arrayBuffer());
+
+        // Stage 1: Convert to PNG (if needed)
+        const conversion = await convertToPng(buffer, file.type, file.name);
+        if (conversion.error) {
+          return NextResponse.json({ error: conversion.error, step: 'conversion' }, { status: 422 });
+        }
+
+        // Stage 2: AI extraction
+        const aiProvider = getAIProvider();
+        const imageBase64 = conversion.imageBuffer.toString('base64');
+        const extraction = await aiProvider.analyzeFloorPlan(imageBase64);
+
+        if (!extraction.success || !extraction.data) {
+          return NextResponse.json(
+            { error: extraction.error || 'AI extraction failed.', step: 'ai_extraction' },
+            { status: 422 }
+          );
+        }
+
+        // Stage 3: Confidence scoring
+        const confidence = scoreConfidence(extraction.data);
+        const needsConfirmation = confidence.score < 70;
+
+        // Stage 4: Rule engine
+        const analysis = runRuleEngine(extraction.data);
+        // Override analysis method 
+        (analysis as { analysisMethod: string }).analysisMethod = 'ai_vision';
+
+        const response: AnalyzeResponse = {
+          extraction: extraction.data,
+          analysis,
+          confidence,
+          needsConfirmation,
+          meta: {
+            fileName: file.name,
+            fileSize: file.size,
+            fileType: file.type,
+            originalFormat: conversion.originalFormat,
+            wasConverted: conversion.wasConverted,
+            aiProvider: aiProvider.name,
+            analyzedAt: new Date().toISOString(),
+          },
+        };
+
+        return NextResponse.json(response);
+      } catch (err) {
+        console.error('Analysis error:', err);
+        return NextResponse.json({ error: 'Internal server error.' }, { status: 500 });
+      }
+    }
+    ```
+
+    ### 2. src/app/api/analyze-manual/route.ts — Manual fallback
+
+    ```typescript
     import { NextRequest, NextResponse } from 'next/server';
     import { runRuleEngine } from '@/lib/ruleEngine';
-    import type { BuildingInput } from '@/types';
+    import type { BuildingInput, AnalyzeResponse } from '@/types';
 
     export async function POST(request: NextRequest) {
       try {
         const body: BuildingInput = await request.json();
 
-        // Basic validation
-        if (!body.buildingType || !body.totalFloorArea || !body.floorAreas) {
+        if (!body.totalFloorArea || !body.floorAreas) {
           return NextResponse.json(
-            { error: 'Missing required fields: buildingType, totalFloorArea, floorAreas' },
+            { error: 'Missing: totalFloorArea, floorAreas' },
             { status: 400 }
           );
         }
 
-        // Force commercial for MVP
         body.buildingType = 'commercial';
-
-        // Run rule engine
         const analysis = runRuleEngine(body);
+        (analysis as { analysisMethod: string }).analysisMethod = 'manual_override';
 
-        return NextResponse.json({
+        const response: AnalyzeResponse = {
           extraction: body,
           analysis,
           confidence: { overall: 'high', score: 100, flags: [] },
@@ -178,49 +250,39 @@ Add a confidence scoring system to the AI extraction to determine if user confir
             fileName: 'manual_input',
             fileSize: 0,
             fileType: 'application/json',
+            originalFormat: 'json',
+            wasConverted: false,
+            aiProvider: 'none',
             analyzedAt: new Date().toISOString(),
           },
-        });
+        };
+
+        return NextResponse.json(response);
       } catch (err) {
         console.error('Manual analysis error:', err);
-        return NextResponse.json(
-          { error: 'Invalid input. Ensure all required BuildingInput fields are provided.' },
-          { status: 400 }
-        );
+        return NextResponse.json({ error: 'Invalid input.' }, { status: 400 });
       }
     }
     ```
-
-    This endpoint:
-    - Skips AI vision entirely
-    - Accepts the BuildingInput shape directly
-    - Returns the same response format as /api/analyze
-    - Confidence is always 100% (user-provided data)
   </action>
   <verify>
     ```powershell
     npx tsc --noEmit
     ```
-
-    Manual test (with dev server running):
-    ```powershell
-    $body = '{"buildingName":"Test Office","buildingType":"commercial","totalFloorArea":500,"numberOfFloors":2,"floorAreas":[250,250],"buildingHeight":7,"occupantCount":50,"hasKitchen":false,"hasFlammableLiquids":false,"hasFlammableGases":false,"hasCombustibleMetals":false,"hasElectricalHazards":true}'
-    Invoke-WebRequest -Uri "http://localhost:3000/api/analyze-manual" -Method POST -ContentType "application/json" -Body $body | Select-Object -ExpandProperty Content
-    ```
-    Should return JSON with analysis.hazardType, analysis.complianceScore, etc.
   </verify>
   <done>
-    - /api/analyze-manual accepts JSON BuildingInput
-    - Returns same AnalyzeResponse shape as /api/analyze
-    - Input validation rejects missing required fields
-    - npx tsc --noEmit clean
-    - Manual test returns valid AnalysisResult
+    - /api/analyze: upload → convert → AI → confidence → rule engine
+    - /api/analyze-manual: JSON input → rule engine (skip AI)
+    - Both return identical AnalyzeResponse shape
+    - Error handling for all failure modes
   </done>
 </task>
 
 ## Success Criteria
-- [ ] Confidence scoring correctly flags missing/zero critical fields
-- [ ] /api/analyze returns `needsConfirmation: true` when confidence < 70
-- [ ] /api/analyze-manual works without any file upload
-- [ ] Both endpoints return identical response shape (AnalyzeResponse)
-- [ ] npx tsc --noEmit compiles clean
+- [ ] `npx tsc --noEmit` compiles clean
+- [ ] /api/analyze accepts multipart file upload (DWG, PDF, JPG, PNG)
+- [ ] File conversion runs for DWG/PDF, skipped for JPG/PNG
+- [ ] GPT-4o returns structured BuildingInput
+- [ ] Confidence scoring flags missing/implausible fields
+- [ ] /api/analyze-manual works with JSON body directly
+- [ ] Both endpoints return same AnalyzeResponse shape

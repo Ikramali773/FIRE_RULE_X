@@ -1,75 +1,93 @@
-# Phase 2 Research: AI Vision Extraction Pipeline
+# Phase 2 Research: File Conversion + Pluggable Vision LLM
 
-> **Discovery Level**: L2 — Standard Research
-> **Date**: 2026-02-24
-
----
-
-## Decision: AI Provider
-
-| Option | Pros | Cons |
-|--------|------|------|
-| **Gemini 2.5 Flash** ✅ | Cheapest API, structured JSON output with schema enforcement, handles images + PDFs, TypeScript SDK `@google/genai`, thinking budgets for cost control | Preview model (may change) |
-| GPT-4o-vision | Proven track record, excellent image understanding | More expensive per call, no native structured output schema enforcement |
-| Gemini 1.5 Pro | Stable, large context | More expensive than Flash, overkill for extraction |
-
-**Chosen**: Gemini 2.5 Flash via `@google/genai` SDK.
-
-**Reason**: Cost (₹5 target per analysis), structured JSON output with schema enforcement matches BuildingInput shape exactly, TypeScript SDK is clean.
+> **Discovery Level**: L3 — Deep Dive
+> **Date**: 2026-02-27 (revised from 2026-02-24)
+> **Approach**: File conversion (DWG/PDF → PNG) + pluggable vision LLM
 
 ---
 
-## Decision: File Upload Strategy
+## Architecture: Two-Stage Pipeline
 
-**Chosen**: In-memory processing (no file storage for MVP).
-
-- Next.js App Router `NextRequest.formData()` handles multipart natively — no multer/formidable needed
-- File → ArrayBuffer → Buffer → base64 → Gemini inline data
-- Max 10MB file size limit (floor plans are typically <5MB)
-- No Vercel Blob or Cloudinary needed for MVP — saves complexity and cost
-
----
-
-## Decision: API Design
-
-Two endpoints:
-1. `/api/analyze` (POST, multipart) — file upload → AI extraction → rule engine
-2. `/api/analyze-manual` (POST, JSON) — user-corrected input → rule engine (skip AI)
-
-Both return identical `AnalyzeResponse` shape for consistent frontend consumption.
-
----
-
-## Confidence Scoring
-
-Penalty-based system (start at 100, deduct for issues):
-- Missing/zero total floor area: -30
-- Missing/zero floor count: -20
-- Empty floor areas: -25
-- Floor count mismatch: -15
-- Missing occupant count: -10
-- Missing height: -10
-- Implausible values: -5 to -10
-
-Thresholds: high (≥70), medium (40-69), low (<40)
-`needsConfirmation` = score < 70
+```
+User uploads DWG/PDF/JPG/PNG
+         │
+         ▼
+  ┌─────────────────┐
+  │ Stage 1: Convert │  GroupDocs Cloud API
+  │ DWG/PDF → PNG    │  (skip if already PNG/JPG)
+  └────────┬────────┘
+           ▼
+  ┌─────────────────┐
+  │ Stage 2: Analyze │  GPT-4o vision (pluggable)
+  │ PNG → JSON       │  Swap to Gemini/Claude later
+  └────────┬────────┘
+           ▼
+  ┌─────────────────┐
+  │ Stage 3: Check   │  IS 2190 Rule Engine (Phase 1)
+  │ JSON → Report    │
+  └─────────────────┘
+```
 
 ---
 
-## Key SDK Usage
+## Stage 1: File Conversion
+
+### GroupDocs Conversion Cloud ✅ (chosen)
+
+| Feature | Detail |
+|---------|--------|
+| **Formats** | DWG, DXF, PDF → PNG/JPG/SVG (80+ formats) |
+| **Free tier** | 150 calls/month (no expiry) |
+| **Paid** | $30 per 1,000 calls after free tier |
+| **SDK** | `groupdocs-conversion-cloud` (npm/Node.js/TypeScript) |
+| **How it works** | Upload file → API converts → download converted PNG |
+| **Serverless?** | ✅ Yes — REST API, no server infrastructure |
+
+### ConvertAPI (rejected)
+
+| Feature | Detail |
+|---------|--------|
+| Free tier | 250 calls, 30 days only (expires) |
+| Paid | $35/month for 12K calls |
+| Why rejected | Free tier expires; GroupDocs is cheaper and persistent |
+
+---
+
+## Stage 2: Vision LLM
+
+### GPT-4o (primary) ✅
+
+| Feature | Detail |
+|---------|--------|
+| **Image input** | Base64 inline or URL |
+| **Structured output** | `response_format: { type: 'json_schema', json_schema: ... }` |
+| **TypeScript** | `openai` npm package, Zod for schema |
+| **Cost** | ~$0.01-0.03 per image analysis (low volume) |
+| **Serverless?** | ✅ Yes — API call |
+
+### Pluggable design
 
 ```typescript
-// @google/genai — new unified SDK (NOT @google/generative-ai)
-import { GoogleGenAI } from '@google/genai';
+// AI provider interface — swap implementations
+interface AIProvider {
+  name: string;
+  analyzeFloorPlan(imageBase64: string): Promise<BuildingInput>;
+}
 
-const genai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-
-const response = await genai.models.generateContent({
-  model: 'gemini-2.5-flash',
-  contents: [{ role: 'user', parts: [{ text: prompt }, { inlineData: { mimeType, data: base64 } }] }],
-  config: {
-    responseMimeType: 'application/json',
-    responseSchema: BUILDING_INPUT_SCHEMA,  // enforces our JSON shape
-  },
-});
+// Implementations:
+// - OpenAIProvider (GPT-4o) ← default
+// - GeminiProvider (Gemini 2.5 Flash) ← future
+// - ClaudeProvider (Claude 3.5) ← future
 ```
+
+---
+
+## Key Decisions
+
+| Decision | Choice | Why |
+|----------|--------|-----|
+| Conversion API | GroupDocs Cloud | 150 free/mo, $30/1K after, DWG support |
+| Primary AI | GPT-4o | Best vision accuracy, structured output, proven |
+| AI architecture | Pluggable interface | Swap providers without app changes |
+| File flow | Convert → Analyze | Clean PNG gives AI best chance of accuracy |
+| Serverless | ✅ Fully | Both APIs are REST, runs on Vercel |

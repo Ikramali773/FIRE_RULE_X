@@ -1,53 +1,45 @@
 # STATE.md — FireRuleX Project State
 
 > **Last Updated**: 2026-02-27
-> **Current Phase**: Phase 2 — Planning Complete (Revised)
-> **Overall Status**: 🟡 Phase 2 Planned — Ready for Execution
+> **Current Phase**: Phase 3 — Planning Complete
+> **Overall Status**: 🟡 Phase 2 & 3 Planned — Execute in order
 
 ---
 
 ## Current Position
 
 - **Milestone**: v1.0 MVP
-- **Active Phase**: Phase 2 — AI Vision Extraction Pipeline (PLANNED)
-- **Next Action**: `/execute 2` to run all 3 plans
+- **Active Phase**: Phase 2 → Phase 3 (both planned, execute sequentially)
+- **Next Action**: `/execute 2` then `/execute 3`
 
 ---
 
-## What's Done
+## Phase Summary
 
-- [x] Phase 1 — Foundation & Rule Engine (✅ Complete, 19/19 tests pass)
-- [x] Phase 2 Planning — revised with startup-friendly approach:
-  - GroupDocs Cloud for DWG/PDF → PNG conversion
-  - GPT-4o as primary AI (pluggable interface for swapping)
-  - Confidence scoring + manual fallback
-
----
-
-## Phase 2 Plan Summary (Revised)
-
-| Plan | Name | Wave | Status |
-|------|------|------|--------|
-| 2.1  | File Conversion + Pluggable AI Interface | 1 | ⬜ Ready |
-| 2.2  | API Routes + Confidence + Manual Fallback | 1 | ⬜ Ready |
-| 2.3  | Unit Tests + Integration Validation | 2 | ⬜ Ready |
+| Phase | Name | Status |
+|-------|------|--------|
+| 1 | Foundation & Rule Engine | ✅ Complete (19/19 tests) |
+| 2 | AI Vision Extraction Pipeline | 📋 Planned (3 plans, 2 waves) |
+| 3 | Web UI | 📋 Planned (3 plans, 2 waves) |
+| 4 | Report Generation & Polish | ⬜ Not Planned |
 
 ---
 
-## Pipeline Architecture
+## Phase 2 Plans
 
-```
-Upload (DWG/PDF/JPG/PNG) → GroupDocs Convert → GPT-4o Vision → Confidence Score → Rule Engine → Response
-```
+| Plan | Name | Wave |
+|------|------|------|
+| 2.1 | File Conversion (GroupDocs) + Pluggable AI (GPT-4o) | 1 |
+| 2.2 | API Routes + Confidence + Manual Fallback | 1 |
+| 2.3 | Unit Tests + Integration Validation | 2 |
 
----
+## Phase 3 Plans
 
-## Key Decisions (Phase 2 Revised)
-
-- AI Provider: GPT-4o with pluggable `AIProvider` interface
-- File Conversion: GroupDocs Cloud (150 free/mo, $30/1K after)
-- DWG Support: via conversion (not CAD SDK)
-- APIs: `/api/analyze` (AI) + `/api/analyze-manual` (fallback)
+| Plan | Name | Wave |
+|------|------|------|
+| 3.1 | Landing Page + Upload Component | 1 |
+| 3.2 | Results Page + Data Confirmation Screen | 1 |
+| 3.3 | Loading States + Polish + Browser Validation | 2 |
 
 ---
 

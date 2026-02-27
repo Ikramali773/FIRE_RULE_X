@@ -49,5 +49,31 @@ export interface AnalysisResult {
     requiredExtinguishers: ExtinguisherRequirement[];
     violations: Violation[];
     passedRules: string[];
-    analysisMethod: 'structured_input';
+    analysisMethod: 'structured_input' | 'ai_vision' | 'manual_override';
+}
+
+// --- Phase 2: Extraction & API Types ---
+
+export type ConfidenceLevel = 'high' | 'medium' | 'low';
+
+export interface ExtractionConfidence {
+    overall: ConfidenceLevel;
+    score: number;              // 0-100
+    flags: string[];            // reasons for low confidence
+}
+
+export interface AnalyzeResponse {
+    extraction: BuildingInput;
+    analysis: AnalysisResult;
+    confidence: ExtractionConfidence;
+    needsConfirmation: boolean;  // true if confidence < 70
+    meta: {
+        fileName: string;
+        fileSize: number;
+        fileType: string;
+        originalFormat: string;
+        wasConverted: boolean;
+        aiProvider: string;
+        analyzedAt: string;
+    };
 }

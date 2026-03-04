@@ -6,11 +6,11 @@
 // 2. Change getAIProvider() to return the new implementation
 
 import type { AIProvider } from './types';
-import { OpenAIProvider } from './openaiProvider';
+import { GeminiProvider } from './geminiProvider';
 
 export type { AIProvider, AIExtractionResult } from './types';
 
-// Default: GPT-4o — swap this to change the global AI provider
+// Active: Gemini 2.0 Flash — swap this to change the global AI provider
 export function getAIProvider(): AIProvider {
-    return new OpenAIProvider();
+    return new GeminiProvider();
 }

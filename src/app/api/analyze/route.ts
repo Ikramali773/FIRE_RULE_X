@@ -11,6 +11,8 @@ import { convertToPng } from '@/lib/fileConverter';
 import { getAIProvider } from '@/lib/ai';
 import { scoreConfidence } from '@/lib/confidenceScorer';
 import { runRuleEngine } from '@/lib/ruleEngine';
+import { resizeForAI } from '@/lib/imageResizer';
+import { checkRateLimit } from '@/lib/rateLimiter';
 import type { AnalyzeResponse } from '@/types';
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
@@ -36,6 +38,20 @@ export async function POST(request: NextRequest) {
             );
         }
 
+        // ─── Rate limit check ───
+        const rateCheck = checkRateLimit();
+        if (!rateCheck.allowed) {
+            const retrySec = Math.ceil((rateCheck.retryAfterMs ?? 30000) / 1000);
+            return NextResponse.json(
+                {
+                    error: `Too many requests. Please wait ${retrySec} seconds and try again.`,
+                    step: 'rate_limit',
+                    retryAfterSeconds: retrySec,
+                },
+                { status: 429 }
+            );
+        }
+
         const buffer = Buffer.from(await file.arrayBuffer());
 
         // ─── Stage 1: Convert to PNG (if needed) ───
@@ -46,6 +62,9 @@ export async function POST(request: NextRequest) {
                 { status: 422 }
             );
         }
+
+        // ─── Stage 1.5: Resize for AI (reduce token usage) ───
+        const resizedBuffer = await resizeForAI(conversion.imageBuffer);
 
         // ─── Stage 2: AI extraction ───
         let aiProvider;
@@ -61,7 +80,7 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        const imageBase64 = conversion.imageBuffer.toString('base64');
+        const imageBase64 = resizedBuffer.toString('base64');
         const extraction = await aiProvider.analyzeFloorPlan(imageBase64);
 
         if (!extraction.success || !extraction.data) {

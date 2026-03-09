@@ -9,7 +9,7 @@ describe('Manual analysis path', () => {
     it('produces valid AnalysisResult for a standard office', () => {
         const input: BuildingInput = {
             buildingName: 'User Office',
-            buildingType: 'commercial',
+            buildingType: 'Office',
             totalFloorArea: 300,
             numberOfFloors: 1,
             floorAreas: [300],
@@ -33,7 +33,7 @@ describe('Manual analysis path', () => {
     it('handles all hazard types from manual input', () => {
         const input: BuildingInput = {
             buildingName: 'Warehouse',
-            buildingType: 'commercial',
+            buildingType: 'Hospital',
             totalFloorArea: 5000,
             numberOfFloors: 1,
             floorAreas: [5000],
@@ -59,7 +59,7 @@ describe('Manual analysis path', () => {
     it('flags combustible metals requiring professional assessment', () => {
         const input: BuildingInput = {
             buildingName: 'Metal Workshop',
-            buildingType: 'commercial',
+            buildingType: 'Warehouse',
             totalFloorArea: 200,
             numberOfFloors: 1,
             floorAreas: [200],
@@ -82,7 +82,7 @@ describe('Manual analysis path', () => {
     it('handles kitchen without cooking area as a violation', () => {
         const input: BuildingInput = {
             buildingName: 'Restaurant',
-            buildingType: 'commercial',
+            buildingType: 'School',
             totalFloorArea: 400,
             numberOfFloors: 1,
             floorAreas: [400],

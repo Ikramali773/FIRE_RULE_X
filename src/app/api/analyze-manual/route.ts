@@ -25,8 +25,10 @@ export async function POST(request: NextRequest) {
             body.numberOfFloors = body.floorAreas.length;
         }
 
-        // Force commercial for MVP
-        body.buildingType = 'commercial';
+        // Keep input buildingType or default
+        if (!body.buildingType) {
+            body.buildingType = 'Unknown';
+        }
 
         // Default building name
         if (!body.buildingName) {

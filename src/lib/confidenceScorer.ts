@@ -58,6 +58,41 @@ export function scoreConfidence(data: BuildingInput): ExtractionConfidence {
         score -= 5;
     }
 
+    // Floor areas sum vs totalFloorArea (±10% tolerance)
+    if (data.floorAreas && data.floorAreas.length > 0 && data.totalFloorArea > 0) {
+        const floorSum = data.floorAreas.reduce((s, a) => s + a, 0);
+        const deviation = Math.abs(data.totalFloorArea - floorSum) / data.totalFloorArea;
+        if (deviation > 0.10) {
+            flags.push(
+                `Floor areas sum (${floorSum.toFixed(0)}m²) differs from totalFloorArea (${data.totalFloorArea}m²) by ${(deviation * 100).toFixed(0)}%`
+            );
+            score -= 10;
+        }
+    }
+
+    // Occupant density sanity check
+    if (data.occupantCount > 0 && data.totalFloorArea > 0) {
+        const density = data.totalFloorArea / data.occupantCount; // m² per person
+        if (density < 2) {
+            flags.push(`Occupant density too high (${density.toFixed(1)}m²/person) — verify count`);
+            score -= 10;
+        } else if (density > 50) {
+            flags.push(`Occupant density very low (${density.toFixed(1)}m²/person) — verify count`);
+            score -= 5;
+        }
+    }
+
+    // Building height vs floor count consistency
+    if (data.buildingHeight > 0 && data.numberOfFloors > 0) {
+        const heightPerFloor = data.buildingHeight / data.numberOfFloors;
+        if (heightPerFloor < 2.5 || heightPerFloor > 6) {
+            flags.push(
+                `Height per floor (${heightPerFloor.toFixed(1)}m) outside typical 2.5–6m range — verify`
+            );
+            score -= 5;
+        }
+    }
+
     score = Math.max(0, score);
     const overall: ConfidenceLevel =
         score >= 70 ? 'high' : score >= 40 ? 'medium' : 'low';

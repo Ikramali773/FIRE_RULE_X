@@ -6,11 +6,32 @@
     "created": "2026-02-23",
     "description": "Structured fire extinguisher rules for the FireRuleX rule engine. All rules are sourced directly from IS 2190:2024.",
     "ruleEngine": {
-      "inputFields": ["buildingType", "totalFloorArea", "floorAreas", "numberOfFloors", "occupantCount", "buildingHeight", "hazardType", "fireClasses", "hasKitchen", "cookingAreaM2", "hasFlammableLiquids", "flammableLiquidsLitres", "hasFlammableGases", "flammableGasesLitres", "hasCombustibleMetals", "hasElectricalHazards"],
-      "outputFields": ["requiredExtinguishers", "violations", "complianceScore", "clauseReferences"]
+      "inputFields": [
+        "buildingType",
+        "totalFloorArea",
+        "floorAreas",
+        "numberOfFloors",
+        "occupantCount",
+        "buildingHeight",
+        "hazardType",
+        "fireClasses",
+        "hasKitchen",
+        "cookingAreaM2",
+        "hasFlammableLiquids",
+        "flammableLiquidsLitres",
+        "hasFlammableGases",
+        "flammableGasesLitres",
+        "hasCombustibleMetals",
+        "hasElectricalHazards"
+      ],
+      "outputFields": [
+        "requiredExtinguishers",
+        "violations",
+        "complianceScore",
+        "clauseReferences"
+      ]
     }
   },
-
   "fireClasses": {
     "description": "Classification of fire types per IS 2190:2024 clause 3.4",
     "classes": {
@@ -21,7 +42,6 @@
       "F": "Fires involving cooking media (vegetable or animal oils/fats). Also called kitchen fire."
     }
   },
-
   "hazardClassification": {
     "clause": "3.6 and Annex B (Table 6)",
     "description": "Hazard type classification based on building characteristics",
@@ -30,107 +50,263 @@
         "label": "Low (Light) Hazard",
         "description": "Minor quantity of Class A combustibles. Offices, classrooms, churches, assembly halls, hotel guest rooms.",
         "criteria": {
-          "buildingHeightM": { "max": 15 },
-          "occupantCount": { "max": 14 },
-          "floorAreaM2": { "max": 299 },
-          "flammableGasesLitres": { "max": 499 },
-          "flammableLiquidsLitres": { "max": 249 },
-          "combustibleLiquidsLitres": { "max": 499 }
+          "buildingHeightM": {
+            "max": 15
+          },
+          "occupantCount": {
+            "max": 14
+          },
+          "floorAreaM2": {
+            "max": 299
+          },
+          "flammableGasesLitres": {
+            "max": 499
+          },
+          "flammableLiquidsLitres": {
+            "max": 249
+          },
+          "combustibleLiquidsLitres": {
+            "max": 499
+          }
         },
-        "examples": ["offices", "classrooms", "churches", "assembly_halls", "hotel_guest_rooms"]
+        "examples": [
+          "offices",
+          "classrooms",
+          "churches",
+          "assembly_halls",
+          "hotel_guest_rooms"
+        ]
       },
       "moderate": {
         "label": "Ordinary (Moderate) Hazard",
         "description": "Greater amounts of Class A combustibles and Class B flammables. Dining areas, mercantile shops, light manufacturing, auto showrooms, workshops.",
         "criteria": {
-          "buildingHeightM": { "note": "Not applicable as a standalone criterion" },
-          "occupantCount": { "min": 15, "max": 250 },
-          "floorAreaM2": { "min": 300, "max": 3000 },
-          "flammableGasesLitres": { "min": 500, "max": 3000 },
-          "flammableLiquidsLitres": { "min": 250, "max": 1000 },
-          "combustibleLiquidsLitres": { "min": 500, "max": 2000 }
+          "buildingHeightM": {
+            "note": "Not applicable as a standalone criterion"
+          },
+          "occupantCount": {
+            "min": 15,
+            "max": 250
+          },
+          "floorAreaM2": {
+            "min": 300,
+            "max": 3000
+          },
+          "flammableGasesLitres": {
+            "min": 500,
+            "max": 3000
+          },
+          "flammableLiquidsLitres": {
+            "min": 250,
+            "max": 1000
+          },
+          "combustibleLiquidsLitres": {
+            "min": 500,
+            "max": 2000
+          }
         },
-        "examples": ["dining_areas", "mercantile_shops", "storage", "light_manufacturing", "research_labs", "auto_showrooms", "parking_garages", "workshops"]
+        "examples": [
+          "dining_areas",
+          "mercantile_shops",
+          "storage",
+          "light_manufacturing",
+          "research_labs",
+          "auto_showrooms",
+          "parking_garages",
+          "workshops"
+        ]
       },
       "high": {
         "label": "High Hazard",
         "description": "Large amounts of Class A combustibles and Class B flammables. Woodworking, vehicle repair, aircraft servicing, cooking areas, painting, dipping, coating.",
         "criteria": {
-          "buildingHeightM": { "min": 15 },
-          "occupantCount": { "min": 251 },
-          "floorAreaM2": { "min": 3001 },
-          "flammableGasesLitres": { "min": 3001 },
-          "flammableLiquidsLitres": { "min": 1001 },
-          "combustibleLiquidsLitres": { "min": 2001 }
+          "buildingHeightM": {
+            "min": 15
+          },
+          "occupantCount": {
+            "min": 251
+          },
+          "floorAreaM2": {
+            "min": 3001
+          },
+          "flammableGasesLitres": {
+            "min": 3001
+          },
+          "flammableLiquidsLitres": {
+            "min": 1001
+          },
+          "combustibleLiquidsLitres": {
+            "min": 2001
+          }
         },
-        "examples": ["woodworking", "vehicle_repair", "aircraft_servicing", "cooking_areas", "painting", "dipping", "coating", "flammable_liquid_handling", "warehousing"]
+        "examples": [
+          "woodworking",
+          "vehicle_repair",
+          "aircraft_servicing",
+          "cooking_areas",
+          "painting",
+          "dipping",
+          "coating",
+          "flammable_liquid_handling",
+          "warehousing"
+        ]
       }
     }
   },
-
   "extinguisherTypes": {
     "description": "Types of portable fire extinguishers and their applicable fire classes",
     "types": {
       "water": {
         "label": "Water Type",
-        "applicableClasses": ["A"],
-        "notSuitableFor": ["B", "C", "D", "F", "electrical"],
+        "applicableClasses": [
+          "A"
+        ],
+        "notSuitableFor": [
+          "B",
+          "C",
+          "D",
+          "F",
+          "electrical"
+        ],
         "standard": "IS 15683"
       },
       "foam_afff": {
         "label": "Foam (AFFF/FFFP) Type",
-        "applicableClasses": ["A", "B"],
-        "notSuitableFor": ["water_soluble_flammables", "electrical"],
+        "applicableClasses": [
+          "A",
+          "B"
+        ],
+        "notSuitableFor": [
+          "water_soluble_flammables",
+          "electrical"
+        ],
         "note": "Not for water-soluble flammable/combustible liquids unless specifically rated",
         "standard": "IS 15683"
       },
       "dcp_abc": {
         "label": "Dry Chemical Powder (ABC Type)",
-        "applicableClasses": ["A", "B", "C"],
-        "notSuitableFor": ["D"],
+        "applicableClasses": [
+          "A",
+          "B",
+          "C"
+        ],
+        "notSuitableFor": [
+          "D"
+        ],
         "note": "Residue may damage delicate electronic equipment",
         "standard": "IS 4308"
       },
       "dcp_bc": {
         "label": "Dry Chemical Powder (BC Type)",
-        "applicableClasses": ["B", "C"],
-        "notSuitableFor": ["A", "D"],
+        "applicableClasses": [
+          "B",
+          "C"
+        ],
+        "notSuitableFor": [
+          "A",
+          "D"
+        ],
         "standard": "IS 4308"
       },
       "co2": {
         "label": "Carbon Dioxide (CO2) Type",
-        "applicableClasses": ["B", "C", "electrical"],
-        "notSuitableFor": ["D"],
+        "applicableClasses": [
+          "B",
+          "C",
+          "electrical"
+        ],
+        "notSuitableFor": [
+          "D"
+        ],
         "note": "Metal horns not safe for energized electrical equipment. Suitable for clean environments (no residue).",
         "standard": "IS 15683"
       },
       "clean_agent": {
         "label": "Clean Agent Type",
-        "applicableClasses": ["A", "B", "C", "electrical"],
-        "notSuitableFor": ["D"],
+        "applicableClasses": [
+          "A",
+          "B",
+          "C",
+          "electrical"
+        ],
+        "notSuitableFor": [
+          "D"
+        ],
         "note": "Use where clean medium is required (server rooms, archives). Regulated by Montreal Protocol.",
         "standard": "IS 15683"
       },
       "dry_powder_d": {
         "label": "Dry Powder (Class D Type)",
-        "applicableClasses": ["D"],
-        "notSuitableFor": ["A", "B", "C", "F"],
+        "applicableClasses": [
+          "D"
+        ],
+        "notSuitableFor": [
+          "A",
+          "B",
+          "C",
+          "F"
+        ],
         "standard": "IS 4308"
       },
       "wet_chemical_f": {
         "label": "Wet Chemical (Class F Type)",
-        "applicableClasses": ["F"],
-        "notSuitableFor": ["A", "B", "C", "D"],
+        "applicableClasses": [
+          "F"
+        ],
+        "notSuitableFor": [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
         "standard": "IS 15683"
       },
       "water_mist": {
         "label": "Water Mist Type",
-        "applicableClasses": ["A", "electrical"],
+        "applicableClasses": [
+          "A",
+          "electrical"
+        ],
         "standard": "IS 15683"
       }
     }
   },
-
+  "generalPrinciples": {
+    "clause": "7.1",
+    "description": "Overarching principles that apply across all fire classes (IS 2190:2024, clause 7.1)",
+    "rules": [
+      {
+        "id": "GEN-01",
+        "clause": "7.1.1",
+        "rule": "The selection of fire extinguishers for a given situation shall be determined by the character of the fires anticipated, the construction and occupancy of the property, and the vehicle and contents to be protected."
+      },
+      {
+        "id": "GEN-02",
+        "clause": "7.1.2",
+        "rule": "Required fire extinguishers shall be provided on each floor level of a building."
+      },
+      {
+        "id": "GEN-03",
+        "clause": "7.1.3",
+        "rule": "All buildings with combustible construction or combustible contents require a minimum complement of Class A fire extinguishers."
+      },
+      {
+        "id": "GEN-04",
+        "clause": "7.1.4",
+        "rule": "Hazards of different classes (B, C, D, F) that are present in a building require extinguishers specific to the hazard class IN ADDITION to the Class A complement."
+      },
+      {
+        "id": "GEN-05",
+        "clause": "7.1.5",
+        "rule": "Where different hazard types exist on the same floor, the most stringent criteria shall apply for extinguisher placement."
+      },
+      {
+        "id": "GEN-06",
+        "clause": "7.1.6",
+        "rule": "Class B/C/D/F extinguishers shall NOT be used as substitutes for Class A extinguishers. They are supplementary."
+      }
+    ]
+  },
   "placementRules": {
     "classA": {
       "clause": "7.2 and Table 1",
@@ -169,7 +345,6 @@
         }
       }
     },
-
     "classBandC": {
       "clause": "7.3 and Table 2",
       "description": "Placement requirements for Class B (flammable liquids shallow depth ≤6mm) and Class C (flammable gas) hazards",
@@ -210,7 +385,6 @@
         }
       }
     },
-
     "classBDeepFlammable": {
       "clause": "7.4",
       "description": "For flammable liquid hazards of appreciable depth (>6mm) — dip tanks, quench tanks",
@@ -235,7 +409,6 @@
         }
       ]
     },
-
     "classD": {
       "clause": "7.6",
       "description": "Combustible metal hazards (magnesium, aluminium, zinc, sodium, potassium)",
@@ -258,7 +431,6 @@
         }
       ]
     },
-
     "classF": {
       "clause": "7.7 and Table 3",
       "description": "Class F: cooking media fires (vegetable or animal oils/fats) in cooking appliances",
@@ -281,13 +453,24 @@
         }
       ],
       "byRating": [
-        { "minimumRating": "5F",  "maxCookingAreaM2": 0.03 },
-        { "minimumRating": "15F", "maxCookingAreaM2": 0.05 },
-        { "minimumRating": "25F", "maxCookingAreaM2": 0.08 },
-        { "minimumRating": "75F", "maxCookingAreaM2": 0.25 }
+        {
+          "minimumRating": "5F",
+          "maxCookingAreaM2": 0.03
+        },
+        {
+          "minimumRating": "15F",
+          "maxCookingAreaM2": 0.05
+        },
+        {
+          "minimumRating": "25F",
+          "maxCookingAreaM2": 0.08
+        },
+        {
+          "minimumRating": "75F",
+          "maxCookingAreaM2": 0.25
+        }
       ]
     },
-
     "electrical": {
       "clause": "7.5 and 6.3.7",
       "description": "Electrical equipment hazards",
@@ -301,14 +484,21 @@
           "id": "E-GEN-02",
           "clause": "7.5.3 and 6.3.7",
           "rule": "Must use extinguishers suitable for energized electrical equipment: CO2, ABC powder, clean agent, or water-mist types.",
-          "suitableTypes": ["co2", "dcp_abc", "clean_agent", "water_mist"],
-          "prohibited": ["water", "foam_afff"],
+          "suitableTypes": [
+            "co2",
+            "dcp_abc",
+            "clean_agent",
+            "water_mist"
+          ],
+          "prohibited": [
+            "water",
+            "foam_afff"
+          ],
           "note": "CO2 with metal horns NOT safe for energized electrical equipment."
         }
       ]
     }
   },
-
   "installationRequirements": {
     "clause": "5",
     "rules": [
@@ -356,7 +546,6 @@
       }
     ]
   },
-
   "inspectionAndMaintenance": {
     "inspection": {
       "clause": "8.3",
@@ -405,7 +594,6 @@
       ]
     }
   },
-
   "refillSchedule": {
     "clause": "Annex E",
     "rules": [
@@ -436,7 +624,6 @@
       }
     ]
   },
-
   "hydrostaticTestSchedule": {
     "clause": "Annex F",
     "schedule": [
@@ -472,19 +659,32 @@
       }
     ]
   },
-
   "extinguisherLifetime": {
     "clause": "Annex G",
     "note": "Lifetime measured from date of manufacture. Extinguisher failing hydrostatic pressure test must be discarded immediately.",
     "lifetimes": [
-      { "type": "Water based",    "lifetimeYears": 10 },
-      { "type": "Foam based",     "lifetimeYears": 10 },
-      { "type": "Powder based",   "lifetimeYears": 10 },
-      { "type": "Carbon dioxide", "lifetimeYears": 15 },
-      { "type": "Clean agent",    "lifetimeYears": 10 }
+      {
+        "type": "Water based",
+        "lifetimeYears": 10
+      },
+      {
+        "type": "Foam based",
+        "lifetimeYears": 10
+      },
+      {
+        "type": "Powder based",
+        "lifetimeYears": 10
+      },
+      {
+        "type": "Carbon dioxide",
+        "lifetimeYears": 15
+      },
+      {
+        "type": "Clean agent",
+        "lifetimeYears": 10
+      }
     ]
   },
-
   "obsoleteExtinguishers": {
     "clause": "Annex D",
     "description": "These types MUST be removed from service immediately",
@@ -497,7 +697,6 @@
       "Copper or brass shell types joined by soft solder or rivets; steel shell types joined by rivets"
     ]
   },
-
   "commercialBuildingRules": {
     "description": "Derived rules specifically for commercial buildings (MVP scope). Commercial buildings typically fall under Moderate hazard with Class A fire potential and possibly Class B (flammable storage/goods).",
     "hazardDetermination": {

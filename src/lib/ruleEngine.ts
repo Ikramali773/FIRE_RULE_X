@@ -1,8 +1,9 @@
 // src/lib/ruleEngine.ts
 // FireRuleX Rule Engine — Main Orchestrator
 //
-// Accepts a BuildingInput and evaluates all IS 2190:2024 fire
-// extinguisher rules applicable to commercial buildings.
+// Accepts a BuildingInput and evaluates all fire safety rules:
+//   IS 2190:2024 — Fire extinguisher requirements
+//   NBC 2016 Part IV — Occupant load, exit capacity, travel distance
 //
 // Evaluation flow:
 //   1. Determine hazard type (Annex B, Table 6)
@@ -11,19 +12,22 @@
 //   4. Calculate Class F requirements (Table 3) — if kitchen
 //   5. Check electrical hazard (cl 7.5) — if electrical panels
 //   6. Flag combustible metals (cl 7.6) — requires professional
-//   7. Calculate compliance score and grade
+//   7. NBC checks (Tables 3-5) — if occupancyGroup provided
+//   8. Calculate compliance score and grade
 
-import type { BuildingInput, AnalysisResult, Violation, ExtinguisherRequirement } from '@/types';
+import type { BuildingInput, AnalysisResult, Violation, ExtinguisherRequirement, NBCComplianceData } from '@/types';
 import { determineHazardType } from './hazardClassifier';
 import { checkClassA } from './classAChecker';
 import { checkClassBC } from './classBCChecker';
 import { checkClassF } from './classFChecker';
 import { checkElectrical } from './electricalChecker';
+import { runNBCChecks } from './nbcChecker';
 
 export function runRuleEngine(input: BuildingInput): AnalysisResult {
     const violations: Violation[] = [];
     const passedRules: string[] = [];
     const allRequirements: ExtinguisherRequirement[] = [];
+    let nbcCompliance: NBCComplianceData | undefined;
 
     // Step 1: Determine hazard type
     const { hazardType } = determineHazardType(input);
@@ -75,7 +79,33 @@ export function runRuleEngine(input: BuildingInput): AnalysisResult {
         });
     }
 
-    // Step 7: Compliance score
+    // Step 7: NBC 2016 Part IV checks (occupant load, exit capacity, travel distance)
+    if (input.occupancyGroup) {
+        const nbcResult = runNBCChecks(input);
+
+        // Merge NBC violations into main violations (map to same Violation interface)
+        for (const nbcV of nbcResult.violations) {
+            violations.push({
+                ruleId: nbcV.ruleId,
+                clauseRef: nbcV.clauseRef,
+                severity: nbcV.severity,
+                description: nbcV.description,
+                fixSuggestion: nbcV.fixSuggestion,
+            });
+        }
+
+        passedRules.push(...nbcResult.passedRules);
+
+        // Forward NBC detail objects for UI display
+        nbcCompliance = {
+            occupantLoad: nbcResult.occupantLoad,
+            exitCapacity: nbcResult.exitCapacity,
+            travelDistance: nbcResult.travelDistance,
+            firefightingInstallations: nbcResult.firefightingInstallations,
+        };
+    }
+
+    // Step 8: Compliance score
     //   Penalty-based scoring:
     //     High violation:   -20 points
     //     Medium violation: -10 points
@@ -102,5 +132,7 @@ export function runRuleEngine(input: BuildingInput): AnalysisResult {
         violations,
         passedRules,
         analysisMethod: 'structured_input',
+        nbcCompliance,
     };
 }
+

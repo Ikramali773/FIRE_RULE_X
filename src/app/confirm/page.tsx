@@ -8,7 +8,7 @@ import type { BuildingInput, AnalyzeResponse } from '@/types';
 
 const defaultInput: BuildingInput = {
     buildingName: '',
-    buildingType: 'commercial',
+    buildingType: '',
     totalFloorArea: 0,
     numberOfFloors: 1,
     floorAreas: [0],
@@ -128,6 +128,20 @@ export default function ConfirmPage() {
                                 value={form.buildingName}
                                 onChange={(e) => updateField('buildingName', e.target.value)}
                                 placeholder="e.g. Acme Office Complex"
+                                className="w-full px-3 py-2 rounded-lg border border-slate-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none transition text-sm"
+                            />
+                        </div>
+
+                        {/* Building Type */}
+                        <div>
+                            <label className="block text-sm font-medium text-slate-700 mb-1">
+                                Building Functional Type
+                            </label>
+                            <input
+                                type="text"
+                                value={form.buildingType}
+                                onChange={(e) => updateField('buildingType', e.target.value)}
+                                placeholder="e.g. Office, Hospital, School, Residential"
                                 className="w-full px-3 py-2 rounded-lg border border-slate-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none transition text-sm"
                             />
                         </div>

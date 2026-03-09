@@ -7,7 +7,7 @@ import type { BuildingInput } from '@/types';
 
 const completeInput: BuildingInput = {
     buildingName: 'Test Office',
-    buildingType: 'commercial',
+    buildingType: 'Office',
     totalFloorArea: 500,
     numberOfFloors: 2,
     floorAreas: [250, 250],
@@ -50,7 +50,7 @@ describe('scoreConfidence', () => {
     });
 
     it('flags floor areas count mismatch (-15)', () => {
-        const result = scoreConfidence({ ...completeInput, numberOfFloors: 3 });
+        const result = scoreConfidence({ ...completeInput, numberOfFloors: 3, buildingHeight: 10 });
         expect(result.flags.some((f) => f.includes("doesn't match"))).toBe(true);
         expect(result.score).toBe(85);
     });
@@ -62,7 +62,12 @@ describe('scoreConfidence', () => {
     });
 
     it('flags unusually large buildings (>50,000 m²)', () => {
-        const result = scoreConfidence({ ...completeInput, totalFloorArea: 60000 });
+        const result = scoreConfidence({
+            ...completeInput,
+            totalFloorArea: 60000,
+            floorAreas: [30000, 30000],
+            occupantCount: 5000
+        });
         expect(result.flags.some((f) => f.includes('50,000'))).toBe(true);
         expect(result.score).toBe(90);
     });

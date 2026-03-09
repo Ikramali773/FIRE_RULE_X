@@ -7,6 +7,7 @@ import Footer from '@/components/Footer';
 import ComplianceScore from '@/components/ComplianceScore';
 import ViolationCard from '@/components/ViolationCard';
 import ExtinguisherTable from '@/components/ExtinguisherTable';
+import NBCCompliancePanel from '@/components/NBCCompliancePanel';
 import type { AnalyzeResponse } from '@/types';
 
 export default function ResultsPage() {
@@ -127,6 +128,9 @@ export default function ResultsPage() {
                                     </div>
                                 </div>
                             )}
+
+                            {/* NBC Compliance */}
+                            <NBCCompliancePanel data={analysis.nbcCompliance} />
 
                             {/* Passed rules */}
                             {analysis.passedRules.length > 0 && (

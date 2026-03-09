@@ -4,7 +4,7 @@ import { determineHazardType } from '../hazardClassifier';
 
 const baseInput = {
     buildingName: 'Test',
-    buildingType: 'commercial' as const,
+    buildingType: 'Hospital',
     totalFloorArea: 100,
     numberOfFloors: 1,
     floorAreas: [100],

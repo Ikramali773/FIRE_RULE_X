@@ -5,7 +5,7 @@ import type { BuildingInput } from '@/types';
 
 const smallOffice: BuildingInput = {
     buildingName: 'Small Office',
-    buildingType: 'commercial',
+    buildingType: 'Office',
     totalFloorArea: 150,
     numberOfFloors: 1,
     floorAreas: [150],
@@ -20,7 +20,7 @@ const smallOffice: BuildingInput = {
 
 const largeCommercial: BuildingInput = {
     buildingName: 'Large Mall',
-    buildingType: 'commercial',
+    buildingType: 'Warehouse',
     totalFloorArea: 5000,
     numberOfFloors: 4,
     floorAreas: [1250, 1250, 1250, 1250],

@@ -14,7 +14,7 @@ Extract the following building metadata for IS 2190:2024 fire extinguisher compl
 
 RULES:
 1. Extract ONLY what you can see or reasonably infer from the floor plan.
-2. Set buildingType to "commercial".
+2. Determine buildingType naturally based on the plan (e.g., 'Hospital', 'Office', 'Residential', 'School', 'Mall', 'Factory', 'Warehouse').
 3. Estimate occupantCount: 1 person per 10m² for offices, 1 per 3m² for assembly areas.
 4. Estimate buildingHeight: floor count × 3.5m if not visible in the plan.
 5. Set boolean flags based on visible room labels (kitchen, server room, storage, electrical panel, etc.).
@@ -30,7 +30,7 @@ const BUILDING_INPUT_SCHEMA = {
         type: 'object' as const,
         properties: {
             buildingName: { type: 'string' as const, description: 'Name or identifier of the building' },
-            buildingType: { type: 'string' as const, enum: ['commercial'] },
+            buildingType: { type: 'string' as const, description: 'General functional type of the building (e.g., Office, Hospital, Residential, Mall, Factory, School)' },
             totalFloorArea: { type: 'number' as const, description: 'Total floor area in m²' },
             numberOfFloors: { type: 'number' as const, description: 'Total number of floors including ground' },
             floorAreas: { type: 'array' as const, items: { type: 'number' as const }, description: 'Area per floor in m², index 0 = ground' },
@@ -105,9 +105,6 @@ export class OpenAIProvider implements AIProvider {
             }
 
             const parsed: BuildingInput = JSON.parse(text);
-
-            // Enforce MVP constraints
-            parsed.buildingType = 'commercial';
 
             // Fix floor areas if missing
             if (!parsed.floorAreas || parsed.floorAreas.length === 0) {

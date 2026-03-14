@@ -28,7 +28,7 @@ const EXTENSION_MAP: Record<string, string> = {
 };
 
 export interface ConversionResult {
-    imageBuffer: Buffer;
+    imageBuffers: Buffer[];
     originalFormat: string;
     wasConverted: boolean;
     error?: string;
@@ -46,7 +46,7 @@ export async function convertToPng(
 ): Promise<ConversionResult> {
     // If already an image, pass through
     if (PASSTHROUGH_MIMES.includes(mimeType)) {
-        return { imageBuffer: fileBuffer, originalFormat: mimeType, wasConverted: false };
+        return { imageBuffers: [fileBuffer], originalFormat: mimeType, wasConverted: false };
     }
 
     // Check MIME type first, then fallback to extension
@@ -58,10 +58,10 @@ export async function convertToPng(
     if (!sourceFormat || ['png', 'jpg', 'jpeg'].includes(sourceFormat)) {
         // It's an image by extension but didn't match MIME — pass through
         if (['png', 'jpg', 'jpeg'].includes(sourceFormat || '')) {
-            return { imageBuffer: fileBuffer, originalFormat: sourceFormat || mimeType, wasConverted: false };
+            return { imageBuffers: [fileBuffer], originalFormat: sourceFormat || mimeType, wasConverted: false };
         }
         return {
-            imageBuffer: Buffer.from(''),
+            imageBuffers: [],
             originalFormat: mimeType,
             wasConverted: false,
             error: `Unsupported file type: ${mimeType} (${fileName}). Accepted: PDF, DWG, DXF, JPG, PNG.`,
@@ -74,7 +74,7 @@ export async function convertToPng(
 
     if (!clientId || !clientSecret) {
         return {
-            imageBuffer: Buffer.from(''),
+            imageBuffers: [],
             originalFormat: sourceFormat,
             wasConverted: false,
             error: 'GroupDocs API credentials not configured. Set GROUPDOCS_CLIENT_ID and GROUPDOCS_CLIENT_SECRET in .env.local.',
@@ -103,16 +103,22 @@ export async function convertToPng(
 
         if (!result || result.length === 0) {
             return {
-                imageBuffer: Buffer.from(''),
+                imageBuffers: [],
                 originalFormat: sourceFormat,
                 wasConverted: false,
                 error: 'GroupDocs conversion returned no output.',
             };
         }
 
-        // Download converted PNG
-        const downloadRequest = new groupdocs_conversion_cloud.DownloadFileRequest(result[0].path);
-        const downloadResult = await fileApi.downloadFile(downloadRequest);
+        // Download all converted PNG pages
+        const imageBuffers: Buffer[] = [];
+        for (const res of result) {
+            if (res.path) {
+                const downloadRequest = new groupdocs_conversion_cloud.DownloadFileRequest(res.path);
+                const downloadResult = await fileApi.downloadFile(downloadRequest);
+                imageBuffers.push(Buffer.from(downloadResult));
+            }
+        }
 
         // Clean up uploaded file (best effort)
         try {
@@ -123,14 +129,14 @@ export async function convertToPng(
         }
 
         return {
-            imageBuffer: Buffer.from(downloadResult),
+            imageBuffers,
             originalFormat: sourceFormat,
             wasConverted: true,
         };
     } catch (err) {
         const message = err instanceof Error ? err.message : 'Unknown conversion error';
         return {
-            imageBuffer: Buffer.from(''),
+            imageBuffers: [],
             originalFormat: sourceFormat,
             wasConverted: false,
             error: `File conversion failed: ${message}`,

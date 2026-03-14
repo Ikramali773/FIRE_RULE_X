@@ -9,6 +9,7 @@ import ViolationCard from '@/components/ViolationCard';
 import ExtinguisherTable from '@/components/ExtinguisherTable';
 import NBCCompliancePanel from '@/components/NBCCompliancePanel';
 import type { AnalyzeResponse } from '@/types';
+import nbcData from '@/data/nbc_building_classification.json';
 
 function ResultsContent() {
     const router = useRouter();
@@ -112,6 +113,43 @@ function ResultsContent() {
 
                     {/* Right column: Details */}
                     <div className="lg:col-span-2 space-y-6">
+                        {/* Building Information Card */}
+                        <div className="card card-elevated">
+                            <h2 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+                                🏢 Building Information
+                            </h2>
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                <div className="p-3 bg-slate-50 rounded-lg border border-slate-100 col-span-2 md:col-span-1">
+                                    <div className="text-xs text-slate-500 uppercase tracking-wider mb-1">Building Type</div>
+                                    <div className="font-semibold text-slate-800">{extraction.buildingType || 'Unknown'}</div>
+                                    <div className="text-[10px] text-slate-400 mt-1">
+                                        Class {extraction.occupancyGroup}
+                                        {extraction.occupancyGroup && (nbcData.occupancyGroups as any)[extraction.occupancyGroup]
+                                            ? ` - ${(nbcData.occupancyGroups as any)[extraction.occupancyGroup].label}`
+                                            : ''}
+                                        {extraction.occupancyGroup && extraction.occupancySubdivision && (nbcData.occupancyGroups as any)[extraction.occupancyGroup]?.subdivisions?.[extraction.occupancySubdivision]
+                                            ? ` (${extraction.occupancySubdivision}: ${(nbcData.occupancyGroups as any)[extraction.occupancyGroup].subdivisions[extraction.occupancySubdivision].label})`
+                                            : extraction.occupancySubdivision ? ` (${extraction.occupancySubdivision})` : ''}
+                                    </div>
+                                </div>
+                                <div className="p-3 bg-slate-50 rounded-lg border border-slate-100">
+                                    <div className="text-xs text-slate-500 uppercase tracking-wider mb-1">Occupant Load</div>
+                                    <div className="font-semibold text-slate-800">{extraction.occupantCount ? extraction.occupantCount.toLocaleString() : 'N/A'}</div>
+                                    <div className="text-[10px] text-slate-400 mt-1">persons</div>
+                                </div>
+                                <div className="p-3 bg-slate-50 rounded-lg border border-slate-100">
+                                    <div className="text-xs text-slate-500 uppercase tracking-wider mb-1">Height</div>
+                                    <div className="font-semibold text-slate-800">{extraction.buildingHeight}m</div>
+                                    <div className="text-[10px] text-slate-400 mt-1">{extraction.numberOfFloors} Floors</div>
+                                </div>
+                                <div className="p-3 bg-slate-50 rounded-lg border border-slate-100">
+                                    <div className="text-xs text-slate-500 uppercase tracking-wider mb-1">Total Area</div>
+                                    <div className="font-semibold text-slate-800">{extraction.totalFloorArea ? extraction.totalFloorArea.toLocaleString() : 'N/A'}</div>
+                                    <div className="text-[10px] text-slate-400 mt-1">m²</div>
+                                </div>
+                            </div>
+                        </div>
+
                         {/* Violations */}
                         {sortedViolations.length > 0 && (
                             <div>

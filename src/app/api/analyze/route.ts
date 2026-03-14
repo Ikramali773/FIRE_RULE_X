@@ -20,22 +20,26 @@ const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 export async function POST(request: NextRequest) {
     try {
         const formData = await request.formData();
-        const file = formData.get('file') as File | null;
+        const files = formData.getAll('file') as File[];
 
-        if (!file) {
+        if (!files || files.length === 0) {
             return NextResponse.json(
-                { error: 'No file provided. Send a file with the key "file".' },
+                { error: 'No files provided. Send file(s) with the key "file".' },
                 { status: 400 }
             );
         }
 
-        if (file.size > MAX_FILE_SIZE) {
-            return NextResponse.json(
-                {
-                    error: `File too large (${(file.size / 1024 / 1024).toFixed(1)}MB). Maximum is 10MB.`,
-                },
-                { status: 400 }
-            );
+        let totalSize = 0;
+        for (const file of files) {
+            totalSize += file.size;
+            if (file.size > MAX_FILE_SIZE) {
+                return NextResponse.json(
+                    {
+                        error: `File ${file.name} too large (${(file.size / 1024 / 1024).toFixed(1)}MB). Maximum per file is 10MB.`,
+                    },
+                    { status: 400 }
+                );
+            }
         }
 
         // ─── Rate limit check ───
@@ -52,19 +56,30 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        const buffer = Buffer.from(await file.arrayBuffer());
+        // ─── Stage 1 & 1.5: Convert to PNG (if needed) & Resize ───
+        const allBase64Images: string[] = [];
+        let wasConverted = false;
+        let originalFormat = 'mixed';
 
-        // ─── Stage 1: Convert to PNG (if needed) ───
-        const conversion = await convertToPng(buffer, file.type, file.name);
-        if (conversion.error) {
-            return NextResponse.json(
-                { error: conversion.error, step: 'conversion' },
-                { status: 422 }
-            );
+        for (const file of files) {
+            const buffer = Buffer.from(await file.arrayBuffer());
+            const conversion = await convertToPng(buffer, file.type, file.name);
+            
+            if (conversion.error) {
+                return NextResponse.json(
+                    { error: conversion.error, step: 'conversion' },
+                    { status: 422 }
+                );
+            }
+
+            if (conversion.wasConverted) wasConverted = true;
+            originalFormat = conversion.originalFormat;
+
+            for (const imgBuffer of conversion.imageBuffers) {
+                const resizedBuffer = await resizeForAI(imgBuffer);
+                allBase64Images.push(resizedBuffer.toString('base64'));
+            }
         }
-
-        // ─── Stage 1.5: Resize for AI (reduce token usage) ───
-        const resizedBuffer = await resizeForAI(conversion.imageBuffer);
 
         // ─── Stage 2: AI extraction ───
         let aiProvider;
@@ -80,8 +95,7 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        const imageBase64 = resizedBuffer.toString('base64');
-        const extraction = await aiProvider.analyzeFloorPlan(imageBase64);
+        const extraction = await aiProvider.analyzeFloorPlan(allBase64Images);
 
         if (!extraction.success || !extraction.data) {
             return NextResponse.json(
@@ -108,11 +122,11 @@ export async function POST(request: NextRequest) {
             confidence,
             needsConfirmation,
             meta: {
-                fileName: file.name,
-                fileSize: file.size,
-                fileType: file.type,
-                originalFormat: conversion.originalFormat,
-                wasConverted: conversion.wasConverted,
+                fileName: files.length === 1 ? files[0].name : `${files.length} files processed`,
+                fileSize: totalSize,
+                fileType: files.length === 1 ? files[0].type : 'mixed',
+                originalFormat,
+                wasConverted,
                 aiProvider: aiProvider.name,
                 analyzedAt: new Date().toISOString(),
             },

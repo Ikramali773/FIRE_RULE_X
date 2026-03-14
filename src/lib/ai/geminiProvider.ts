@@ -131,11 +131,12 @@ export class GeminiProvider implements AIProvider {
         this.client = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
     }
 
-    async analyzeFloorPlan(imageBase64: string, mimeType = 'image/png'): Promise<AIExtractionResult> {
+    async analyzeFloorPlan(imagesBase64: string | string[], mimeType = 'image/png'): Promise<AIExtractionResult> {
         const MAX_RETRIES = 2;
         let lastError = '';
 
-        console.log(`[Gemini] Image size: ${(imageBase64.length * 0.75 / 1024).toFixed(0)} KB`);
+        const images = Array.isArray(imagesBase64) ? imagesBase64 : [imagesBase64];
+        console.log(`[Gemini] Processing ${images.length} images...`);
 
         for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
             try {
@@ -149,14 +150,16 @@ export class GeminiProvider implements AIProvider {
                     },
                 });
 
+                const imageParts = images.map(imgBase64 => ({
+                    inlineData: {
+                        mimeType,
+                        data: imgBase64,
+                    },
+                }));
+
                 const result = await model.generateContent([
                     { text: EXTRACTION_PROMPT },
-                    {
-                        inlineData: {
-                            mimeType,
-                            data: imageBase64,
-                        },
-                    },
+                    ...imageParts
                 ]);
 
                 const text = result.response.text();

@@ -16,5 +16,5 @@ export interface AIExtractionResult {
 
 export interface AIProvider {
     name: string;
-    analyzeFloorPlan(imageBase64: string, mimeType?: string): Promise<AIExtractionResult>;
+    analyzeFloorPlan(imageBase64: string | string[], mimeType?: string): Promise<AIExtractionResult>;
 }

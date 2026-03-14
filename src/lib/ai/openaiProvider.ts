@@ -67,22 +67,25 @@ export class OpenAIProvider implements AIProvider {
         this.client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
     }
 
-    async analyzeFloorPlan(imageBase64: string, mimeType = 'image/png'): Promise<AIExtractionResult> {
+    async analyzeFloorPlan(imagesBase64: string | string[], mimeType = 'image/png'): Promise<AIExtractionResult> {
+        const images = Array.isArray(imagesBase64) ? imagesBase64 : [imagesBase64];
         try {
+            const imageParts = images.map(img => ({
+                type: 'image_url' as const,
+                image_url: {
+                    url: `data:${mimeType};base64,${img}`,
+                    detail: 'high' as const,
+                },
+            }));
+
             const response = await this.client.chat.completions.create({
                 model: 'gpt-4o',
                 messages: [
                     {
                         role: 'user',
                         content: [
-                            { type: 'text', text: EXTRACTION_PROMPT },
-                            {
-                                type: 'image_url',
-                                image_url: {
-                                    url: `data:${mimeType};base64,${imageBase64}`,
-                                    detail: 'high',
-                                },
-                            },
+                            { type: 'text' as const, text: EXTRACTION_PROMPT },
+                            ...imageParts
                         ],
                     },
                 ],

@@ -33,7 +33,7 @@ function isValidFile(file: File): { valid: boolean; error?: string } {
 }
 
 export default function FileUpload() {
-    const [file, setFile] = useState<File | null>(null);
+    const [files, setFiles] = useState<File[]>([]);
     const [dragOver, setDragOver] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
@@ -41,41 +41,50 @@ export default function FileUpload() {
     const inputRef = useRef<HTMLInputElement>(null);
     const router = useRouter();
 
-    const handleFile = useCallback((newFile: File) => {
+    const handleFiles = useCallback((newFiles: FileList | File[]) => {
         setError(null);
-        const validation = isValidFile(newFile);
-        if (!validation.valid) {
-            setError(validation.error!);
-            setFile(null);
-            return;
+        const validFiles: File[] = [];
+        for (let i = 0; i < newFiles.length; i++) {
+            const f = newFiles[i];
+            const validation = isValidFile(f);
+            if (!validation.valid) {
+                setError(`${f.name}: ${validation.error}`);
+                setFiles([]);
+                return;
+            }
+            validFiles.push(f);
         }
-        setFile(newFile);
+        if (validFiles.length > 0) {
+            setFiles(validFiles);
+        }
     }, []);
 
     const handleDrop = useCallback(
         (e: React.DragEvent) => {
             e.preventDefault();
             setDragOver(false);
-            const dropped = e.dataTransfer.files[0];
-            if (dropped) handleFile(dropped);
+            if (e.dataTransfer.files?.length > 0) {
+                handleFiles(e.dataTransfer.files);
+            }
         },
-        [handleFile]
+        [handleFiles]
     );
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const selected = e.target.files?.[0];
-        if (selected) handleFile(selected);
+        if (e.target.files?.length) {
+            handleFiles(e.target.files);
+        }
     };
 
     const handleAnalyze = async () => {
-        if (!file) return;
+        if (files.length === 0) return;
         setLoading(true);
         setError(null);
         setLoadingStep(1);
 
         try {
             const formData = new FormData();
-            formData.append('file', file);
+            files.forEach(f => formData.append('file', f));
 
             // Step progression for UX
             const stepTimer1 = setTimeout(() => setLoadingStep(2), 3000);
@@ -85,7 +94,7 @@ export default function FileUpload() {
             const response = await fetch('/api/analyze', {
                 method: 'POST',
                 body: formData,
-                signal: AbortSignal.timeout(90000), // 90s timeout
+                signal: AbortSignal.timeout(300000), // 300s timeout to allow multi-page PDF processing
             });
 
             clearTimeout(stepTimer1);
@@ -154,7 +163,7 @@ export default function FileUpload() {
             {/* Drop zone */}
             <div
                 id="upload-zone"
-                className={`upload-zone ${dragOver ? 'drag-over' : ''} ${file ? 'has-file' : ''}`}
+                className={`upload-zone ${dragOver ? 'drag-over' : ''} ${files.length > 0 ? 'has-file' : ''}`}
                 onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
                 onDragLeave={() => setDragOver(false)}
                 onDrop={handleDrop}
@@ -163,17 +172,22 @@ export default function FileUpload() {
                 <input
                     ref={inputRef}
                     type="file"
+                    multiple
                     accept={ACCEPTED_EXTENSIONS.join(',')}
                     onChange={handleChange}
                     className="hidden"
                     id="file-input"
                 />
 
-                {file ? (
+                {files.length > 0 ? (
                     <div className="space-y-2">
                         <div className="text-4xl">✅</div>
-                        <p className="text-lg font-semibold text-slate-700">{file.name}</p>
-                        <p className="text-sm text-slate-400">{formatSize(file.size)}</p>
+                        <p className="text-lg font-semibold text-slate-700">
+                            {files.length === 1 ? files[0].name : `${files.length} files selected`}
+                        </p>
+                        <p className="text-sm text-slate-400">
+                            {formatSize(files.reduce((acc, f) => acc + f.size, 0))} total
+                        </p>
                         <p className="text-xs text-emerald-600 font-medium">Ready to analyze. Click &quot;Analyze&quot; below.</p>
                     </div>
                 ) : (
@@ -201,7 +215,7 @@ export default function FileUpload() {
                 id="analyze-btn"
                 className="btn-primary w-full mt-4 py-4 text-lg animate-pulse-glow"
                 onClick={handleAnalyze}
-                disabled={!file || loading}
+                disabled={files.length === 0 || loading}
             >
                 🔍 Analyze Compliance
             </button>

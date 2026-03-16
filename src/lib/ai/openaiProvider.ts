@@ -67,13 +67,25 @@ export class OpenAIProvider implements AIProvider {
         this.client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
     }
 
-    async analyzeFloorPlan(imagesBase64: string | string[], mimeType = 'image/png'): Promise<AIExtractionResult> {
-        const images = Array.isArray(imagesBase64) ? imagesBase64 : [imagesBase64];
+    async analyzeFloorPlan(documents: { data: string, mimeType: string }[]): Promise<AIExtractionResult> {
+        // OpenAI Vision requires images, not PDFs via inline chat.
+        const imageDocs = documents.filter(doc => doc.mimeType.startsWith('image/'));
+        
+        if (imageDocs.length === 0) {
+            return {
+                success: false,
+                data: null,
+                rawResponse: '',
+                provider: this.name,
+                error: 'OpenAI requires images for floor plan analysis. PDFs are natively unsupported by GPT-4o Vision API without conversion.',
+            };
+        }
+
         try {
-            const imageParts = images.map(img => ({
+            const imageParts = imageDocs.map(img => ({
                 type: 'image_url' as const,
                 image_url: {
-                    url: `data:${mimeType};base64,${img}`,
+                    url: `data:${img.mimeType};base64,${img.data}`,
                     detail: 'high' as const,
                 },
             }));

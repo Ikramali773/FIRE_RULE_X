@@ -14,7 +14,12 @@ export interface AIExtractionResult {
     error?: string;
 }
 
+export interface AIDocument {
+    data: string;     // base64
+    mimeType: string; // e.g. 'image/png' or 'application/pdf'
+}
+
 export interface AIProvider {
     name: string;
-    analyzeFloorPlan(imageBase64: string | string[], mimeType?: string): Promise<AIExtractionResult>;
+    analyzeFloorPlan(documents: AIDocument[]): Promise<AIExtractionResult>;
 }

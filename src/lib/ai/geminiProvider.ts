@@ -131,12 +131,11 @@ export class GeminiProvider implements AIProvider {
         this.client = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
     }
 
-    async analyzeFloorPlan(imagesBase64: string | string[], mimeType = 'image/png'): Promise<AIExtractionResult> {
+    async analyzeFloorPlan(documents: { data: string, mimeType: string }[]): Promise<AIExtractionResult> {
         const MAX_RETRIES = 2;
         let lastError = '';
 
-        const images = Array.isArray(imagesBase64) ? imagesBase64 : [imagesBase64];
-        console.log(`[Gemini] Processing ${images.length} images...`);
+        console.log(`[Gemini] Processing ${documents.length} documents...`);
 
         for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
             try {
@@ -150,19 +149,26 @@ export class GeminiProvider implements AIProvider {
                     },
                 });
 
-                const imageParts = images.map(imgBase64 => ({
+                const documentParts = documents.map(doc => ({
                     inlineData: {
-                        mimeType,
-                        data: imgBase64,
+                        mimeType: doc.mimeType,
+                        data: doc.data,
                     },
                 }));
 
                 const result = await model.generateContent([
                     { text: EXTRACTION_PROMPT },
-                    ...imageParts
+                    ...documentParts
                 ]);
 
-                const text = result.response.text();
+                let text = '';
+                try {
+                    text = result.response.text();
+                } catch (textErr) {
+                    console.error('[Gemini] Failed to get text from response:', result.response);
+                    throw new Error(`Gemini blocked response or returned non-text. Reason: ${result.response.candidates?.[0]?.finishReason || 'Unknown'}`);
+                }
+
                 if (!text) {
                     return {
                         success: false,
@@ -173,7 +179,24 @@ export class GeminiProvider implements AIProvider {
                     };
                 }
 
-                const parsed: BuildingInput = JSON.parse(text);
+                let cleanText = text.trim();
+                if (cleanText.startsWith('```')) {
+                    const match = cleanText.match(/```(?:json)?\n([\s\S]*?)\n```/);
+                    if (match) {
+                        cleanText = match[1];
+                    } else {
+                        // fallback if regex doesn't match perfectly
+                        cleanText = cleanText.replace(/^```[a-z]*\n/, '').replace(/\n```$/, '');
+                    }
+                }
+
+                let parsed: BuildingInput;
+                try {
+                    parsed = JSON.parse(cleanText);
+                } catch (parseErr) {
+                    console.error('[Gemini] JSON Parse Error. Raw text was:', text);
+                    throw new Error('Failed to parse Gemini output as JSON.');
+                }
 
                 // ── Post-processing: enforce consistency ──────────────
 
@@ -229,13 +252,15 @@ export class GeminiProvider implements AIProvider {
                 };
             } catch (err) {
                 const message = err instanceof Error ? err.message : 'Unknown Gemini error';
+                console.error(`[Gemini] Error on attempt ${attempt + 1}:`, message);
+                console.error(err); // Full stack trace in console
                 lastError = message;
 
-                // Retry on 429 (rate limit) errors
-                if (message.includes('429') && attempt < MAX_RETRIES) {
+                // Retry on 429 (rate limit) errors or 503 (service unavailable)
+                if ((message.includes('429') || message.includes('503')) && attempt < MAX_RETRIES) {
                     const retryMatch = message.match(/retry in (\d+)/i);
                     const waitSeconds = retryMatch ? parseInt(retryMatch[1], 10) + 2 : (attempt + 1) * 30;
-                    console.log(`[Gemini] Rate limited. Retrying in ${waitSeconds}s (attempt ${attempt + 1}/${MAX_RETRIES})...`);
+                    console.log(`[Gemini] Retrying in ${waitSeconds}s (attempt ${attempt + 1}/${MAX_RETRIES})...`);
                     await new Promise(resolve => setTimeout(resolve, waitSeconds * 1000));
                     continue;
                 }
@@ -245,6 +270,7 @@ export class GeminiProvider implements AIProvider {
             }
         }
 
+        console.error(`[Gemini] All attempts failed. Return error to client: ${lastError}`);
         return {
             success: false,
             data: null,

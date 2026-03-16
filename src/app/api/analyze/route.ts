@@ -57,15 +57,25 @@ export async function POST(request: NextRequest) {
         }
 
         // ─── Stage 1 & 1.5: Convert to PNG (if needed) & Resize ───
-        const allBase64Images: string[] = [];
+        const allBase64Docs: { data: string, mimeType: string }[] = [];
         let wasConverted = false;
         let originalFormat = 'mixed';
 
         for (const file of files) {
+            const mimeType = file.type;
             const buffer = Buffer.from(await file.arrayBuffer());
-            const conversion = await convertToPng(buffer, file.type, file.name);
+
+            // Gemini natively supports PDFs, bypass conversion
+            if (mimeType === 'application/pdf') {
+                allBase64Docs.push({ data: buffer.toString('base64'), mimeType: 'application/pdf' });
+                originalFormat = 'pdf';
+                continue;
+            }
+
+            const conversion = await convertToPng(buffer, mimeType, file.name);
             
             if (conversion.error) {
+                console.error('[API Analyze] File conversion failed:', conversion.error);
                 return NextResponse.json(
                     { error: conversion.error, step: 'conversion' },
                     { status: 422 }
@@ -77,7 +87,7 @@ export async function POST(request: NextRequest) {
 
             for (const imgBuffer of conversion.imageBuffers) {
                 const resizedBuffer = await resizeForAI(imgBuffer);
-                allBase64Images.push(resizedBuffer.toString('base64'));
+                allBase64Docs.push({ data: resizedBuffer.toString('base64'), mimeType: 'image/png' });
             }
         }
 
@@ -95,9 +105,10 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        const extraction = await aiProvider.analyzeFloorPlan(allBase64Images);
+        const extraction = await aiProvider.analyzeFloorPlan(allBase64Docs);
 
         if (!extraction.success || !extraction.data) {
+            console.error('[API Analyze] AI extraction failed:', extraction.error);
             return NextResponse.json(
                 {
                     error: extraction.error || 'AI extraction failed. Please try a clearer image.',

@@ -68,7 +68,65 @@ export async function convertToPng(
         };
     }
 
-    // Validate GroupDocs credentials
+    // ── Local PDF Conversion via pdfjs-dist ──
+    if (sourceFormat === 'pdf') {
+        try {
+            console.log('[FileConverter] Using local pdfjs-dist for PDF conversion');
+            
+            // pdfjs-dist requires a specific import for Node.js environments
+            const pdfjsLib = require('pdfjs-dist/legacy/build/pdf.js');
+            const Canvas = require('canvas');
+
+            const loadingTask = pdfjsLib.getDocument({ data: new Uint8Array(fileBuffer) });
+            const pdfDocument = await loadingTask.promise;
+            
+            const imageBuffers: Buffer[] = [];
+            const numPages = Math.min(pdfDocument.numPages, 3); // Max 3 pages for floor plans
+
+            for (let pageNum = 1; pageNum <= numPages; pageNum++) {
+                const page = await pdfDocument.getPage(pageNum);
+                
+                // Use a scale that provides good resolution (e.g. 150-200 DPI equivalent)
+                const scale = 2.0; 
+                const viewport = page.getViewport({ scale });
+
+                const canvas = Canvas.createCanvas(viewport.width, viewport.height);
+                const context = canvas.getContext('2d');
+
+                const renderContext = {
+                    canvasContext: context as any, // Cast needed due to DOM types mismatch with Node canvas
+                    viewport: viewport,
+                };
+
+                await page.render(renderContext).promise;
+                
+                // Convert Node canvas to PNG buffer
+                const pngBuffer = canvas.toBuffer('image/png', { compressionLevel: 3 });
+                imageBuffers.push(pngBuffer);
+            }
+
+            if (imageBuffers.length > 0) {
+                return {
+                    imageBuffers,
+                    originalFormat: sourceFormat,
+                    wasConverted: true,
+                };
+            } else {
+                throw new Error("Local PDF conversion produced no output.");
+            }
+
+        } catch (pdfErr: any) {
+            console.error('[pdfjs Error]:', pdfErr);
+            return {
+                imageBuffers: [],
+                originalFormat: sourceFormat,
+                wasConverted: false,
+                error: `Local PDF conversion failed: ${pdfErr.message || 'Unknown PDF processing error'}.`,
+            };
+        }
+    }
+
+    // ── GroupDocs Fallback for DWG/DXF ──
     const clientId = process.env.GROUPDOCS_CLIENT_ID;
     const clientSecret = process.env.GROUPDOCS_CLIENT_SECRET;
 
@@ -77,11 +135,12 @@ export async function convertToPng(
             imageBuffers: [],
             originalFormat: sourceFormat,
             wasConverted: false,
-            error: 'GroupDocs API credentials not configured. Set GROUPDOCS_CLIENT_ID and GROUPDOCS_CLIENT_SECRET in .env.local.',
+            error: 'GroupDocs API credentials not configured. Setup GROUPDOCS_CLIENT_ID and GROUPDOCS_CLIENT_SECRET in .env.local to convert CAD files.',
         };
     }
 
     try {
+        console.log('[FileConverter] Using GroupDocs for CAD conversion');
         // Initialize GroupDocs API
         const config = new groupdocs_conversion_cloud.Configuration(clientId, clientSecret);
         const fileApi = groupdocs_conversion_cloud.FileApi.fromConfig(config);
@@ -133,13 +192,27 @@ export async function convertToPng(
             originalFormat: sourceFormat,
             wasConverted: true,
         };
-    } catch (err) {
-        const message = err instanceof Error ? err.message : 'Unknown conversion error';
+    } catch (err: any) {
+        console.error('[GroupDocs Conversion Error]:', err);
+        
+        let message = 'Unknown conversion error';
+        if (err instanceof Error) {
+            message = err.message;
+        } else if (typeof err === 'object' && err !== null) {
+            if (err.message) message = err.message;
+            else if (err.error && err.error.message) message = err.error.message;
+            else {
+                try { message = JSON.stringify(err); } catch { message = String(err); }
+            }
+        } else {
+            message = String(err);
+        }
+
         return {
             imageBuffers: [],
             originalFormat: sourceFormat,
             wasConverted: false,
-            error: `File conversion failed: ${message}`,
+            error: `CAD conversion failed (GroupDocs): ${message}`,
         };
     }
 }

@@ -1,0 +1,42 @@
+# backend/main.py
+# FastAPI Application Entry Point
+#
+# Runs on port 8000 with CORS enabled for Next.js frontend (port 3000).
+# Mounts all API routes under /api/*.
+
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
+from routes.analyze import router as analyze_router
+from routes.analyze_manual import router as analyze_manual_router
+
+app = FastAPI(
+    title="FireRuleX API",
+    description="AI-powered fire extinguisher compliance checker (IS 2190:2024 & NBC 2016 Part IV)",
+    version="0.2.0",
+)
+
+# CORS: allow Next.js frontend to call this API
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Mount routes
+app.include_router(analyze_router)
+app.include_router(analyze_manual_router)
+
+
+@app.get("/")
+async def root():
+    return {"status": "ok", "service": "FireRuleX API", "version": "0.2.0"}

@@ -91,7 +91,7 @@ export default function FileUpload() {
             const stepTimer2 = setTimeout(() => setLoadingStep(3), 8000);
             const stepTimer3 = setTimeout(() => setLoadingStep(4), 15000);
 
-            const response = await fetch('/api/analyze', {
+            const response = await fetch('http://localhost:8000/api/analyze', {
                 method: 'POST',
                 body: formData,
                 signal: AbortSignal.timeout(300000), // 300s timeout to allow multi-page PDF processing

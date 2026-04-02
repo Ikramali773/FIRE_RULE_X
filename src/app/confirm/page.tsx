@@ -73,7 +73,7 @@ function ConfirmForm() {
         setError(null);
 
         try {
-            const response = await fetch('/api/analyze-manual', {
+            const response = await fetch('http://localhost:8000/api/analyze-manual', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(form),

@@ -1,0 +1,1975 @@
+{
+    "_metadata": {
+        "standard": "NBC 2016 Part IV — Fire and Life Safety",
+        "title": "National Building Code of India 2016 — Part IV Fire and Life Safety",
+        "version": "2016",
+        "created": "2026-03-05",
+        "sections": {
+            "buildingClassification": "Section 3.1 — Classification of Buildings Based on Occupancy",
+            "occupantLoad": "Table 3 — Occupant Load",
+            "capacityFactors": "Table 4 — Capacity Factors",
+            "travelDistance": "Table 5 — Travel Distance to Exits"
+        }
+    },
+    "occupancyGroups": {
+        "A": {
+            "label": "Residential",
+            "description": "Buildings where sleeping accommodation is provided for normal residential purposes.",
+            "subdivisions": {
+                "A-1": {
+                    "label": "Lodging or Rooming Houses",
+                    "description": "Separate sleeping for not more than 40 persons.",
+                    "examples": [
+                        "inns",
+                        "clubs",
+                        "motels",
+                        "guest houses"
+                    ],
+                    "maxOccupants": 40
+                },
+                "A-2": {
+                    "label": "One or Two-Family Private Dwellings",
+                    "description": "Private homes with sleeping for not more than 20 persons.",
+                    "examples": [
+                        "private homes"
+                    ],
+                    "maxOccupants": 20
+                },
+                "A-3": {
+                    "label": "Dormitories",
+                    "description": "Group sleeping for non-family members under joint occupancy.",
+                    "examples": [
+                        "school hostels",
+                        "college hostels",
+                        "military barracks"
+                    ]
+                },
+                "A-4": {
+                    "label": "Apartment Houses (Flats)",
+                    "description": "Living quarters for 3 or more families living independently.",
+                    "examples": [
+                        "residential apartments"
+                    ],
+                    "minFamilies": 3
+                },
+                "A-5": {
+                    "label": "Hotels",
+                    "description": "Single management, sleeping for more than 40 persons.",
+                    "examples": [
+                        "hotels",
+                        "motels"
+                    ],
+                    "minOccupants": 41
+                },
+                "A-6": {
+                    "label": "Hotels (Starred)",
+                    "description": "Five-star and above hotels.",
+                    "examples": [
+                        "luxury hotels",
+                        "five-star hotels"
+                    ]
+                }
+            }
+        },
+        "B": {
+            "label": "Educational",
+            "description": "Used for schools, colleges, or training institutions.",
+            "subdivisions": {
+                "B-1": {
+                    "label": "Schools up to Senior Secondary Level",
+                    "description": "Buildings with not less than 20 students.",
+                    "examples": [
+                        "primary schools",
+                        "secondary schools",
+                        "senior secondary schools"
+                    ],
+                    "minStudents": 20
+                },
+                "B-2": {
+                    "label": "All Others / Training Institutions",
+                    "description": "Higher education or training with not less than 100 students.",
+                    "examples": [
+                        "colleges",
+                        "universities",
+                        "training centres"
+                    ],
+                    "minStudents": 100
+                }
+            }
+        },
+        "C": {
+            "label": "Institutional",
+            "description": "Used for medical treatment, care of the aged/infirm, or penal/correctional detention.",
+            "subdivisions": {
+                "C-1": {
+                    "label": "Hospitals and Sanatoria",
+                    "description": "Housing persons with physical limitations.",
+                    "examples": [
+                        "hospitals",
+                        "nursing homes",
+                        "sanatoria"
+                    ]
+                },
+                "C-2": {
+                    "label": "Custodial Institutions",
+                    "description": "Care of children, convalescents, or the aged.",
+                    "examples": [
+                        "orphanages",
+                        "old age homes",
+                        "convalescent homes"
+                    ]
+                },
+                "C-3": {
+                    "label": "Penal and Mental Institutions",
+                    "description": "Housing persons under restraint.",
+                    "examples": [
+                        "jails",
+                        "prisons",
+                        "mental hospitals",
+                        "reformatories"
+                    ]
+                }
+            }
+        },
+        "D": {
+            "label": "Assembly",
+            "description": "Where 50 or more persons gather for amusement, recreation, or similar purposes.",
+            "minOccupantsForClassification": 50,
+            "subdivisions": {
+                "D-1": {
+                    "label": "Large Theatres",
+                    "description": "Theatres or stage buildings with fixed seats for over 1000 persons.",
+                    "examples": [
+                        "large theatres",
+                        "opera houses"
+                    ],
+                    "minFixedSeats": 1001
+                },
+                "D-2": {
+                    "label": "Small Theatres",
+                    "description": "Similar to D-1, but with fixed seats up to 1000 persons.",
+                    "examples": [
+                        "small theatres",
+                        "auditoriums"
+                    ],
+                    "maxFixedSeats": 1000
+                },
+                "D-3": {
+                    "label": "Assembly Halls (Large)",
+                    "description": "No permanent stage, accommodation for 300 or more persons.",
+                    "examples": [
+                        "conference halls",
+                        "banquet halls"
+                    ],
+                    "minCapacity": 300
+                },
+                "D-4": {
+                    "label": "Assembly Halls (Small)",
+                    "description": "No permanent stage, accommodation for less than 300 persons.",
+                    "examples": [
+                        "meeting rooms",
+                        "community halls"
+                    ],
+                    "maxCapacity": 299
+                },
+                "D-5": {
+                    "label": "Outdoor Assembly",
+                    "description": "All other outdoor assembly structures.",
+                    "examples": [
+                        "grandstands",
+                        "stadia",
+                        "circus tents",
+                        "amusement parks"
+                    ]
+                },
+                "D-6": {
+                    "label": "Mixed-Use Assembly",
+                    "description": "Mixed-use assembly buildings combining entertainment with commercial.",
+                    "examples": [
+                        "multiplexes with shopping",
+                        "entertainment complexes with restaurants"
+                    ]
+                },
+                "D-7": {
+                    "label": "Other Assembly",
+                    "description": "Any other assembly structure not covered above.",
+                    "examples": [
+                        "religious buildings",
+                        "exhibition halls"
+                    ]
+                }
+            }
+        },
+        "E": {
+            "label": "Business",
+            "description": "Used for transaction of business, record-keeping, or professional services.",
+            "subdivisions": {
+                "E-1": {
+                    "label": "Offices and Banks",
+                    "description": "Offices, banks, professional establishments.",
+                    "examples": [
+                        "offices",
+                        "banks",
+                        "professional establishments",
+                        "police stations"
+                    ]
+                },
+                "E-2": {
+                    "label": "Laboratories and Libraries",
+                    "description": "Laboratories, research establishments, libraries.",
+                    "examples": [
+                        "laboratories",
+                        "research establishments",
+                        "libraries"
+                    ]
+                },
+                "E-3": {
+                    "label": "Computer Installations",
+                    "description": "Computer centres and data centres.",
+                    "examples": [
+                        "data centres",
+                        "computer installations"
+                    ]
+                },
+                "E-4": {
+                    "label": "Telephone Exchanges",
+                    "description": "Telephone exchanges and communication facilities.",
+                    "examples": [
+                        "telephone exchanges"
+                    ]
+                },
+                "E-5": {
+                    "label": "Broadcasting Stations",
+                    "description": "Broadcasting and TV stations.",
+                    "examples": [
+                        "broadcasting stations",
+                        "TV stations",
+                        "radio stations"
+                    ]
+                }
+            }
+        },
+        "F": {
+            "label": "Mercantile",
+            "description": "Used as shops, stores, or markets for display and sale of merchandise.",
+            "subdivisions": {
+                "F-1": {
+                    "label": "Small Shops",
+                    "description": "Retail area up to 500 m².",
+                    "examples": [
+                        "small shops",
+                        "boutiques"
+                    ],
+                    "maxAreaM2": 500
+                },
+                "F-2": {
+                    "label": "Large Shops / Malls",
+                    "description": "Retail area more than 500 m².",
+                    "examples": [
+                        "department stores",
+                        "shopping malls",
+                        "supermarkets"
+                    ],
+                    "minAreaM2": 501
+                },
+                "F-3": {
+                    "label": "Underground Shopping",
+                    "description": "Underground shopping centres.",
+                    "examples": [
+                        "underground malls",
+                        "subway shopping"
+                    ]
+                }
+            }
+        },
+        "G": {
+            "label": "Industrial",
+            "description": "Where products or materials are fabricated, assembled, or processed.",
+            "subdivisions": {
+                "G-1": {
+                    "label": "Low Hazard Industrial",
+                    "description": "Contents of low combustibility; no self-propagating fire possible.",
+                    "hazardLevel": "low",
+                    "examples": [
+                        "power plants",
+                        "steel mills",
+                        "ice plants"
+                    ]
+                },
+                "G-2": {
+                    "label": "Moderate Hazard Industrial",
+                    "description": "Burn with moderate rapidity; may give off considerable smoke but no toxic fumes/explosions.",
+                    "hazardLevel": "moderate",
+                    "examples": [
+                        "automobile assembly",
+                        "dry cleaning",
+                        "printing",
+                        "electronics manufacturing"
+                    ]
+                },
+                "G-3": {
+                    "label": "High Hazard Industrial",
+                    "description": "Burn with extreme rapidity; liable to give off toxic fumes or explosions.",
+                    "hazardLevel": "high",
+                    "examples": [
+                        "chemical plants",
+                        "paint manufacturing",
+                        "explosives",
+                        "fireworks"
+                    ]
+                }
+            }
+        },
+        "H": {
+            "label": "Storage",
+            "description": "Primarily for storage or sheltering of goods, merchandise, vehicles, or animals.",
+            "subdivisions": {
+                "H": {
+                    "label": "Storage",
+                    "description": "Warehouses, cold storage, hangars, grain elevators, freight depots.",
+                    "examples": [
+                        "warehouses",
+                        "cold storage",
+                        "hangars",
+                        "grain elevators",
+                        "freight depots",
+                        "truck terminals"
+                    ]
+                }
+            }
+        },
+        "J": {
+            "label": "Hazardous",
+            "description": "Storage or handling of highly combustible, explosive, or toxic materials.",
+            "subdivisions": {
+                "J": {
+                    "label": "Hazardous",
+                    "description": "Highly combustible, explosive, or toxic material storage/handling. Includes base kitchens over 100 m².",
+                    "examples": [
+                        "LPG storage",
+                        "rocket propellants",
+                        "ammunition factories",
+                        "fireworks storage",
+                        "base kitchens over 100 m²"
+                    ]
+                }
+            }
+        }
+    },
+    "occupantLoadFactors": {
+        "_clause": "Table 3 — Occupant Load",
+        "_description": "Floor area per person (m²/person) for calculating maximum occupant load. Occupant Load = Total Floor Area / Occupant Load Factor.",
+        "_notes": [
+            "Indoor patient area includes rooms and nurseries but excludes nurse stations and corridors.",
+            "For fixed seating, the occupant load is the actual number of fixed seats.",
+            "Storage load factor applies to warehouses where occupant numbers are very limited."
+        ],
+        "factors": {
+            "A": {
+                "default": 12.5,
+                "unit": "m2_per_person"
+            },
+            "B": {
+                "default": 4.0,
+                "unit": "m2_per_person"
+            },
+            "C": {
+                "indoor_patients": 15.0,
+                "outdoor_patients": 10.0,
+                "unit": "m2_per_person"
+            },
+            "D": {
+                "concentrated_no_fixed_seats": 0.65,
+                "less_concentrated_no_fixed_seats": 1.4,
+                "fixed_seating": "ACTUAL_SEAT_COUNT",
+                "dining_restaurants": 1.8,
+                "unit": "m2_per_person"
+            },
+            "E": {
+                "default": 10.0,
+                "unit": "m2_per_person"
+            },
+            "F": {
+                "street_floor_sales_basement": 3.0,
+                "upper_sales_floors": 6.0,
+                "storage_warehouse": 20.0,
+                "unit": "m2_per_person"
+            },
+            "G": {
+                "default": 10.0,
+                "unit": "m2_per_person"
+            },
+            "H": {
+                "default": 30.0,
+                "unit": "m2_per_person"
+            },
+            "J": {
+                "default": 10.0,
+                "unit": "m2_per_person"
+            }
+        }
+    },
+    "capacityFactors": {
+        "_clause": "Table 4 — Capacity Factors",
+        "_description": "Number of occupants permitted per unit width of exit component. Unit width is typically 500mm.",
+        "factors": {
+            "A": {
+                "stairways": 25,
+                "corridors": 50,
+                "doors": 75
+            },
+            "B": {
+                "stairways": 25,
+                "corridors": 50,
+                "doors": 75
+            },
+            "C": {
+                "stairways": 25,
+                "corridors": 50,
+                "doors": 75
+            },
+            "D": {
+                "stairways": 40,
+                "corridors": 60,
+                "doors": 90
+            },
+            "E": {
+                "stairways": 50,
+                "corridors": 75,
+                "doors": 100
+            },
+            "F": {
+                "stairways": 50,
+                "corridors": 75,
+                "doors": 100
+            },
+            "G": {
+                "stairways": 50,
+                "corridors": 75,
+                "doors": 100
+            },
+            "H": {
+                "stairways": 50,
+                "corridors": 75,
+                "doors": 100
+            },
+            "J": {
+                "stairways": 25,
+                "corridors": 40,
+                "doors": 60
+            }
+        }
+    },
+    "travelDistance": {
+        "_clause": "Table 5 — Travel Distance to Exits",
+        "_description": "Maximum travel distance (metres) from any point to the nearest exit, based on occupancy group and construction type.",
+        "_notes": [
+            "For fully sprinklered buildings, travel distance may be increased by 50 percent.",
+            "Type 1 and Type 2 construction are fire-resistive and non-combustible.",
+            "Type 3 and Type 4 construction are ordinary and wood-frame.",
+            "Construction of Type 3 or Type 4 is NOT PERMITTED for Storage (Group H) and Hazardous (Group J) occupancies."
+        ],
+        "sprinklerBonus": 1.5,
+        "distances": {
+            "A": {
+                "type12": 30.0,
+                "type34": 22.5
+            },
+            "B": {
+                "type12": 30.0,
+                "type34": 22.5
+            },
+            "C": {
+                "type12": 30.0,
+                "type34": 22.5
+            },
+            "D": {
+                "type12": 30.0,
+                "type34": 30.0
+            },
+            "E": {
+                "type12": 30.0,
+                "type34": 30.0
+            },
+            "F": {
+                "type12": 30.0,
+                "type34": 30.0
+            },
+            "G-1": {
+                "type12": 45.0,
+                "type34": 22.5
+            },
+            "G-2": {
+                "type12": 45.0,
+                "type34": 22.5
+            },
+            "G-3": {
+                "type12": 22.5,
+                "type34": 22.5
+            },
+            "H": {
+                "type12": 30.0,
+                "type34": "NOT_PERMITTED"
+            },
+            "J": {
+                "type12": 22.5,
+                "type34": "NOT_PERMITTED"
+            }
+        }
+    },
+    "firefightingInstallations": {
+        "_clause": "Table 7 — Minimum Requirements for Fire Fighting Installations",
+        "_description": "Required fire protection systems based on occupancy subdivision and building height per NBC 2016 Part IV.",
+        "_notes": [
+            "R = Required, NR = Not Required",
+            "Note 3: Buildings >15m NOT permitted for A-1, A-2",
+            "Note 4: Sprinklers required in basements >200m²",
+            "Note 6: Parenthesis values to be added if basement >200m²",
+            "Note 10: Pump = 1E+1D(SB) 2280 L/min + 1E 180 L/min",
+            "Note 11: Pump = 2E+1D(SB) 2280 L/min + 2E 180 L/min",
+            "Note 12: Pump = 2E+1D(SB) 2850 L/min + 2E 180 L/min",
+            "Note 14: Pump = 1E+1D(SB) 1620 L/min + 1E 180 L/min",
+            "Note 16: Buildings >30m NOT permitted for B, C, D, F",
+            "Note 18: Buildings >18m NOT permitted for G-1, G-2",
+            "Note 19: Buildings >15m NOT permitted for G-3",
+            "Note 20: Buildings >15m NOT permitted for H, J"
+        ],
+        "heightNotPermitted": {
+            "A-1": 15,
+            "A-2": 15,
+            "B": 30,
+            "C": 30,
+            "D": 30,
+            "F": 30,
+            "G-1": 18,
+            "G-2": 18,
+            "G-3": 15,
+            "H": 15,
+            "J": 15
+        },
+        "requirements": {
+            "A-1": [
+                {
+                    "maxHeightM": 15,
+                    "label": "≤15m, ≤15 rooms",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": false,
+                    "wetRiser": false,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": false,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 5000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": null,
+                    "notes": "Note 4: sprinkler in basement >200m². Note 5: tank if basement >200m²"
+                },
+                {
+                    "maxHeightM": 15,
+                    "label": "≤15m, 16-30 rooms",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": false,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 5000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 450,
+                    "notes": "Note 6: add (5000)L tank and (450)L/min pump if basement >200m²"
+                },
+                {
+                    "maxHeightM": 15,
+                    "label": "≤15m, >30 rooms",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 450,
+                    "notes": "Note 6: add (5000)L tank and (450)L/min pump if basement >200m². Note 7: hose reel for >2 storeys"
+                }
+            ],
+            "A-2": [
+                {
+                    "maxHeightM": 15,
+                    "label": "≤15m",
+                    "fireExtinguisher": false,
+                    "firstAidHoseReel": false,
+                    "wetRiser": false,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": false,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": null,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": null
+                }
+            ],
+            "A-3": [
+                {
+                    "maxHeightM": 15,
+                    "label": "≤15m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": false,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 5000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 450,
+                    "notes": "Note 4: sprinkler in basement >200m². Note 6: add (5000)/(450) if basement >200m²"
+                },
+                {
+                    "maxHeightM": 35,
+                    "label": "15m to 35m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": true,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 25000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 900,
+                    "notes": "Note 4, Note 8: downcomer for >15m"
+                },
+                {
+                    "maxHeightM": 45,
+                    "label": "35m to 45m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": 75000,
+                    "terraceTankLitres": 5000,
+                    "undergroundPumpLpm": 2280,
+                    "terracePumpLpm": null,
+                    "notes": "Note 4, Note 9: sprinklers from both tanks. Note 10: pump config"
+                },
+                {
+                    "maxHeightM": 60,
+                    "label": "45m to 60m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": 150000,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": 2280,
+                    "terracePumpLpm": null,
+                    "notes": "Note 11: pump config"
+                },
+                {
+                    "maxHeightM": 9999,
+                    "label": ">60m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 200000,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": 2850,
+                    "terracePumpLpm": null,
+                    "notes": "Note 12, Note 13: multistage pumps"
+                }
+            ],
+            "A-4": [
+                {
+                    "maxHeightM": 15,
+                    "label": "≤15m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": false,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 5000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 450,
+                    "notes": "Note 4, Note 6"
+                },
+                {
+                    "maxHeightM": 35,
+                    "label": "15m to 35m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": true,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 25000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 900,
+                    "notes": "Note 4, Note 8"
+                },
+                {
+                    "maxHeightM": 45,
+                    "label": "35m to 45m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": 75000,
+                    "terraceTankLitres": 5000,
+                    "undergroundPumpLpm": 2280,
+                    "terracePumpLpm": null,
+                    "notes": "Note 4, Note 9, Note 10"
+                },
+                {
+                    "maxHeightM": 60,
+                    "label": "45m to 60m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": 150000,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": 2280,
+                    "terracePumpLpm": null,
+                    "notes": "Note 11"
+                },
+                {
+                    "maxHeightM": 9999,
+                    "label": ">60m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 200000,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": 2850,
+                    "terracePumpLpm": null,
+                    "notes": "Note 12, Note 13"
+                }
+            ],
+            "A-5": [
+                {
+                    "maxHeightM": 15,
+                    "label": "≤15m, area ≤300m²",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 5000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 450,
+                    "notes": "Note 4, Note 6"
+                },
+                {
+                    "maxHeightM": 15,
+                    "label": "≤15m, area 300-1000m²",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 50000,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": 1620,
+                    "terracePumpLpm": 450,
+                    "notes": "Note 4, Note 7: wet riser for >2 storeys. Note 14: pump 1620 L/min"
+                },
+                {
+                    "maxHeightM": 15,
+                    "label": "≤15m, area >1000m²",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 100000,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": 1620,
+                    "terracePumpLpm": null,
+                    "notes": "Note 1, Note 4, Note 14, Note 15: >1 storey"
+                },
+                {
+                    "maxHeightM": 30,
+                    "label": "15m to 30m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 150000,
+                    "terraceTankLitres": 20000,
+                    "undergroundPumpLpm": 2280,
+                    "terracePumpLpm": null,
+                    "notes": "Note 11"
+                },
+                {
+                    "maxHeightM": 9999,
+                    "label": ">30m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 200000,
+                    "terraceTankLitres": 20000,
+                    "undergroundPumpLpm": 2280,
+                    "terracePumpLpm": null,
+                    "notes": "Note 11"
+                }
+            ],
+            "A-6": [
+                {
+                    "maxHeightM": 9999,
+                    "label": "All heights",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 250000,
+                    "terraceTankLitres": 20000,
+                    "undergroundPumpLpm": 2850,
+                    "terracePumpLpm": null,
+                    "notes": "Note 12"
+                }
+            ],
+            "B": [
+                {
+                    "maxHeightM": 15,
+                    "label": "≤15m, G+1 or more",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": false,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 450,
+                    "notes": "Note 4, Note 6: add (5000)/(450) if basement >200m²"
+                },
+                {
+                    "maxHeightM": 24,
+                    "label": "15m to 24m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": true,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 25000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 900,
+                    "notes": "Note 4"
+                },
+                {
+                    "maxHeightM": 30,
+                    "label": "24m to 30m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": 50000,
+                    "terraceTankLitres": 5000,
+                    "undergroundPumpLpm": 1620,
+                    "terracePumpLpm": null,
+                    "notes": "Note 4, Note 6, Note 14"
+                }
+            ],
+            "C-1": [
+                {
+                    "maxHeightM": 15,
+                    "label": "≤15m, plot ≤1000m², G+1, no beds",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": false,
+                    "wetRiser": false,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 5000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": null,
+                    "notes": "Note 4, Note 6"
+                },
+                {
+                    "maxHeightM": 15,
+                    "label": "≤15m, plot ≤1000m², G+1, with beds",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 5000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 450,
+                    "notes": "Note 4, Note 6"
+                },
+                {
+                    "maxHeightM": 15,
+                    "label": "≤15m, plot ≤1000m², G+2+, no beds",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": true,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 900,
+                    "notes": "Note 4, Note 6"
+                },
+                {
+                    "maxHeightM": 15,
+                    "label": "≤15m, plot ≤1000m², G+2+, with beds",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 75000,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": 1620,
+                    "terracePumpLpm": null,
+                    "notes": "Note 1, Note 14"
+                },
+                {
+                    "maxHeightM": 15,
+                    "label": "≤15m, plot >1000m²",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 100000,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": 1620,
+                    "terracePumpLpm": null,
+                    "notes": "Note 1, Note 14"
+                },
+                {
+                    "maxHeightM": 24,
+                    "label": "15m to 24m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 150000,
+                    "terraceTankLitres": 20000,
+                    "undergroundPumpLpm": 2280,
+                    "terracePumpLpm": null,
+                    "notes": "Note 10"
+                },
+                {
+                    "maxHeightM": 45,
+                    "label": "24m to 45m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 200000,
+                    "terraceTankLitres": 20000,
+                    "undergroundPumpLpm": 2280,
+                    "terracePumpLpm": null,
+                    "notes": "Note 11"
+                }
+            ],
+            "C-2": [
+                {
+                    "maxHeightM": 10,
+                    "label": "≤10m, ≤300 persons",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 450,
+                    "notes": "Note 4, Note 6"
+                },
+                {
+                    "maxHeightM": 10,
+                    "label": "≤10m, >300 persons",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": true,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 15000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 900,
+                    "notes": "Note 4, Note 6"
+                },
+                {
+                    "maxHeightM": 15,
+                    "label": "10m to 15m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 100000,
+                    "terraceTankLitres": 5000,
+                    "undergroundPumpLpm": 2280,
+                    "terracePumpLpm": null,
+                    "notes": "Note 4, Note 6, Note 10"
+                },
+                {
+                    "maxHeightM": 24,
+                    "label": "15m to 24m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 150000,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": 2280,
+                    "terracePumpLpm": null,
+                    "notes": "Note 11"
+                },
+                {
+                    "maxHeightM": 30,
+                    "label": "24m to 30m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 200000,
+                    "terraceTankLitres": 20000,
+                    "undergroundPumpLpm": 2280,
+                    "terracePumpLpm": null,
+                    "notes": "Note 11"
+                }
+            ],
+            "C-3": [
+                {
+                    "maxHeightM": 10,
+                    "label": "≤10m, ≤300 persons",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 450,
+                    "notes": "Note 4, Note 6"
+                },
+                {
+                    "maxHeightM": 10,
+                    "label": "≤10m, >300 persons",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": true,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 15000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 900,
+                    "notes": "Note 4, Note 6"
+                },
+                {
+                    "maxHeightM": 15,
+                    "label": "10m to 15m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 100000,
+                    "terraceTankLitres": 5000,
+                    "undergroundPumpLpm": 2280,
+                    "terracePumpLpm": null,
+                    "notes": "Note 4, Note 6, Note 10"
+                },
+                {
+                    "maxHeightM": 24,
+                    "label": "15m to 24m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 150000,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": 2280,
+                    "terracePumpLpm": null,
+                    "notes": "Note 11"
+                },
+                {
+                    "maxHeightM": 30,
+                    "label": "24m to 30m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 200000,
+                    "terraceTankLitres": 20000,
+                    "undergroundPumpLpm": 2280,
+                    "terracePumpLpm": null,
+                    "notes": "Note 11"
+                }
+            ],
+            "D": [
+                {
+                    "maxHeightM": 10,
+                    "label": "≤10m, ≤300 persons",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": true,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 20000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 450,
+                    "notes": "Note 4, Note 6"
+                },
+                {
+                    "maxHeightM": 10,
+                    "label": "≤10m, >300 persons",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": true,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 25000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 900,
+                    "notes": "Note 4, Note 6"
+                },
+                {
+                    "maxHeightM": 15,
+                    "label": "10m to 15m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 100000,
+                    "terraceTankLitres": 5000,
+                    "undergroundPumpLpm": 2280,
+                    "terracePumpLpm": 450,
+                    "notes": "Note 1, Note 4, Note 6, Note 10"
+                },
+                {
+                    "maxHeightM": 24,
+                    "label": "15m to 24m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 150000,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": 2280,
+                    "terracePumpLpm": null,
+                    "notes": "Note 11"
+                },
+                {
+                    "maxHeightM": 30,
+                    "label": "24m to 30m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 200000,
+                    "terraceTankLitres": 20000,
+                    "undergroundPumpLpm": 2280,
+                    "terracePumpLpm": null,
+                    "notes": "Note 11"
+                }
+            ],
+            "D-6": [
+                {
+                    "maxHeightM": 9999,
+                    "label": "All heights",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 200000,
+                    "terraceTankLitres": 20000,
+                    "undergroundPumpLpm": 2850,
+                    "terracePumpLpm": null,
+                    "notes": "Note 12"
+                }
+            ],
+            "E": [
+                {
+                    "maxHeightM": 10,
+                    "label": "≤10m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": true,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 450,
+                    "notes": "Note 4, Note 6"
+                },
+                {
+                    "maxHeightM": 15,
+                    "label": "10m to 15m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 50000,
+                    "terraceTankLitres": 5000,
+                    "undergroundPumpLpm": 1620,
+                    "terracePumpLpm": 450,
+                    "notes": "Note 4, Note 6, Note 14"
+                },
+                {
+                    "maxHeightM": 24,
+                    "label": "15m to 24m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 100000,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": 2280,
+                    "terracePumpLpm": null,
+                    "notes": "Note 10"
+                },
+                {
+                    "maxHeightM": 30,
+                    "label": "24m to 30m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 150000,
+                    "terraceTankLitres": 20000,
+                    "undergroundPumpLpm": 2280,
+                    "terracePumpLpm": null,
+                    "notes": "Note 11"
+                },
+                {
+                    "maxHeightM": 9999,
+                    "label": ">30m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 200000,
+                    "terraceTankLitres": 20000,
+                    "undergroundPumpLpm": 2850,
+                    "terracePumpLpm": null,
+                    "notes": "Note 12"
+                }
+            ],
+            "F-1": [
+                {
+                    "maxHeightM": 15,
+                    "label": "≤15m, G+1, area ≤500m²",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": false,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 5000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 450,
+                    "notes": "Note 4, Note 6"
+                },
+                {
+                    "maxHeightM": 15,
+                    "label": "≤15m, G+1, area >500m²",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": true,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 20000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 900,
+                    "notes": "Note 4, Note 6"
+                },
+                {
+                    "maxHeightM": 15,
+                    "label": "≤15m, >G+1",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": true,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 25000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 900,
+                    "notes": "Note 4, Note 6"
+                },
+                {
+                    "maxHeightM": 24,
+                    "label": "15m to 24m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 100000,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": 2280,
+                    "terracePumpLpm": null,
+                    "notes": "Note 10"
+                },
+                {
+                    "maxHeightM": 30,
+                    "label": "24m to 30m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 200000,
+                    "terraceTankLitres": 20000,
+                    "undergroundPumpLpm": 2280,
+                    "terracePumpLpm": null,
+                    "notes": "Note 11"
+                }
+            ],
+            "F-2": [
+                {
+                    "maxHeightM": 15,
+                    "label": "≤15m, G+1, area ≤500m²",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": false,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 5000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 450,
+                    "notes": "Note 4, Note 6"
+                },
+                {
+                    "maxHeightM": 15,
+                    "label": "≤15m, G+1, area >500m²",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": true,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 20000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 900,
+                    "notes": "Note 4, Note 6"
+                },
+                {
+                    "maxHeightM": 15,
+                    "label": "≤15m, >G+1",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": true,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 25000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 900,
+                    "notes": "Note 4, Note 6"
+                },
+                {
+                    "maxHeightM": 24,
+                    "label": "15m to 24m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 100000,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": 2280,
+                    "terracePumpLpm": null,
+                    "notes": "Note 10"
+                },
+                {
+                    "maxHeightM": 30,
+                    "label": "24m to 30m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 200000,
+                    "terraceTankLitres": 20000,
+                    "undergroundPumpLpm": 2280,
+                    "terracePumpLpm": null,
+                    "notes": "Note 11"
+                }
+            ],
+            "F-3": [
+                {
+                    "maxHeightM": 9999,
+                    "label": "All",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 150000,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": 2280,
+                    "terracePumpLpm": null,
+                    "notes": "Note 11"
+                }
+            ],
+            "G-1": [
+                {
+                    "maxHeightM": 18,
+                    "label": "area ≤100m²",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": false,
+                    "wetRiser": false,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": false,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 5000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 450,
+                    "notes": "Note 4, Note 5: tank/pump if basement >200m²"
+                },
+                {
+                    "maxHeightM": 18,
+                    "label": "area 100-500m²",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": true,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": false,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 20000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 450,
+                    "notes": "Note 4, Note 6, Note 8: downcomer if >15m"
+                },
+                {
+                    "maxHeightM": 18,
+                    "label": "area >500m²",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": true,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 25000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 900,
+                    "notes": "Note 4, Note 6"
+                }
+            ],
+            "G-2": [
+                {
+                    "maxHeightM": 18,
+                    "label": "area ≤100m²",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": false,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 450
+                },
+                {
+                    "maxHeightM": 18,
+                    "label": "area 100-500m²",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": true,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 20000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 900
+                },
+                {
+                    "maxHeightM": 15,
+                    "label": "area 500-1000m², ≤15m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": true,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 100000,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": 1620,
+                    "terracePumpLpm": 900,
+                    "notes": "Note 14"
+                },
+                {
+                    "maxHeightM": 18,
+                    "label": "area 500-1000m², >15m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 100000,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": 1620,
+                    "terracePumpLpm": null,
+                    "notes": "Note 14"
+                },
+                {
+                    "maxHeightM": 18,
+                    "label": "area >1000m²",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 200000,
+                    "terraceTankLitres": 20000,
+                    "undergroundPumpLpm": 2280,
+                    "terracePumpLpm": null,
+                    "notes": "Note 1, Note 2, Note 11"
+                }
+            ],
+            "G-3": [
+                {
+                    "maxHeightM": 15,
+                    "label": "area ≤50m²",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": false,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 900
+                },
+                {
+                    "maxHeightM": 15,
+                    "label": "area 50-150m²",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 25000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 900
+                },
+                {
+                    "maxHeightM": 15,
+                    "label": "area 150-500m²",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 50000,
+                    "terraceTankLitres": null,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 900
+                },
+                {
+                    "maxHeightM": 15,
+                    "label": "area 500-1000m², ≤15m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 100000,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": 1620,
+                    "terracePumpLpm": null,
+                    "notes": "Note 14"
+                },
+                {
+                    "maxHeightM": 15,
+                    "label": "area >1000m²",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 150000,
+                    "terraceTankLitres": 20000,
+                    "undergroundPumpLpm": 2280,
+                    "terracePumpLpm": null,
+                    "notes": "Note 11"
+                }
+            ],
+            "H": [
+                {
+                    "maxHeightM": 15,
+                    "label": "Low/Mod hazard, area ≤250m²",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": true,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 5000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 450,
+                    "notes": "Note 4, Note 6"
+                },
+                {
+                    "maxHeightM": 15,
+                    "label": "Low/Mod hazard, area 250-500m²",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": true,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 900,
+                    "notes": "Note 20"
+                },
+                {
+                    "maxHeightM": 15,
+                    "label": "Low/Mod hazard, area >500m²",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 150000,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": 2280,
+                    "terracePumpLpm": null,
+                    "notes": "Note 11"
+                },
+                {
+                    "maxHeightM": 15,
+                    "label": "High hazard",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 200000,
+                    "terraceTankLitres": 20000,
+                    "undergroundPumpLpm": 2280,
+                    "terracePumpLpm": null,
+                    "notes": "Note 11"
+                }
+            ],
+            "J": [
+                {
+                    "maxHeightM": 15,
+                    "label": "All",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 250000,
+                    "terraceTankLitres": 20000,
+                    "undergroundPumpLpm": 2850,
+                    "terracePumpLpm": null,
+                    "notes": "Note 12"
+                }
+            ]
+        },
+        "tableNotes": {
+            "1": "MOEFA System shall also include talk-back system and public address system for the occupancies given in the table for (d)(1)(iii) under A-5, (a)(1)(iv) and (a)(2) under C-1, and (a)(2) under D-1 to D-5, in all buildings 15m and above in height, except for A-3 and A-4 occupancies where these shall be provided for buildings of height 24m and above. These shall also be provided in car parking areas more than 300m² and in multi-level car parking irrespective of their areas.",
+            "2": "Automatic detection and alarm system is not required to be provided in car parking area. Such detection system shall however be required in other areas of car parking such as electrical rooms, cabins and other areas.",
+            "3": "Buildings above 15m in height not to be permitted for occupancies A-1 and A-2.",
+            "4": "Required to be installed in basement, if area of basement exceeds 200m².",
+            "5": "Required to be provided if basement area exceeds 200m².",
+            "6": "Additional value given in parenthesis shall be added if basement area exceeds 200m².",
+            "7": "Required to be provided for buildings with more than two storeys (Ground + One).",
+            "8": "Required to be provided for buildings with height above 15m.",
+            "9": "Sprinklers shall be fed water from both underground static water storage tank and terrace tank.",
+            "10": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 2280 litre/min and one electric pump of capacity 180 litre/min.",
+            "11": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min.",
+            "12": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2850 litre/min and two electric pump of capacity 180 litre/min.",
+            "13": "Lower levels in high rise buildings 60m or above in height are likely to experience high pressure and therefore, it is recommended to consider multi-stage, multi-outlet pumps (creating pressure zones) or variable frequency drive pumps or any other equivalent arrangement.",
+            "14": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 1620 litre/min and one electric pump of capacity 180 litre/min.",
+            "15": "Required to be provided for buildings with more than one storey.",
+            "16": "Buildings above 30m in height not to be permitted for Group B, Group C, Group D and Group F occupancies.",
+            "17": "The requirements given in this table for Group G Industrial Buildings are for small scale industry units. For other industries the requirements will have to be worked out on the basis of relevant Indian Standards and also in consultation with the local fire authorities.",
+            "18": "Buildings above 18m in height not to be permitted for G-1 and G-2 occupancies.",
+            "19": "Buildings above 15m in height not to be permitted for G-3 occupancies.",
+            "20": "Buildings above 15m in height not to be permitted for Group H and Group J occupancies. However, buildings above 45m in height shall not be permitted for multi-level car parking (MLCP) occupancy.",
+            "21": "Pump capacity shall be based on the covered area of the building.",
+            "22": "One set of pumps shall be provided for each 100 hydrants or part thereof, with a maximum of two sets. In case of more than one pump set installation, both pump sets shall be interconnected at their delivery headers.",
+            "23": "Alternative to provisions of additional set of pumps, the objective can be met by providing additional diesel pump of the same capacity and doubling the water tank capacity as required for one set of pumps.",
+            "24": "As per the requirement of local authority dry riser may be used in hilly areas, industrial areas or as required."
+        }
+    }
+}

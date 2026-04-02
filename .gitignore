@@ -30,8 +30,9 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
+# env files
 .env*
+!.env.example
 
 # vercel
 .vercel
@@ -39,3 +40,30 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# ---- Python Backend ----
+# Virtual environment
+backend/.venv/
+backend/__pycache__/
+backend/**/__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+
+# Pytest
+backend/.pytest_cache/
+.pytest_cache/
+
+# ---- IDE / Editor ----
+.vscode/
+.idea/
+
+# ---- GSD / Agent ----
+.gsd/
+.agent/
+.gemini/
+
+# ---- Logs & temp files ----
+*.log
+test-errors.log
+ts_errors.txt

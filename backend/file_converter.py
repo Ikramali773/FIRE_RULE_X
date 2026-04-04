@@ -87,9 +87,11 @@ def convert_to_png(
 
             for page_num in range(num_pages):
                 page = doc.load_page(page_num)
-                # Scale to ~200 DPI (default is 72 DPI, so zoom=200/72 ≈ 2.78)
-                mat = fitz.Matrix(2.0, 2.0)
-                pix = page.get_pixmap(matrix=mat)
+                # Prevent OOM by scaling dynamically. Max dimension ~1536px.
+                rect = page.rect
+                zoom = min(1536.0 / max(rect.width, 1.0), 1536.0 / max(rect.height, 1.0), 2.0)
+                mat = fitz.Matrix(zoom, zoom)
+                pix = page.get_pixmap(matrix=mat, alpha=False, colorspace=fitz.csRGB)
                 png_bytes = pix.tobytes("png")
                 image_buffers.append(png_bytes)
 

@@ -159,7 +159,7 @@ class GeminiProvider:
                         "data": doc["data"],
                     })
 
-                response = model.generate_content(parts)
+                response = await model.generate_content_async(parts)
 
                 text = ""
                 try:
@@ -248,7 +248,7 @@ class GeminiProvider:
                     wait_seconds = (
                         int(retry_match.group(1)) + 2
                         if retry_match
-                        else (attempt + 1) * 30
+                        else (attempt + 1) * 10
                     )
                     print(
                         f"[Gemini] Retrying in {wait_seconds}s (attempt {attempt + 1}/{MAX_RETRIES})..."

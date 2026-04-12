@@ -13,6 +13,7 @@ load_dotenv()
 
 from routes.analyze import router as analyze_router
 from routes.analyze_manual import router as analyze_manual_router
+from routes.analyze_simple import router as analyze_simple_router
 
 app = FastAPI(
     title="FireRuleX API",
@@ -32,6 +33,7 @@ app.add_middleware(
 # Mount routes
 app.include_router(analyze_router)
 app.include_router(analyze_manual_router)
+app.include_router(analyze_simple_router)
 
 
 @app.get("/")

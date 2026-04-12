@@ -796,6 +796,7 @@
             "A-5": [
                 {
                     "maxHeightM": 15,
+                    "maxAreaM2": 300,
                     "label": "≤15m, area ≤300m²",
                     "fireExtinguisher": true,
                     "firstAidHoseReel": true,
@@ -813,6 +814,8 @@
                 },
                 {
                     "maxHeightM": 15,
+                    "minAreaM2": 301,
+                    "maxAreaM2": 1000,
                     "label": "≤15m, area 300-1000m²",
                     "fireExtinguisher": true,
                     "firstAidHoseReel": true,
@@ -830,6 +833,7 @@
                 },
                 {
                     "maxHeightM": 15,
+                    "minAreaM2": 1001,
                     "label": "≤15m, area >1000m²",
                     "fireExtinguisher": true,
                     "firstAidHoseReel": true,
@@ -1443,6 +1447,8 @@
             "F-1": [
                 {
                     "maxHeightM": 15,
+                    "maxFloors": 2,
+                    "maxAreaM2": 500,
                     "label": "≤15m, G+1, area ≤500m²",
                     "fireExtinguisher": true,
                     "firstAidHoseReel": true,
@@ -1460,6 +1466,8 @@
                 },
                 {
                     "maxHeightM": 15,
+                    "maxFloors": 2,
+                    "minAreaM2": 501,
                     "label": "≤15m, G+1, area >500m²",
                     "fireExtinguisher": true,
                     "firstAidHoseReel": true,
@@ -1477,6 +1485,7 @@
                 },
                 {
                     "maxHeightM": 15,
+                    "minFloors": 3,
                     "label": "≤15m, >G+1",
                     "fireExtinguisher": true,
                     "firstAidHoseReel": true,
@@ -1530,6 +1539,8 @@
             "F-2": [
                 {
                     "maxHeightM": 15,
+                    "maxFloors": 2,
+                    "maxAreaM2": 500,
                     "label": "≤15m, G+1, area ≤500m²",
                     "fireExtinguisher": true,
                     "firstAidHoseReel": true,
@@ -1547,6 +1558,8 @@
                 },
                 {
                     "maxHeightM": 15,
+                    "maxFloors": 2,
+                    "minAreaM2": 501,
                     "label": "≤15m, G+1, area >500m²",
                     "fireExtinguisher": true,
                     "firstAidHoseReel": true,
@@ -1564,6 +1577,7 @@
                 },
                 {
                     "maxHeightM": 15,
+                    "minFloors": 3,
                     "label": "≤15m, >G+1",
                     "fireExtinguisher": true,
                     "firstAidHoseReel": true,
@@ -1636,6 +1650,7 @@
             "G-1": [
                 {
                     "maxHeightM": 18,
+                    "maxAreaM2": 100,
                     "label": "area ≤100m²",
                     "fireExtinguisher": true,
                     "firstAidHoseReel": false,
@@ -1653,6 +1668,8 @@
                 },
                 {
                     "maxHeightM": 18,
+                    "minAreaM2": 101,
+                    "maxAreaM2": 500,
                     "label": "area 100-500m²",
                     "fireExtinguisher": true,
                     "firstAidHoseReel": true,
@@ -1669,43 +1686,9 @@
                     "notes": "Note 4, Note 6, Note 8: downcomer if >15m"
                 },
                 {
-                    "maxHeightM": 18,
-                    "label": "area >500m²",
-                    "fireExtinguisher": true,
-                    "firstAidHoseReel": true,
-                    "wetRiser": false,
-                    "downComer": true,
-                    "yardHydrant": false,
-                    "automaticSprinkler": false,
-                    "manualFireAlarm": true,
-                    "autoDetectionAlarm": false,
-                    "undergroundTankLitres": null,
-                    "terraceTankLitres": 25000,
-                    "undergroundPumpLpm": null,
-                    "terracePumpLpm": 900,
-                    "notes": "Note 4, Note 6"
-                }
-            ],
-            "G-2": [
-                {
-                    "maxHeightM": 18,
-                    "label": "area ≤100m²",
-                    "fireExtinguisher": true,
-                    "firstAidHoseReel": true,
-                    "wetRiser": false,
-                    "downComer": false,
-                    "yardHydrant": false,
-                    "automaticSprinkler": false,
-                    "manualFireAlarm": false,
-                    "autoDetectionAlarm": false,
-                    "undergroundTankLitres": null,
-                    "terraceTankLitres": 10000,
-                    "undergroundPumpLpm": null,
-                    "terracePumpLpm": 450
-                },
-                {
-                    "maxHeightM": 18,
-                    "label": "area 100-500m²",
+                    "maxHeightM": 15,
+                    "minAreaM2": 501,
+                    "label": "area >500m², ≤15m",
                     "fireExtinguisher": true,
                     "firstAidHoseReel": true,
                     "wetRiser": false,
@@ -1717,27 +1700,88 @@
                     "undergroundTankLitres": null,
                     "terraceTankLitres": 20000,
                     "undergroundPumpLpm": null,
+                    "terracePumpLpm": 450,
+                    "notes": "Note 4, Note 6"
+                },
+                {
+                    "maxHeightM": 18,
+                    "minHeightM": 15,
+                    "minAreaM2": 501,
+                    "label": "area >500m², >15m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 75000,
+                    "terraceTankLitres": 5000,
+                    "undergroundPumpLpm": 1620,
+                    "terracePumpLpm": null,
+                    "notes": "Note 4, Note 6, Note 14"
+                }
+            ],
+            "G-2": [
+                {
+                    "maxHeightM": 18,
+                    "maxAreaM2": 100,
+                    "label": "area ≤100m²",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": false,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 450
+                },
+                {
+                    "maxHeightM": 18,
+                    "minAreaM2": 101,
+                    "maxAreaM2": 500,
+                    "label": "area 100-500m²",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": false,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 20000,
+                    "undergroundPumpLpm": null,
                     "terracePumpLpm": 900
                 },
                 {
                     "maxHeightM": 15,
+                    "minAreaM2": 501,
+                    "maxAreaM2": 1000,
                     "label": "area 500-1000m², ≤15m",
                     "fireExtinguisher": true,
                     "firstAidHoseReel": true,
                     "wetRiser": false,
                     "downComer": true,
-                    "yardHydrant": true,
+                    "yardHydrant": false,
                     "automaticSprinkler": true,
                     "manualFireAlarm": true,
                     "autoDetectionAlarm": true,
-                    "undergroundTankLitres": 100000,
-                    "terraceTankLitres": 10000,
-                    "undergroundPumpLpm": 1620,
-                    "terracePumpLpm": 900,
-                    "notes": "Note 14"
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 50000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 900
                 },
                 {
                     "maxHeightM": 18,
+                    "minHeightM": 15,
+                    "minAreaM2": 501,
+                    "maxAreaM2": 1000,
                     "label": "area 500-1000m², >15m",
                     "fireExtinguisher": true,
                     "firstAidHoseReel": true,
@@ -1755,6 +1799,7 @@
                 },
                 {
                     "maxHeightM": 18,
+                    "minAreaM2": 1001,
                     "label": "area >1000m²",
                     "fireExtinguisher": true,
                     "firstAidHoseReel": true,
@@ -1764,16 +1809,17 @@
                     "automaticSprinkler": true,
                     "manualFireAlarm": true,
                     "autoDetectionAlarm": true,
-                    "undergroundTankLitres": 200000,
+                    "undergroundTankLitres": 150000,
                     "terraceTankLitres": 20000,
                     "undergroundPumpLpm": 2280,
                     "terracePumpLpm": null,
-                    "notes": "Note 1, Note 2, Note 11"
+                    "notes": "Note 11"
                 }
             ],
             "G-3": [
                 {
                     "maxHeightM": 15,
+                    "maxAreaM2": 50,
                     "label": "area ≤50m²",
                     "fireExtinguisher": true,
                     "firstAidHoseReel": true,
@@ -1790,6 +1836,8 @@
                 },
                 {
                     "maxHeightM": 15,
+                    "minAreaM2": 51,
+                    "maxAreaM2": 150,
                     "label": "area 50-150m²",
                     "fireExtinguisher": true,
                     "firstAidHoseReel": true,
@@ -1806,7 +1854,9 @@
                 },
                 {
                     "maxHeightM": 15,
-                    "label": "area 150-500m²",
+                    "minAreaM2": 151,
+                    "maxAreaM2": 300,
+                    "label": "area 150-300m²",
                     "fireExtinguisher": true,
                     "firstAidHoseReel": true,
                     "wetRiser": true,
@@ -1822,7 +1872,9 @@
                 },
                 {
                     "maxHeightM": 15,
-                    "label": "area 500-1000m², ≤15m",
+                    "minAreaM2": 301,
+                    "maxAreaM2": 500,
+                    "label": "area 300-500m²",
                     "fireExtinguisher": true,
                     "firstAidHoseReel": true,
                     "wetRiser": true,
@@ -1839,7 +1891,8 @@
                 },
                 {
                     "maxHeightM": 15,
-                    "label": "area >1000m²",
+                    "minAreaM2": 501,
+                    "label": "area >500m²",
                     "fireExtinguisher": true,
                     "firstAidHoseReel": true,
                     "wetRiser": true,
@@ -1858,7 +1911,8 @@
             "H": [
                 {
                     "maxHeightM": 15,
-                    "label": "Low/Mod hazard, area ≤250m²",
+                    "maxAreaM2": 250,
+                    "label": "≤15m, area <250m²",
                     "fireExtinguisher": true,
                     "firstAidHoseReel": true,
                     "wetRiser": false,
@@ -1875,7 +1929,9 @@
                 },
                 {
                     "maxHeightM": 15,
-                    "label": "Low/Mod hazard, area 250-500m²",
+                    "minAreaM2": 251,
+                    "maxFloors": 1,
+                    "label": "≤15m, area >250m², ground only",
                     "fireExtinguisher": true,
                     "firstAidHoseReel": true,
                     "wetRiser": false,
@@ -1892,7 +1948,10 @@
                 },
                 {
                     "maxHeightM": 15,
-                    "label": "Low/Mod hazard, area >500m²",
+                    "minAreaM2": 251,
+                    "maxFloors": 2,
+                    "minFloors": 2,
+                    "label": "≤15m, area >250m², G+1",
                     "fireExtinguisher": true,
                     "firstAidHoseReel": true,
                     "wetRiser": true,
@@ -1909,7 +1968,9 @@
                 },
                 {
                     "maxHeightM": 15,
-                    "label": "High hazard",
+                    "minAreaM2": 251,
+                    "minFloors": 3,
+                    "label": "≤15m, area >250m², >G+1",
                     "fireExtinguisher": true,
                     "firstAidHoseReel": true,
                     "wetRiser": true,

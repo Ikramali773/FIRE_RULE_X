@@ -157,8 +157,17 @@ def check_firefighting_installations(
     group: str,
     subdivision: Optional[str],
     building_height_m: float,
+    floor_area_m2: float = 0,
+    num_floors: int = 0,
 ) -> dict:
-    """Return {"result": ..., "violation": ...} — one or both may be None."""
+    """Return {"result": ..., "violation": ...} — one or both may be None.
+
+    Tier matching uses multiple criteria from Table 7:
+      - maxHeightM / minHeightM: building height range
+      - maxAreaM2 / minAreaM2:   largest floor area (or covered area)
+      - maxFloors / minFloors:   number of storeys
+    A tier matches if ALL provided criteria are satisfied.
+    """
     fi_data = _NBC_DATA.get("firefightingInstallations")
     if not fi_data:
         return {}
@@ -186,15 +195,29 @@ def check_firefighting_installations(
     if not tiers:
         return {}
 
-    # Find matching height tier
+    # Find matching tier using multi-criteria: height, area, floors
     tier = None
     for t in tiers:
-        if building_height_m <= t["maxHeightM"]:
-            tier = t
-            break
+        # Height check
+        if building_height_m > t["maxHeightM"]:
+            continue
+        if "minHeightM" in t and building_height_m < t["minHeightM"]:
+            continue
+        # Area check (if tier specifies area criteria)
+        if "maxAreaM2" in t and floor_area_m2 > 0 and floor_area_m2 > t["maxAreaM2"]:
+            continue
+        if "minAreaM2" in t and floor_area_m2 > 0 and floor_area_m2 < t["minAreaM2"]:
+            continue
+        # Floor count check (if tier specifies floor criteria)
+        if "maxFloors" in t and num_floors > 0 and num_floors > t["maxFloors"]:
+            continue
+        if "minFloors" in t and num_floors > 0 and num_floors < t["minFloors"]:
+            continue
+        tier = t
+        break
 
     if tier is None:
-        # Height exceeds all defined tiers — use the last (highest)
+        # No tier matched — use the last (most conservative) tier
         tier = tiers[-1]
 
     result = FirefightingInstallationRequirement(
@@ -315,10 +338,14 @@ def run_nbc_checks(inp: BuildingInput) -> NBCCheckResult:
 
     # ── Firefighting Installations (Table 7) ──
     if inp.building_height > 0:
+        # Use max floor area for tier matching; fallback to total_floor_area
+        max_floor_area = max(inp.floor_areas) if inp.floor_areas else inp.total_floor_area
         fi_check = check_firefighting_installations(
             group,
             inp.occupancy_subdivision or None,
             inp.building_height,
+            floor_area_m2=max_floor_area,
+            num_floors=inp.number_of_floors,
         )
 
         if fi_check.get("violation"):

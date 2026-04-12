@@ -225,7 +225,7 @@ export default function FileUpload() {
             <button
                 id="manual-input-btn"
                 className="btn-secondary w-full mt-3"
-                onClick={() => router.push('/confirm?manual=true')}
+                onClick={() => router.push('/manual')}
             >
                 ✏️ Enter building data manually
             </button>

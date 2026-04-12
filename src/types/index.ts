@@ -65,6 +65,15 @@ export interface Violation {
 }
 
 // --- NBC 2016 Part IV Compliance Detail ---
+export interface EvaluatedNote {
+    noteId: number;
+    field?: string;
+    condition: string;
+    isMet: boolean;
+    description: string;
+    additionalValue?: number;
+}
+
 export interface FirefightingInstallationRequirement {
     fireExtinguisher: boolean;
     firstAidHoseReel: boolean;
@@ -81,6 +90,8 @@ export interface FirefightingInstallationRequirement {
     heightTierLabel: string;
     occupancyLabel: string;
     clauseRef: string;
+    notes?: string;
+    evaluatedNotes?: EvaluatedNote[];
 }
 
 export interface NBCComplianceData {

@@ -366,45 +366,45 @@
         ],
         "factors": {
             "A": {
-                "default": 12.50,
+                "default": 12.5,
                 "unit": "m2_per_person"
             },
             "B": {
-                "default": 4.00,
+                "default": 4.0,
                 "unit": "m2_per_person"
             },
             "C": {
-                "indoor_patients": 15.00,
-                "outdoor_patients": 10.00,
+                "indoor_patients": 15.0,
+                "outdoor_patients": 10.0,
                 "unit": "m2_per_person"
             },
             "D": {
                 "concentrated_no_fixed_seats": 0.65,
-                "less_concentrated_no_fixed_seats": 1.40,
+                "less_concentrated_no_fixed_seats": 1.4,
                 "fixed_seating": "ACTUAL_SEAT_COUNT",
-                "dining_restaurants": 1.80,
+                "dining_restaurants": 1.8,
                 "unit": "m2_per_person"
             },
             "E": {
-                "default": 10.00,
+                "default": 10.0,
                 "unit": "m2_per_person"
             },
             "F": {
-                "street_floor_sales_basement": 3.00,
-                "upper_sales_floors": 6.00,
-                "storage_warehouse": 20.00,
+                "street_floor_sales_basement": 3.0,
+                "upper_sales_floors": 6.0,
+                "storage_warehouse": 20.0,
                 "unit": "m2_per_person"
             },
             "G": {
-                "default": 10.00,
+                "default": 10.0,
                 "unit": "m2_per_person"
             },
             "H": {
-                "default": 30.00,
+                "default": 30.0,
                 "unit": "m2_per_person"
             },
             "J": {
-                "default": 10.00,
+                "default": 10.0,
                 "unit": "m2_per_person"
             }
         }
@@ -472,47 +472,47 @@
         "sprinklerBonus": 1.5,
         "distances": {
             "A": {
-                "type12": 30.00,
-                "type34": 22.50
+                "type12": 30.0,
+                "type34": 22.5
             },
             "B": {
-                "type12": 30.00,
-                "type34": 22.50
+                "type12": 30.0,
+                "type34": 22.5
             },
             "C": {
-                "type12": 30.00,
-                "type34": 22.50
+                "type12": 30.0,
+                "type34": 22.5
             },
             "D": {
-                "type12": 30.00,
-                "type34": 30.00
+                "type12": 30.0,
+                "type34": 30.0
             },
             "E": {
-                "type12": 30.00,
-                "type34": 30.00
+                "type12": 30.0,
+                "type34": 30.0
             },
             "F": {
-                "type12": 30.00,
-                "type34": 30.00
+                "type12": 30.0,
+                "type34": 30.0
             },
             "G-1": {
-                "type12": 45.00,
-                "type34": 22.50
+                "type12": 45.0,
+                "type34": 22.5
             },
             "G-2": {
-                "type12": 45.00,
-                "type34": 22.50
+                "type12": 45.0,
+                "type34": 22.5
             },
             "G-3": {
-                "type12": 22.50,
-                "type34": 22.50
+                "type12": 22.5,
+                "type34": 22.5
             },
             "H": {
-                "type12": 30.00,
+                "type12": 30.0,
                 "type34": "NOT_PERMITTED"
             },
             "J": {
-                "type12": 22.50,
+                "type12": 22.5,
                 "type34": "NOT_PERMITTED"
             }
         }
@@ -522,18 +522,28 @@
         "_description": "Required fire protection systems based on occupancy subdivision and building height per NBC 2016 Part IV.",
         "_notes": [
             "R = Required, NR = Not Required",
-            "Note 4: Sprinklers required in basements >200m² and multi-level car parking",
-            "Note 10: Pump config = 2280 L/min electric + diesel standby + 180 L/min jockey",
-            "Note 11: Pump config = 2280 L/min + 180 L/min jockey",
-            "Note 12: Pump config = 2850 L/min + 180 L/min jockey",
-            "Note 16: Buildings >30m height NOT permitted for Groups B, C, D, F",
-            "Note 20: Buildings >15m height NOT permitted for Groups H, J"
+            "Note 3: Buildings >15m NOT permitted for A-1, A-2",
+            "Note 4: Sprinklers required in basements >200m²",
+            "Note 6: Parenthesis values to be added if basement >200m²",
+            "Note 10: Pump = 1E+1D(SB) 2280 L/min + 1E 180 L/min",
+            "Note 11: Pump = 2E+1D(SB) 2280 L/min + 2E 180 L/min",
+            "Note 12: Pump = 2E+1D(SB) 2850 L/min + 2E 180 L/min",
+            "Note 14: Pump = 1E+1D(SB) 1620 L/min + 1E 180 L/min",
+            "Note 16: Buildings >30m NOT permitted for B, C, D, F",
+            "Note 18: Buildings >18m NOT permitted for G-1, G-2",
+            "Note 19: Buildings >15m NOT permitted for G-3",
+            "Note 20: Buildings >15m NOT permitted for H, J"
         ],
         "heightNotPermitted": {
+            "A-1": 15,
+            "A-2": 15,
             "B": 30,
             "C": 30,
             "D": 30,
             "F": 30,
+            "G-1": 18,
+            "G-2": 18,
+            "G-3": 15,
             "H": 15,
             "J": 15
         },
@@ -541,25 +551,7 @@
             "A-1": [
                 {
                     "maxHeightM": 15,
-                    "label": "≤15m",
-                    "fireExtinguisher": true,
-                    "firstAidHoseReel": false,
-                    "wetRiser": false,
-                    "downComer": false,
-                    "yardHydrant": false,
-                    "automaticSprinkler": false,
-                    "manualFireAlarm": false,
-                    "autoDetectionAlarm": false,
-                    "undergroundTankLitres": null,
-                    "terraceTankLitres": 5000,
-                    "undergroundPumpLpm": null,
-                    "terracePumpLpm": null
-                }
-            ],
-            "A-2": [
-                {
-                    "maxHeightM": 15,
-                    "label": "≤15m",
+                    "label": "≤15m, ≤15 rooms",
                     "fireExtinguisher": true,
                     "firstAidHoseReel": false,
                     "wetRiser": false,
@@ -571,7 +563,117 @@
                     "undergroundTankLitres": null,
                     "terraceTankLitres": null,
                     "undergroundPumpLpm": null,
-                    "terracePumpLpm": null
+                    "terracePumpLpm": null,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 4,
+                            "field": "automaticSprinkler",
+                            "condition": "basement_area_gt_200",
+                            "description": "Required to be installed in basement, if area of basement exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 5,
+                            "field": "terraceTankLitres",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 5000,
+                            "description": "Required to be provided if basement area exceeds 200 m²."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 15,
+                    "label": "≤15m, 16-30 rooms",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": false,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 5000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 450,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 4,
+                            "field": "automaticSprinkler",
+                            "condition": "basement_area_gt_200",
+                            "description": "Required to be installed in basement, if area of basement exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terraceTankLitres",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 5000,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terracePumpLpm",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 450,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 15,
+                    "label": "≤15m, >30 rooms",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": false,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 450,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 6,
+                            "field": "terraceTankLitres",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 5000,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terracePumpLpm",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 450,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 7,
+                            "field": "manualFireAlarm",
+                            "condition": "floors_gt_2",
+                            "description": "Required to be provided for buildings with more than two storeys (Ground + One)."
+                        }
+                    ]
+                }
+            ],
+            "A-2": [
+                {
+                    "maxHeightM": 15,
+                    "label": "≤15m",
+                    "fireExtinguisher": false,
+                    "firstAidHoseReel": false,
+                    "wetRiser": false,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": false,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": null,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": null,
+                    "conditionalNotes": []
                 }
             ],
             "A-3": [
@@ -584,28 +686,154 @@
                     "downComer": false,
                     "yardHydrant": false,
                     "automaticSprinkler": false,
-                    "manualFireAlarm": true,
+                    "manualFireAlarm": false,
                     "autoDetectionAlarm": false,
                     "undergroundTankLitres": null,
-                    "terraceTankLitres": 10000,
+                    "terraceTankLitres": 5000,
                     "undergroundPumpLpm": null,
-                    "terracePumpLpm": 450
+                    "terracePumpLpm": 450,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 4,
+                            "field": "automaticSprinkler",
+                            "condition": "basement_area_gt_200",
+                            "description": "Required to be installed in basement, if area of basement exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terraceTankLitres",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 5000,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terracePumpLpm",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 450,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        }
+                    ]
                 },
                 {
-                    "maxHeightM": 24,
-                    "label": "15m to 24m",
+                    "maxHeightM": 35,
+                    "label": "15m to 35m",
                     "fireExtinguisher": true,
                     "firstAidHoseReel": true,
                     "wetRiser": false,
                     "downComer": true,
                     "yardHydrant": false,
                     "automaticSprinkler": false,
-                    "manualFireAlarm": true,
+                    "manualFireAlarm": false,
                     "autoDetectionAlarm": false,
                     "undergroundTankLitres": null,
-                    "terraceTankLitres": 20000,
+                    "terraceTankLitres": 25000,
                     "undergroundPumpLpm": null,
-                    "terracePumpLpm": 900
+                    "terracePumpLpm": 900,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 4,
+                            "field": "automaticSprinkler",
+                            "condition": "basement_area_gt_200",
+                            "description": "Required to be installed in basement, if area of basement exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 8,
+                            "field": "manualFireAlarm",
+                            "condition": "height_gte_15",
+                            "description": "Required to be provided for buildings with height above 15 m and above."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 45,
+                    "label": "35m to 45m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": 75000,
+                    "terraceTankLitres": 5000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": null,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 4,
+                            "field": "automaticSprinkler",
+                            "condition": "basement_area_gt_200",
+                            "description": "Required to be installed in basement, if area of basement exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 9,
+                            "field": "automaticSprinkler",
+                            "condition": "always",
+                            "description": "Sprinklers shall be fed water from both underground static water storage tank and terrace tank."
+                        },
+                        {
+                            "noteId": 10,
+                            "field": "undergroundPumpLpm",
+                            "condition": "always",
+                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 2280 litre/min and one electric pump of capacity 180 litre/min."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 60,
+                    "label": "45m to 60m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": 150000,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": null,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 11,
+                            "field": "undergroundPumpLpm",
+                            "condition": "always",
+                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 9999,
+                    "label": ">60m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 200000,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": null,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 12,
+                            "field": "undergroundPumpLpm",
+                            "condition": "always",
+                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2850 litre/min and two electric pump of capacity 180 litre/min."
+                        },
+                        {
+                            "noteId": 13,
+                            "field": "undergroundPumpLpm",
+                            "condition": "height_gte_60",
+                            "description": "Lower levels in high rise buildings 60 m or above in height are likely to experience high pressure and therefore, it is recommended to consider multi-stage, multi-outlet pumps (creating pressure zones) or variable frequency drive pumps or any other equivalent arrangement."
+                        }
+                    ]
                 }
             ],
             "A-4": [
@@ -613,7 +841,377 @@
                     "maxHeightM": 15,
                     "label": "≤15m",
                     "fireExtinguisher": true,
-                    "firstAidHoseReel": false,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": false,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 5000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 450,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 4,
+                            "field": "automaticSprinkler",
+                            "condition": "basement_area_gt_200",
+                            "description": "Required to be installed in basement, if area of basement exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terraceTankLitres",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 5000,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terracePumpLpm",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 450,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 35,
+                    "label": "15m to 35m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": true,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": false,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 25000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 900,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 4,
+                            "field": "automaticSprinkler",
+                            "condition": "basement_area_gt_200",
+                            "description": "Required to be installed in basement, if area of basement exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 8,
+                            "field": "manualFireAlarm",
+                            "condition": "height_gte_15",
+                            "description": "Required to be provided for buildings with height above 15 m and above."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 45,
+                    "label": "35m to 45m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": 75000,
+                    "terraceTankLitres": 5000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": null,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 4,
+                            "field": "automaticSprinkler",
+                            "condition": "basement_area_gt_200",
+                            "description": "Required to be installed in basement, if area of basement exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 9,
+                            "field": "automaticSprinkler",
+                            "condition": "always",
+                            "description": "Sprinklers shall be fed water from both underground static water storage tank and terrace tank."
+                        },
+                        {
+                            "noteId": 10,
+                            "field": "undergroundPumpLpm",
+                            "condition": "always",
+                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 2280 litre/min and one electric pump of capacity 180 litre/min."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 60,
+                    "label": "45m to 60m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": 150000,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": null,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 11,
+                            "field": "undergroundPumpLpm",
+                            "condition": "always",
+                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 9999,
+                    "label": ">60m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 200000,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": null,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 12,
+                            "field": "undergroundPumpLpm",
+                            "condition": "always",
+                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2850 litre/min and two electric pump of capacity 180 litre/min."
+                        },
+                        {
+                            "noteId": 13,
+                            "field": "undergroundPumpLpm",
+                            "condition": "height_gte_60",
+                            "description": "Lower levels in high rise buildings 60 m or above in height are likely to experience high pressure and therefore, it is recommended to consider multi-stage, multi-outlet pumps (creating pressure zones) or variable frequency drive pumps or any other equivalent arrangement."
+                        }
+                    ]
+                }
+            ],
+            "A-5": [
+                {
+                    "maxHeightM": 15,
+                    "maxAreaM2": 300,
+                    "label": "≤15m, area ≤300m²",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 5000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 450,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 4,
+                            "field": "automaticSprinkler",
+                            "condition": "basement_area_gt_200",
+                            "description": "Required to be installed in basement, if area of basement exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terraceTankLitres",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 5000,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terracePumpLpm",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 450,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 15,
+                    "minAreaM2": 301,
+                    "maxAreaM2": 1000,
+                    "label": "≤15m, area 300-1000m²",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 450,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 4,
+                            "field": "automaticSprinkler",
+                            "condition": "basement_area_gt_200",
+                            "description": "Required to be installed in basement, if area of basement exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 7,
+                            "field": "wetRiser",
+                            "condition": "floors_gt_2",
+                            "description": "Required to be provided for buildings with more than two storeys (Ground + One)."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terraceTankLitres",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 5000,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terracePumpLpm",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 450,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 14,
+                            "field": "undergroundPumpLpm",
+                            "condition": "always",
+                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 1620 litre/min and one electric pump of capacity 180 litre/min."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 15,
+                    "minAreaM2": 1001,
+                    "label": "≤15m, area >1000m²",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 100000,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": null,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 1,
+                            "field": "manualFireAlarm",
+                            "condition": "always",
+                            "description": "MOEFA System shall also include talk-back system and public address system."
+                        },
+                        {
+                            "noteId": 4,
+                            "field": "automaticSprinkler",
+                            "condition": "basement_area_gt_200",
+                            "description": "Required to be installed in basement, if area of basement exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 15,
+                            "field": "wetRiser",
+                            "condition": "floors_gt_1",
+                            "description": "Required to be provided for buildings with more than one storey."
+                        },
+                        {
+                            "noteId": 14,
+                            "field": "undergroundPumpLpm",
+                            "condition": "always",
+                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 1620 litre/min and one electric pump of capacity 180 litre/min."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 30,
+                    "label": "15m to 30m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 150000,
+                    "terraceTankLitres": 20000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": null,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 11,
+                            "field": "undergroundPumpLpm",
+                            "condition": "always",
+                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 9999,
+                    "label": ">30m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 200000,
+                    "terraceTankLitres": 20000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": null,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 11,
+                            "field": "undergroundPumpLpm",
+                            "condition": "always",
+                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min."
+                        }
+                    ]
+                }
+            ],
+            "A-6": [
+                {
+                    "maxHeightM": 9999,
+                    "label": "All heights",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 250000,
+                    "terraceTankLitres": 20000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": null,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 12,
+                            "field": "undergroundPumpLpm",
+                            "condition": "always",
+                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2850 litre/min and two electric pump of capacity 180 litre/min."
+                        }
+                    ]
+                }
+            ],
+            "B": [
+                {
+                    "maxHeightM": 15,
+                    "label": "≤15m, G+1 or more",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
                     "wetRiser": false,
                     "downComer": false,
                     "yardHydrant": false,
@@ -623,7 +1221,29 @@
                     "undergroundTankLitres": null,
                     "terraceTankLitres": 10000,
                     "undergroundPumpLpm": null,
-                    "terracePumpLpm": 450
+                    "terracePumpLpm": 450,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 4,
+                            "field": "automaticSprinkler",
+                            "condition": "basement_area_gt_200",
+                            "description": "Required to be installed in basement, if area of basement exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terraceTankLitres",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 5000,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terracePumpLpm",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 450,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        }
+                    ]
                 },
                 {
                     "maxHeightM": 24,
@@ -637,13 +1257,360 @@
                     "manualFireAlarm": true,
                     "autoDetectionAlarm": false,
                     "undergroundTankLitres": null,
-                    "terraceTankLitres": 20000,
+                    "terraceTankLitres": 25000,
                     "undergroundPumpLpm": null,
-                    "terracePumpLpm": 900
+                    "terracePumpLpm": 900,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 4,
+                            "field": "automaticSprinkler",
+                            "condition": "basement_area_gt_200",
+                            "description": "Required to be installed in basement, if area of basement exceeds 200 m²."
+                        }
+                    ]
                 },
                 {
-                    "maxHeightM": 35,
-                    "label": "24m to 35m",
+                    "maxHeightM": 30,
+                    "label": "24m to 30m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": 50000,
+                    "terraceTankLitres": 5000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": null,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 4,
+                            "field": "automaticSprinkler",
+                            "condition": "basement_area_gt_200",
+                            "description": "Required to be installed in basement, if area of basement exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terraceTankLitres",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 5000,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 14,
+                            "field": "undergroundPumpLpm",
+                            "condition": "always",
+                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 1620 litre/min and one electric pump of capacity 180 litre/min."
+                        }
+                    ]
+                }
+            ],
+            "C-1": [
+                {
+                    "maxHeightM": 15,
+                    "label": "≤15m, plot ≤1000m², G+1, no beds",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": false,
+                    "wetRiser": false,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": null,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": null,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 4,
+                            "field": "automaticSprinkler",
+                            "condition": "basement_area_gt_200",
+                            "description": "Required to be installed in basement, if area of basement exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terraceTankLitres",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 5000,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terracePumpLpm",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 450,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 15,
+                    "label": "≤15m, plot ≤1000m², G+1, with beds",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 5000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 450,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 4,
+                            "field": "automaticSprinkler",
+                            "condition": "basement_area_gt_200",
+                            "description": "Required to be installed in basement, if area of basement exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terraceTankLitres",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 5000,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terracePumpLpm",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 450,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 15,
+                    "label": "≤15m, plot ≤1000m², G+2+, no beds",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": true,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 900,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 4,
+                            "field": "automaticSprinkler",
+                            "condition": "basement_area_gt_200",
+                            "description": "Required to be installed in basement, if area of basement exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terraceTankLitres",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 5000,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terracePumpLpm",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 450,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 15,
+                    "label": "≤15m, plot ≤1000m², G+2+, with beds",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 75000,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": null,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 1,
+                            "field": "manualFireAlarm",
+                            "condition": "always",
+                            "description": "MOEFA System shall also include talk-back system and public address system."
+                        },
+                        {
+                            "noteId": 14,
+                            "field": "undergroundPumpLpm",
+                            "condition": "always",
+                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 1620 litre/min and one electric pump of capacity 180 litre/min."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 15,
+                    "label": "≤15m, plot >1000m²",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 100000,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": null,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 1,
+                            "field": "manualFireAlarm",
+                            "condition": "always",
+                            "description": "MOEFA System shall also include talk-back system and public address system."
+                        },
+                        {
+                            "noteId": 14,
+                            "field": "undergroundPumpLpm",
+                            "condition": "always",
+                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 1620 litre/min and one electric pump of capacity 180 litre/min."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 24,
+                    "label": "15m to 24m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 150000,
+                    "terraceTankLitres": 20000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": null,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 10,
+                            "field": "undergroundPumpLpm",
+                            "condition": "always",
+                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 2280 litre/min and one electric pump of capacity 180 litre/min."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 45,
+                    "label": "24m to 45m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 200000,
+                    "terraceTankLitres": 20000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": null,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 11,
+                            "field": "undergroundPumpLpm",
+                            "condition": "always",
+                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min."
+                        }
+                    ]
+                }
+            ],
+            "C-2": [
+                {
+                    "maxHeightM": 10,
+                    "label": "≤10m, ≤300 persons",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 450,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 4,
+                            "field": "automaticSprinkler",
+                            "condition": "basement_area_gt_200",
+                            "description": "Required to be installed in basement, if area of basement exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terraceTankLitres",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 5000,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terracePumpLpm",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 450,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 10,
+                    "label": "≤10m, >300 persons",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": true,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 15000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 900,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 4,
+                            "field": "automaticSprinkler",
+                            "condition": "basement_area_gt_200",
+                            "description": "Required to be installed in basement, if area of basement exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terraceTankLitres",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 5000,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terracePumpLpm",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 450,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 15,
+                    "label": "10m to 15m",
                     "fireExtinguisher": true,
                     "firstAidHoseReel": true,
                     "wetRiser": true,
@@ -652,14 +1619,1408 @@
                     "automaticSprinkler": false,
                     "manualFireAlarm": true,
                     "autoDetectionAlarm": true,
-                    "undergroundTankLitres": 50000,
-                    "terraceTankLitres": 10000,
-                    "undergroundPumpLpm": 2280,
-                    "terracePumpLpm": null
+                    "undergroundTankLitres": 100000,
+                    "terraceTankLitres": 5000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": null,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 4,
+                            "field": "automaticSprinkler",
+                            "condition": "basement_area_gt_200",
+                            "description": "Required to be installed in basement, if area of basement exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terraceTankLitres",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 5000,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 10,
+                            "field": "undergroundPumpLpm",
+                            "condition": "always",
+                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 2280 litre/min and one electric pump of capacity 180 litre/min."
+                        }
+                    ]
                 },
                 {
-                    "maxHeightM": 45,
-                    "label": "35m to 45m",
+                    "maxHeightM": 24,
+                    "label": "15m to 24m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 150000,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": null,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 11,
+                            "field": "undergroundPumpLpm",
+                            "condition": "always",
+                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 30,
+                    "label": "24m to 30m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 200000,
+                    "terraceTankLitres": 20000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": null,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 11,
+                            "field": "undergroundPumpLpm",
+                            "condition": "always",
+                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min."
+                        }
+                    ]
+                }
+            ],
+            "C-3": [
+                {
+                    "maxHeightM": 10,
+                    "label": "≤10m, ≤300 persons",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 450,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 4,
+                            "field": "automaticSprinkler",
+                            "condition": "basement_area_gt_200",
+                            "description": "Required to be installed in basement, if area of basement exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terraceTankLitres",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 5000,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terracePumpLpm",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 450,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 10,
+                    "label": "≤10m, >300 persons",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": true,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 15000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 900,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 4,
+                            "field": "automaticSprinkler",
+                            "condition": "basement_area_gt_200",
+                            "description": "Required to be installed in basement, if area of basement exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terraceTankLitres",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 5000,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terracePumpLpm",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 450,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 15,
+                    "label": "10m to 15m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 100000,
+                    "terraceTankLitres": 5000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": null,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 4,
+                            "field": "automaticSprinkler",
+                            "condition": "basement_area_gt_200",
+                            "description": "Required to be installed in basement, if area of basement exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terraceTankLitres",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 5000,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 10,
+                            "field": "undergroundPumpLpm",
+                            "condition": "always",
+                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 2280 litre/min and one electric pump of capacity 180 litre/min."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 24,
+                    "label": "15m to 24m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 150000,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": null,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 11,
+                            "field": "undergroundPumpLpm",
+                            "condition": "always",
+                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 30,
+                    "label": "24m to 30m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 200000,
+                    "terraceTankLitres": 20000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": null,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 11,
+                            "field": "undergroundPumpLpm",
+                            "condition": "always",
+                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min."
+                        }
+                    ]
+                }
+            ],
+            "D": [
+                {
+                    "maxHeightM": 10,
+                    "label": "≤10m, ≤300 persons",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": true,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 20000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 450,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 4,
+                            "field": "automaticSprinkler",
+                            "condition": "basement_area_gt_200",
+                            "description": "Required to be installed in basement, if area of basement exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terraceTankLitres",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 5000,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terracePumpLpm",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 450,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 10,
+                    "label": "≤10m, >300 persons",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": true,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 25000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 900,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 4,
+                            "field": "automaticSprinkler",
+                            "condition": "basement_area_gt_200",
+                            "description": "Required to be installed in basement, if area of basement exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terraceTankLitres",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 5000,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terracePumpLpm",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 450,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 15,
+                    "label": "10m to 15m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 100000,
+                    "terraceTankLitres": 5000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 450,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 1,
+                            "field": "manualFireAlarm",
+                            "condition": "always",
+                            "description": "MOEFA System shall also include talk-back system and public address system."
+                        },
+                        {
+                            "noteId": 4,
+                            "field": "automaticSprinkler",
+                            "condition": "basement_area_gt_200",
+                            "description": "Required to be installed in basement, if area of basement exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terraceTankLitres",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 5000,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terracePumpLpm",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 450,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 10,
+                            "field": "undergroundPumpLpm",
+                            "condition": "always",
+                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 2280 litre/min and one electric pump of capacity 180 litre/min."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 24,
+                    "label": "15m to 24m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 150000,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": null,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 10,
+                            "field": "undergroundPumpLpm",
+                            "condition": "always",
+                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 2280 litre/min and one electric pump of capacity 180 litre/min."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 30,
+                    "label": "24m to 30m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 200000,
+                    "terraceTankLitres": 20000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": null,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 11,
+                            "field": "undergroundPumpLpm",
+                            "condition": "always",
+                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min."
+                        }
+                    ]
+                }
+            ],
+            "D-6": [
+                {
+                    "maxHeightM": 9999,
+                    "label": "All heights",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 200000,
+                    "terraceTankLitres": 20000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": null,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 12,
+                            "field": "undergroundPumpLpm",
+                            "condition": "always",
+                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2850 litre/min and two electric pump of capacity 180 litre/min."
+                        }
+                    ]
+                }
+            ],
+            "E": [
+                {
+                    "maxHeightM": 10,
+                    "label": "≤10m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": true,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 450,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 4,
+                            "field": "automaticSprinkler",
+                            "condition": "basement_area_gt_200",
+                            "description": "Required to be installed in basement, if area of basement exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terraceTankLitres",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 5000,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terracePumpLpm",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 450,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 15,
+                    "label": "10m to 15m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 50000,
+                    "terraceTankLitres": 5000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 450,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 4,
+                            "field": "automaticSprinkler",
+                            "condition": "basement_area_gt_200",
+                            "description": "Required to be installed in basement, if area of basement exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terraceTankLitres",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 5000,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terracePumpLpm",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 450,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 14,
+                            "field": "undergroundPumpLpm",
+                            "condition": "always",
+                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 1620 litre/min and one electric pump of capacity 180 litre/min."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 24,
+                    "label": "15m to 24m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 100000,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": null,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 10,
+                            "field": "undergroundPumpLpm",
+                            "condition": "always",
+                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 2280 litre/min and one electric pump of capacity 180 litre/min."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 30,
+                    "label": "24m to 30m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 150000,
+                    "terraceTankLitres": 20000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": null,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 11,
+                            "field": "undergroundPumpLpm",
+                            "condition": "always",
+                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 9999,
+                    "label": ">30m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 200000,
+                    "terraceTankLitres": 20000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": null,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 12,
+                            "field": "undergroundPumpLpm",
+                            "condition": "always",
+                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2850 litre/min and two electric pump of capacity 180 litre/min."
+                        }
+                    ]
+                }
+            ],
+            "F-1": [
+                {
+                    "maxHeightM": 15,
+                    "maxFloors": 2,
+                    "maxAreaM2": 500,
+                    "label": "≤15m, G+1, area ≤500m²",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": false,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 5000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 450,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 4,
+                            "field": "automaticSprinkler",
+                            "condition": "basement_area_gt_200",
+                            "description": "Required to be installed in basement, if area of basement exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terraceTankLitres",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 5000,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terracePumpLpm",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 450,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 15,
+                    "maxFloors": 2,
+                    "minAreaM2": 501,
+                    "label": "≤15m, G+1, area >500m²",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": true,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 20000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 900,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 4,
+                            "field": "automaticSprinkler",
+                            "condition": "basement_area_gt_200",
+                            "description": "Required to be installed in basement, if area of basement exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terraceTankLitres",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 5000,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terracePumpLpm",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 450,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 15,
+                    "minFloors": 3,
+                    "label": "≤15m, >G+1",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": true,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 25000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 900,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 4,
+                            "field": "automaticSprinkler",
+                            "condition": "basement_area_gt_200",
+                            "description": "Required to be installed in basement, if area of basement exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terraceTankLitres",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 5000,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terracePumpLpm",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 450,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 24,
+                    "label": "15m to 24m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 100000,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": null,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 10,
+                            "field": "undergroundPumpLpm",
+                            "condition": "always",
+                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 2280 litre/min and one electric pump of capacity 180 litre/min."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 30,
+                    "label": "24m to 30m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 200000,
+                    "terraceTankLitres": 20000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": null,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 11,
+                            "field": "undergroundPumpLpm",
+                            "condition": "always",
+                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min."
+                        }
+                    ]
+                }
+            ],
+            "F-2": [
+                {
+                    "maxHeightM": 15,
+                    "maxFloors": 2,
+                    "maxAreaM2": 500,
+                    "label": "≤15m, G+1, area ≤500m²",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": false,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 5000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 450,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 4,
+                            "field": "automaticSprinkler",
+                            "condition": "basement_area_gt_200",
+                            "description": "Required to be installed in basement, if area of basement exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terraceTankLitres",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 5000,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terracePumpLpm",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 450,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 15,
+                    "maxFloors": 2,
+                    "minAreaM2": 501,
+                    "label": "≤15m, G+1, area >500m²",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": true,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 20000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 900,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 4,
+                            "field": "automaticSprinkler",
+                            "condition": "basement_area_gt_200",
+                            "description": "Required to be installed in basement, if area of basement exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terraceTankLitres",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 5000,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terracePumpLpm",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 450,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 15,
+                    "minFloors": 3,
+                    "label": "≤15m, >G+1",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": true,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 25000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 900,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 4,
+                            "field": "automaticSprinkler",
+                            "condition": "basement_area_gt_200",
+                            "description": "Required to be installed in basement, if area of basement exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terraceTankLitres",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 5000,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terracePumpLpm",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 450,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 24,
+                    "label": "15m to 24m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 100000,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": null,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 10,
+                            "field": "undergroundPumpLpm",
+                            "condition": "always",
+                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 2280 litre/min and one electric pump of capacity 180 litre/min."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 30,
+                    "label": "24m to 30m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 200000,
+                    "terraceTankLitres": 20000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": null,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 11,
+                            "field": "undergroundPumpLpm",
+                            "condition": "always",
+                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min."
+                        }
+                    ]
+                }
+            ],
+            "F-3": [
+                {
+                    "maxHeightM": 9999,
+                    "label": "All",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 150000,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": null,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 11,
+                            "field": "undergroundPumpLpm",
+                            "condition": "always",
+                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min."
+                        }
+                    ]
+                }
+            ],
+            "G-1": [
+                {
+                    "maxHeightM": 18,
+                    "maxAreaM2": 100,
+                    "label": "area ≤100m²",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": false,
+                    "wetRiser": false,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": false,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": null,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": null,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 4,
+                            "field": "automaticSprinkler",
+                            "condition": "basement_area_gt_200",
+                            "description": "Required to be installed in basement, if area of basement exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 5,
+                            "field": "terraceTankLitres",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 5000,
+                            "description": "Required to be provided if basement area exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 5,
+                            "field": "terracePumpLpm",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 450,
+                            "description": "Required to be provided if basement area exceeds 200 m²."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 18,
+                    "minAreaM2": 101,
+                    "maxAreaM2": 500,
+                    "label": "area 100-500m²",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": false,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 20000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 450,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 4,
+                            "field": "automaticSprinkler",
+                            "condition": "basement_area_gt_200",
+                            "description": "Required to be installed in basement, if area of basement exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terraceTankLitres",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 5000,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terracePumpLpm",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 450,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 8,
+                            "field": "downComer",
+                            "condition": "height_gte_15",
+                            "description": "Required to be provided for buildings with height above 15 m and above."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 15,
+                    "minAreaM2": 501,
+                    "label": "area >500m², ≤15m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": true,
+                    "yardHydrant": false,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 20000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 450,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 4,
+                            "field": "automaticSprinkler",
+                            "condition": "basement_area_gt_200",
+                            "description": "Required to be installed in basement, if area of basement exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terraceTankLitres",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 5000,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terracePumpLpm",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 450,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 18,
+                    "minHeightM": 15,
+                    "minAreaM2": 501,
+                    "label": "area >500m², >15m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": false,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 75000,
+                    "terraceTankLitres": 5000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": null,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 4,
+                            "field": "automaticSprinkler",
+                            "condition": "basement_area_gt_200",
+                            "description": "Required to be installed in basement, if area of basement exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
+                            "field": "terraceTankLitres",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 5000,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 14,
+                            "field": "undergroundPumpLpm",
+                            "condition": "always",
+                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 1620 litre/min and one electric pump of capacity 180 litre/min."
+                        }
+                    ]
+                }
+            ],
+            "G-2": [
+                {
+                    "maxHeightM": 18,
+                    "maxAreaM2": 100,
+                    "label": "area ≤100m²",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": false,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 450,
+                    "conditionalNotes": []
+                },
+                {
+                    "maxHeightM": 18,
+                    "minAreaM2": 101,
+                    "maxAreaM2": 500,
+                    "label": "area 100-500m²",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": false,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 20000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 900,
+                    "conditionalNotes": []
+                },
+                {
+                    "maxHeightM": 15,
+                    "minAreaM2": 501,
+                    "maxAreaM2": 1000,
+                    "label": "area 500-1000m², ≤15m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": true,
+                    "yardHydrant": false,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 50000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 900,
+                    "conditionalNotes": []
+                },
+                {
+                    "maxHeightM": 18,
+                    "minHeightM": 15,
+                    "minAreaM2": 501,
+                    "maxAreaM2": 1000,
+                    "label": "area 500-1000m², >15m",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 100000,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": null,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 14,
+                            "field": "undergroundPumpLpm",
+                            "condition": "always",
+                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 1620 litre/min and one electric pump of capacity 180 litre/min."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 18,
+                    "minAreaM2": 1001,
+                    "label": "area >1000m²",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 150000,
+                    "terraceTankLitres": 20000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": null,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 11,
+                            "field": "undergroundPumpLpm",
+                            "condition": "always",
+                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min."
+                        }
+                    ]
+                }
+            ],
+            "G-3": [
+                {
+                    "maxHeightM": 15,
+                    "maxAreaM2": 50,
+                    "label": "area ≤50m²",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": false,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 900,
+                    "conditionalNotes": []
+                },
+                {
+                    "maxHeightM": 15,
+                    "minAreaM2": 51,
+                    "maxAreaM2": 150,
+                    "label": "area 50-150m²",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 25000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 900,
+                    "conditionalNotes": []
+                },
+                {
+                    "maxHeightM": 15,
+                    "minAreaM2": 151,
+                    "maxAreaM2": 300,
+                    "label": "area 150-300m²",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 50000,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": null,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 14,
+                            "field": "undergroundPumpLpm",
+                            "condition": "always",
+                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 1620 litre/min and one electric pump of capacity 180 litre/min."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 15,
+                    "minAreaM2": 301,
+                    "maxAreaM2": 500,
+                    "label": "area 300-500m²",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 100000,
+                    "terraceTankLitres": 20000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": null,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 10,
+                            "field": "undergroundPumpLpm",
+                            "condition": "always",
+                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 2280 litre/min and one electric pump of capacity 180 litre/min."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 15,
+                    "minAreaM2": 501,
+                    "label": "area >500m²",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 150000,
+                    "terraceTankLitres": 20000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": null,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 11,
+                            "field": "undergroundPumpLpm",
+                            "condition": "always",
+                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min."
+                        }
+                    ]
+                }
+            ],
+            "H": [
+                {
+                    "maxHeightM": 15,
+                    "maxAreaM2": 250,
+                    "label": "≤15m, area <250m²",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": false,
+                    "downComer": false,
+                    "yardHydrant": false,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": false,
+                    "autoDetectionAlarm": false,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 25000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 900,
+                    "conditionalNotes": []
+                },
+                {
+                    "maxHeightM": 15,
+                    "minAreaM2": 251,
+                    "maxFloors": 1,
+                    "label": "≤15m, area >250m², ground only",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": 50000,
+                    "terraceTankLitres": 10000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 450,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 14,
+                            "field": "undergroundPumpLpm",
+                            "condition": "always",
+                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 1620 litre/min and one electric pump of capacity 180 litre/min."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 15,
+                    "minAreaM2": 251,
+                    "maxFloors": 2,
+                    "minFloors": 2,
+                    "label": "≤15m, area >250m², G+1",
                     "fireExtinguisher": true,
                     "firstAidHoseReel": true,
                     "wetRiser": true,
@@ -669,313 +3030,23 @@
                     "manualFireAlarm": true,
                     "autoDetectionAlarm": true,
                     "undergroundTankLitres": 75000,
-                    "terraceTankLitres": 5000,
-                    "undergroundPumpLpm": 2280,
-                    "terracePumpLpm": null
-                },
-                {
-                    "maxHeightM": 60,
-                    "label": "45m to 60m",
-                    "fireExtinguisher": true,
-                    "firstAidHoseReel": true,
-                    "wetRiser": true,
-                    "downComer": false,
-                    "yardHydrant": true,
-                    "automaticSprinkler": true,
-                    "manualFireAlarm": true,
-                    "autoDetectionAlarm": true,
-                    "undergroundTankLitres": 150000,
-                    "terraceTankLitres": 10000,
-                    "undergroundPumpLpm": 2280,
-                    "terracePumpLpm": null
-                },
-                {
-                    "maxHeightM": 9999,
-                    "label": ">60m",
-                    "fireExtinguisher": true,
-                    "firstAidHoseReel": true,
-                    "wetRiser": true,
-                    "downComer": false,
-                    "yardHydrant": true,
-                    "automaticSprinkler": true,
-                    "manualFireAlarm": true,
-                    "autoDetectionAlarm": true,
-                    "undergroundTankLitres": 200000,
-                    "terraceTankLitres": 10000,
-                    "undergroundPumpLpm": 2850,
-                    "terracePumpLpm": null
-                }
-            ],
-            "A-5": [
-                {
-                    "maxHeightM": 15,
-                    "label": "≤15m",
-                    "fireExtinguisher": true,
-                    "firstAidHoseReel": true,
-                    "wetRiser": true,
-                    "downComer": false,
-                    "yardHydrant": true,
-                    "automaticSprinkler": true,
-                    "manualFireAlarm": true,
-                    "autoDetectionAlarm": true,
-                    "undergroundTankLitres": 100000,
-                    "terraceTankLitres": 10000,
-                    "undergroundPumpLpm": 2280,
-                    "terracePumpLpm": null
-                },
-                {
-                    "maxHeightM": 24,
-                    "label": "15m to 24m",
-                    "fireExtinguisher": true,
-                    "firstAidHoseReel": true,
-                    "wetRiser": true,
-                    "downComer": false,
-                    "yardHydrant": true,
-                    "automaticSprinkler": true,
-                    "manualFireAlarm": true,
-                    "autoDetectionAlarm": true,
-                    "undergroundTankLitres": 100000,
-                    "terraceTankLitres": 10000,
-                    "undergroundPumpLpm": 2280,
-                    "terracePumpLpm": null
-                },
-                {
-                    "maxHeightM": 35,
-                    "label": "24m to 35m",
-                    "fireExtinguisher": true,
-                    "firstAidHoseReel": true,
-                    "wetRiser": true,
-                    "downComer": false,
-                    "yardHydrant": true,
-                    "automaticSprinkler": true,
-                    "manualFireAlarm": true,
-                    "autoDetectionAlarm": true,
-                    "undergroundTankLitres": 150000,
-                    "terraceTankLitres": 20000,
-                    "undergroundPumpLpm": 2280,
-                    "terracePumpLpm": null
-                }
-            ],
-            "A-6": [
-                {
-                    "maxHeightM": 15,
-                    "label": "≤15m",
-                    "fireExtinguisher": true,
-                    "firstAidHoseReel": true,
-                    "wetRiser": true,
-                    "downComer": false,
-                    "yardHydrant": true,
-                    "automaticSprinkler": true,
-                    "manualFireAlarm": true,
-                    "autoDetectionAlarm": true,
-                    "undergroundTankLitres": 150000,
-                    "terraceTankLitres": 20000,
-                    "undergroundPumpLpm": 2280,
-                    "terracePumpLpm": null
-                },
-                {
-                    "maxHeightM": 24,
-                    "label": "15m to 24m",
-                    "fireExtinguisher": true,
-                    "firstAidHoseReel": true,
-                    "wetRiser": true,
-                    "downComer": false,
-                    "yardHydrant": true,
-                    "automaticSprinkler": true,
-                    "manualFireAlarm": true,
-                    "autoDetectionAlarm": true,
-                    "undergroundTankLitres": 150000,
-                    "terraceTankLitres": 20000,
-                    "undergroundPumpLpm": 2280,
-                    "terracePumpLpm": null
-                },
-                {
-                    "maxHeightM": 35,
-                    "label": "24m to 35m",
-                    "fireExtinguisher": true,
-                    "firstAidHoseReel": true,
-                    "wetRiser": true,
-                    "downComer": false,
-                    "yardHydrant": true,
-                    "automaticSprinkler": true,
-                    "manualFireAlarm": true,
-                    "autoDetectionAlarm": true,
-                    "undergroundTankLitres": 200000,
-                    "terraceTankLitres": 20000,
-                    "undergroundPumpLpm": 2850,
-                    "terracePumpLpm": null
-                }
-            ],
-            "B": [
-                {
-                    "maxHeightM": 15,
-                    "label": "≤15m",
-                    "fireExtinguisher": true,
-                    "firstAidHoseReel": true,
-                    "wetRiser": false,
-                    "downComer": true,
-                    "yardHydrant": false,
-                    "automaticSprinkler": false,
-                    "manualFireAlarm": true,
-                    "autoDetectionAlarm": false,
-                    "undergroundTankLitres": null,
-                    "terraceTankLitres": 20000,
-                    "undergroundPumpLpm": null,
-                    "terracePumpLpm": 900
-                },
-                {
-                    "maxHeightM": 24,
-                    "label": "15m to 24m",
-                    "fireExtinguisher": true,
-                    "firstAidHoseReel": true,
-                    "wetRiser": true,
-                    "downComer": false,
-                    "yardHydrant": true,
-                    "automaticSprinkler": true,
-                    "manualFireAlarm": true,
-                    "autoDetectionAlarm": true,
-                    "undergroundTankLitres": 100000,
-                    "terraceTankLitres": 10000,
-                    "undergroundPumpLpm": 2280,
-                    "terracePumpLpm": null
-                },
-                {
-                    "maxHeightM": 30,
-                    "label": "24m to 30m",
-                    "fireExtinguisher": true,
-                    "firstAidHoseReel": true,
-                    "wetRiser": true,
-                    "downComer": false,
-                    "yardHydrant": true,
-                    "automaticSprinkler": true,
-                    "manualFireAlarm": true,
-                    "autoDetectionAlarm": true,
-                    "undergroundTankLitres": 150000,
-                    "terraceTankLitres": 20000,
-                    "undergroundPumpLpm": 2280,
-                    "terracePumpLpm": null
-                }
-            ],
-            "C": [
-                {
-                    "maxHeightM": 15,
-                    "label": "≤15m",
-                    "fireExtinguisher": true,
-                    "firstAidHoseReel": true,
-                    "wetRiser": false,
-                    "downComer": true,
-                    "yardHydrant": false,
-                    "automaticSprinkler": false,
-                    "manualFireAlarm": true,
-                    "autoDetectionAlarm": true,
-                    "undergroundTankLitres": null,
-                    "terraceTankLitres": 20000,
-                    "undergroundPumpLpm": null,
-                    "terracePumpLpm": 900
-                },
-                {
-                    "maxHeightM": 24,
-                    "label": "15m to 24m",
-                    "fireExtinguisher": true,
-                    "firstAidHoseReel": true,
-                    "wetRiser": true,
-                    "downComer": false,
-                    "yardHydrant": true,
-                    "automaticSprinkler": true,
-                    "manualFireAlarm": true,
-                    "autoDetectionAlarm": true,
-                    "undergroundTankLitres": 150000,
-                    "terraceTankLitres": 20000,
-                    "undergroundPumpLpm": 2280,
-                    "terracePumpLpm": null
-                },
-                {
-                    "maxHeightM": 30,
-                    "label": "24m to 30m",
-                    "fireExtinguisher": true,
-                    "firstAidHoseReel": true,
-                    "wetRiser": true,
-                    "downComer": false,
-                    "yardHydrant": true,
-                    "automaticSprinkler": true,
-                    "manualFireAlarm": true,
-                    "autoDetectionAlarm": true,
-                    "undergroundTankLitres": 200000,
-                    "terraceTankLitres": 20000,
-                    "undergroundPumpLpm": 2850,
-                    "terracePumpLpm": null
-                }
-            ],
-            "D": [
-                {
-                    "maxHeightM": 15,
-                    "label": "≤15m",
-                    "fireExtinguisher": true,
-                    "firstAidHoseReel": true,
-                    "wetRiser": false,
-                    "downComer": true,
-                    "yardHydrant": false,
-                    "automaticSprinkler": false,
-                    "manualFireAlarm": true,
-                    "autoDetectionAlarm": false,
-                    "undergroundTankLitres": null,
                     "terraceTankLitres": 10000,
                     "undergroundPumpLpm": null,
-                    "terracePumpLpm": 450
+                    "terracePumpLpm": 450,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 10,
+                            "field": "undergroundPumpLpm",
+                            "condition": "always",
+                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 2280 litre/min and one electric pump of capacity 180 litre/min."
+                        }
+                    ]
                 },
-                {
-                    "maxHeightM": 24,
-                    "label": "15m to 24m",
-                    "fireExtinguisher": true,
-                    "firstAidHoseReel": true,
-                    "wetRiser": true,
-                    "downComer": false,
-                    "yardHydrant": true,
-                    "automaticSprinkler": true,
-                    "manualFireAlarm": true,
-                    "autoDetectionAlarm": true,
-                    "undergroundTankLitres": 100000,
-                    "terraceTankLitres": 10000,
-                    "undergroundPumpLpm": 2280,
-                    "terracePumpLpm": null
-                },
-                {
-                    "maxHeightM": 30,
-                    "label": "24m to 30m",
-                    "fireExtinguisher": true,
-                    "firstAidHoseReel": true,
-                    "wetRiser": true,
-                    "downComer": false,
-                    "yardHydrant": true,
-                    "automaticSprinkler": true,
-                    "manualFireAlarm": true,
-                    "autoDetectionAlarm": true,
-                    "undergroundTankLitres": 150000,
-                    "terraceTankLitres": 20000,
-                    "undergroundPumpLpm": 2280,
-                    "terracePumpLpm": null
-                }
-            ],
-            "E": [
                 {
                     "maxHeightM": 15,
-                    "label": "≤15m",
-                    "fireExtinguisher": true,
-                    "firstAidHoseReel": true,
-                    "wetRiser": false,
-                    "downComer": true,
-                    "yardHydrant": false,
-                    "automaticSprinkler": false,
-                    "manualFireAlarm": true,
-                    "autoDetectionAlarm": false,
-                    "undergroundTankLitres": null,
-                    "terraceTankLitres": 20000,
-                    "undergroundPumpLpm": null,
-                    "terracePumpLpm": 900
-                },
-                {
-                    "maxHeightM": 24,
-                    "label": "15m to 24m",
+                    "minAreaM2": 251,
+                    "minFloors": 3,
+                    "label": "≤15m, area >250m², >G+1",
                     "fireExtinguisher": true,
                     "firstAidHoseReel": true,
                     "wetRiser": true,
@@ -986,226 +3057,120 @@
                     "autoDetectionAlarm": true,
                     "undergroundTankLitres": 100000,
                     "terraceTankLitres": 10000,
-                    "undergroundPumpLpm": 2280,
-                    "terracePumpLpm": null
-                },
-                {
-                    "maxHeightM": 35,
-                    "label": "24m to 35m",
-                    "fireExtinguisher": true,
-                    "firstAidHoseReel": true,
-                    "wetRiser": true,
-                    "downComer": false,
-                    "yardHydrant": true,
-                    "automaticSprinkler": true,
-                    "manualFireAlarm": true,
-                    "autoDetectionAlarm": true,
-                    "undergroundTankLitres": 150000,
-                    "terraceTankLitres": 20000,
-                    "undergroundPumpLpm": 2280,
-                    "terracePumpLpm": null
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 450,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 10,
+                            "field": "undergroundPumpLpm",
+                            "condition": "always",
+                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 2280 litre/min and one electric pump of capacity 180 litre/min."
+                        }
+                    ]
                 },
                 {
                     "maxHeightM": 45,
-                    "label": "35m to 45m",
+                    "label": "MLCP",
                     "fireExtinguisher": true,
                     "firstAidHoseReel": true,
                     "wetRiser": true,
                     "downComer": false,
                     "yardHydrant": true,
                     "automaticSprinkler": true,
-                    "manualFireAlarm": true,
-                    "autoDetectionAlarm": true,
-                    "undergroundTankLitres": 200000,
-                    "terraceTankLitres": 20000,
-                    "undergroundPumpLpm": 2280,
-                    "terracePumpLpm": null
-                },
-                {
-                    "maxHeightM": 60,
-                    "label": "45m to 60m",
-                    "fireExtinguisher": true,
-                    "firstAidHoseReel": true,
-                    "wetRiser": true,
-                    "downComer": false,
-                    "yardHydrant": true,
-                    "automaticSprinkler": true,
-                    "manualFireAlarm": true,
-                    "autoDetectionAlarm": true,
-                    "undergroundTankLitres": 200000,
-                    "terraceTankLitres": 20000,
-                    "undergroundPumpLpm": 2850,
-                    "terracePumpLpm": null
-                },
-                {
-                    "maxHeightM": 9999,
-                    "label": ">60m",
-                    "fireExtinguisher": true,
-                    "firstAidHoseReel": true,
-                    "wetRiser": true,
-                    "downComer": false,
-                    "yardHydrant": true,
-                    "automaticSprinkler": true,
-                    "manualFireAlarm": true,
-                    "autoDetectionAlarm": true,
-                    "undergroundTankLitres": 200000,
-                    "terraceTankLitres": 20000,
-                    "undergroundPumpLpm": 2850,
-                    "terracePumpLpm": null
-                }
-            ],
-            "F": [
-                {
-                    "maxHeightM": 15,
-                    "label": "≤15m",
-                    "fireExtinguisher": true,
-                    "firstAidHoseReel": true,
-                    "wetRiser": false,
-                    "downComer": true,
-                    "yardHydrant": false,
-                    "automaticSprinkler": false,
                     "manualFireAlarm": true,
                     "autoDetectionAlarm": false,
-                    "undergroundTankLitres": null,
-                    "terraceTankLitres": 20000,
-                    "undergroundPumpLpm": null,
-                    "terracePumpLpm": 900
-                },
-                {
-                    "maxHeightM": 24,
-                    "label": "15m to 24m",
-                    "fireExtinguisher": true,
-                    "firstAidHoseReel": true,
-                    "wetRiser": true,
-                    "downComer": false,
-                    "yardHydrant": true,
-                    "automaticSprinkler": true,
-                    "manualFireAlarm": true,
-                    "autoDetectionAlarm": true,
-                    "undergroundTankLitres": 100000,
+                    "undergroundTankLitres": 150000,
                     "terraceTankLitres": 10000,
-                    "undergroundPumpLpm": 2280,
-                    "terracePumpLpm": null
-                },
-                {
-                    "maxHeightM": 30,
-                    "label": "24m to 30m",
-                    "fireExtinguisher": true,
-                    "firstAidHoseReel": true,
-                    "wetRiser": true,
-                    "downComer": false,
-                    "yardHydrant": true,
-                    "automaticSprinkler": true,
-                    "manualFireAlarm": true,
-                    "autoDetectionAlarm": true,
-                    "undergroundTankLitres": 150000,
-                    "terraceTankLitres": 20000,
-                    "undergroundPumpLpm": 2280,
-                    "terracePumpLpm": null
-                }
-            ],
-            "G": [
-                {
-                    "maxHeightM": 15,
-                    "label": "≤15m",
-                    "fireExtinguisher": true,
-                    "firstAidHoseReel": true,
-                    "wetRiser": false,
-                    "downComer": true,
-                    "yardHydrant": true,
-                    "automaticSprinkler": false,
-                    "manualFireAlarm": true,
-                    "autoDetectionAlarm": false,
-                    "undergroundTankLitres": null,
-                    "terraceTankLitres": 25000,
                     "undergroundPumpLpm": null,
-                    "terracePumpLpm": 1100
-                },
-                {
-                    "maxHeightM": 24,
-                    "label": "15m to 24m",
-                    "fireExtinguisher": true,
-                    "firstAidHoseReel": true,
-                    "wetRiser": true,
-                    "downComer": false,
-                    "yardHydrant": true,
-                    "automaticSprinkler": true,
-                    "manualFireAlarm": true,
-                    "autoDetectionAlarm": true,
-                    "undergroundTankLitres": 100000,
-                    "terraceTankLitres": 25000,
-                    "undergroundPumpLpm": 2280,
-                    "terracePumpLpm": null
-                },
-                {
-                    "maxHeightM": 35,
-                    "label": "24m to 35m",
-                    "fireExtinguisher": true,
-                    "firstAidHoseReel": true,
-                    "wetRiser": true,
-                    "downComer": false,
-                    "yardHydrant": true,
-                    "automaticSprinkler": true,
-                    "manualFireAlarm": true,
-                    "autoDetectionAlarm": true,
-                    "undergroundTankLitres": 150000,
-                    "terraceTankLitres": 25000,
-                    "undergroundPumpLpm": 2280,
-                    "terracePumpLpm": null
-                },
-                {
-                    "maxHeightM": 45,
-                    "label": "35m to 45m",
-                    "fireExtinguisher": true,
-                    "firstAidHoseReel": true,
-                    "wetRiser": true,
-                    "downComer": false,
-                    "yardHydrant": true,
-                    "automaticSprinkler": true,
-                    "manualFireAlarm": true,
-                    "autoDetectionAlarm": true,
-                    "undergroundTankLitres": 200000,
-                    "terraceTankLitres": 25000,
-                    "undergroundPumpLpm": 2850,
-                    "terracePumpLpm": null
-                }
-            ],
-            "H": [
-                {
-                    "maxHeightM": 15,
-                    "label": "≤15m",
-                    "fireExtinguisher": true,
-                    "firstAidHoseReel": true,
-                    "wetRiser": false,
-                    "downComer": true,
-                    "yardHydrant": true,
-                    "automaticSprinkler": true,
-                    "manualFireAlarm": true,
-                    "autoDetectionAlarm": true,
-                    "undergroundTankLitres": 200000,
-                    "terraceTankLitres": 20000,
-                    "undergroundPumpLpm": 2280,
-                    "terracePumpLpm": null
+                    "terracePumpLpm": 900,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 11,
+                            "field": "undergroundPumpLpm",
+                            "condition": "always",
+                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min."
+                        }
+                    ]
                 }
             ],
             "J": [
                 {
                     "maxHeightM": 15,
-                    "label": "≤15m",
+                    "maxFloors": 1,
+                    "label": "≤15m, single storey",
                     "fireExtinguisher": true,
                     "firstAidHoseReel": true,
-                    "wetRiser": false,
+                    "wetRiser": true,
+                    "downComer": false,
+                    "yardHydrant": true,
+                    "automaticSprinkler": true,
+                    "manualFireAlarm": true,
+                    "autoDetectionAlarm": true,
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": null,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": null,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 21,
+                            "field": "undergroundPumpLpm",
+                            "condition": "always",
+                            "description": "Pump capacity shall be based on the covered area of the building."
+                        }
+                    ]
+                },
+                {
+                    "maxHeightM": 15,
+                    "minFloors": 2,
+                    "label": "≤15m, >1 floor",
+                    "fireExtinguisher": true,
+                    "firstAidHoseReel": true,
+                    "wetRiser": true,
                     "downComer": true,
                     "yardHydrant": true,
                     "automaticSprinkler": true,
                     "manualFireAlarm": true,
                     "autoDetectionAlarm": true,
-                    "undergroundTankLitres": 200000,
-                    "terraceTankLitres": 20000,
-                    "undergroundPumpLpm": 2280,
-                    "terracePumpLpm": null
+                    "undergroundTankLitres": null,
+                    "terraceTankLitres": 50000,
+                    "undergroundPumpLpm": null,
+                    "terracePumpLpm": 900,
+                    "conditionalNotes": [
+                        {
+                            "noteId": 21,
+                            "field": "undergroundPumpLpm",
+                            "condition": "always",
+                            "description": "Pump capacity shall be based on the covered area of the building."
+                        }
+                    ]
                 }
             ]
+        },
+        "tableNotes": {
+            "1": "MOEFA System shall also include talk-back system and public address system for the occupancies given in the table for (d)(1)(iii) under A-5, (a)(1)(iv) and (a)(2) under C-1, and (a)(2) under D-1 to D-5, in all buildings 15m and above in height, except for A-3 and A-4 occupancies where these shall be provided for buildings of height 24m and above. These shall also be provided in car parking areas more than 300m² and in multi-level car parking irrespective of their areas.",
+            "2": "Automatic detection and alarm system is not required to be provided in car parking area. Such detection system shall however be required in other areas of car parking such as electrical rooms, cabins and other areas.",
+            "3": "Buildings above 15m in height not to be permitted for occupancies A-1 and A-2.",
+            "4": "Required to be installed in basement, if area of basement exceeds 200m².",
+            "5": "Required to be provided if basement area exceeds 200m².",
+            "6": "Additional value given in parenthesis shall be added if basement area exceeds 200m².",
+            "7": "Required to be provided for buildings with more than two storeys (Ground + One).",
+            "8": "Required to be provided for buildings with height above 15m.",
+            "9": "Sprinklers shall be fed water from both underground static water storage tank and terrace tank.",
+            "10": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 2280 litre/min and one electric pump of capacity 180 litre/min.",
+            "11": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min.",
+            "12": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2850 litre/min and two electric pump of capacity 180 litre/min.",
+            "13": "Lower levels in high rise buildings 60m or above in height are likely to experience high pressure and therefore, it is recommended to consider multi-stage, multi-outlet pumps (creating pressure zones) or variable frequency drive pumps or any other equivalent arrangement.",
+            "14": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 1620 litre/min and one electric pump of capacity 180 litre/min.",
+            "15": "Required to be provided for buildings with more than one storey.",
+            "16": "Buildings above 30m in height not to be permitted for Group B, Group C, Group D and Group F occupancies.",
+            "17": "The requirements given in this table for Group G Industrial Buildings are for small scale industry units. For other industries the requirements will have to be worked out on the basis of relevant Indian Standards and also in consultation with the local fire authorities.",
+            "18": "Buildings above 18m in height not to be permitted for G-1 and G-2 occupancies.",
+            "19": "Buildings above 15m in height not to be permitted for G-3 occupancies.",
+            "20": "Buildings above 15m in height not to be permitted for Group H and Group J occupancies. However, buildings above 45m in height shall not be permitted for multi-level car parking (MLCP) occupancy.",
+            "21": "Pump capacity shall be based on the covered area of the building.",
+            "22": "One set of pumps shall be provided for each 100 hydrants or part thereof, with a maximum of two sets. In case of more than one pump set installation, both pump sets shall be interconnected at their delivery headers.",
+            "23": "Alternative to provisions of additional set of pumps, the objective can be met by providing additional diesel pump of the same capacity and doubling the water tank capacity as required for one set of pumps.",
+            "24": "As per the requirement of local authority dry riser may be used in hilly areas, industrial areas or as required."
         }
     }
 }

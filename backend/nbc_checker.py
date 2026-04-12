@@ -153,12 +153,36 @@ def check_travel_distance(
 # ── 4. Firefighting Installations (Table 7) ────────────────────────
 
 
+# Condition evaluators for Table 7 notes
+def _evaluate_condition(
+    condition: str,
+    building_height_m: float,
+    num_floors: int,
+    basement_area_m2: float,
+) -> bool:
+    """Evaluate a note condition key against actual building inputs."""
+    if condition == "always":
+        return True
+    if condition == "basement_area_gt_200":
+        return basement_area_m2 > 200
+    if condition == "floors_gt_2":
+        return num_floors > 2
+    if condition == "floors_gt_1":
+        return num_floors > 1
+    if condition == "height_gte_15":
+        return building_height_m >= 15
+    if condition == "height_gte_60":
+        return building_height_m >= 60
+    return False
+
+
 def check_firefighting_installations(
     group: str,
     subdivision: Optional[str],
     building_height_m: float,
     floor_area_m2: float = 0,
     num_floors: int = 0,
+    basement_area_m2: float = 0,
 ) -> dict:
     """Return {"result": ..., "violation": ...} — one or both may be None.
 
@@ -167,6 +191,9 @@ def check_firefighting_installations(
       - maxAreaM2 / minAreaM2:   largest floor area (or covered area)
       - maxFloors / minFloors:   number of storeys
     A tier matches if ALL provided criteria are satisfied.
+
+    Conditional notes are evaluated against building inputs to determine
+    if note conditions (like basement > 200m²) are actually met.
     """
     fi_data = _NBC_DATA.get("firefightingInstallations")
     if not fi_data:
@@ -220,23 +247,82 @@ def check_firefighting_installations(
         # No tier matched — use the last (most conservative) tier
         tier = tiers[-1]
 
+    # Start with base values from the tier
+    base_values = {
+        "fireExtinguisher": tier["fireExtinguisher"],
+        "firstAidHoseReel": tier["firstAidHoseReel"],
+        "wetRiser": tier["wetRiser"],
+        "downComer": tier["downComer"],
+        "yardHydrant": tier["yardHydrant"],
+        "automaticSprinkler": tier["automaticSprinkler"],
+        "manualFireAlarm": tier["manualFireAlarm"],
+        "autoDetectionAlarm": tier["autoDetectionAlarm"],
+        "undergroundTankLitres": tier.get("undergroundTankLitres"),
+        "terraceTankLitres": tier.get("terraceTankLitres"),
+        "undergroundPumpLpm": tier.get("undergroundPumpLpm"),
+        "terracePumpLpm": tier.get("terracePumpLpm"),
+    }
+
+    # Evaluate conditional notes and apply modifications
+    from models import EvaluatedNote
+    evaluated_notes = []
+    conditional_notes = tier.get("conditionalNotes", [])
+
+    for cn in conditional_notes:
+        is_met = _evaluate_condition(
+            cn["condition"], building_height_m, num_floors, basement_area_m2
+        )
+
+        evaluated_notes.append(
+            EvaluatedNote(
+                note_id=cn["noteId"],
+                field=cn.get("field"),
+                condition=cn["condition"],
+                is_met=is_met,
+                description=cn["description"],
+                additional_value=cn.get("additionalValue"),
+            )
+        )
+
+        # Apply note effects when condition is met
+        if is_met:
+            field = cn.get("field")
+            additional_value = cn.get("additionalValue")
+
+            if field and additional_value is not None:
+                # Additive value (e.g., Note 6: +5000L to terraceTankLitres)
+                current = base_values.get(field) or 0
+                base_values[field] = int(current + additional_value)
+
+            elif field and field in base_values and isinstance(base_values[field], bool):
+                # Boolean override (e.g., Note 4: set automaticSprinkler = true)
+                base_values[field] = True
+
+    # Build legacy notes string for backward compat
+    notes_parts = []
+    for en in evaluated_notes:
+        status = "✓ MET" if en.is_met else "✗ NOT MET"
+        notes_parts.append(f"Note {en.note_id} [{status}]: {en.description}")
+    legacy_notes = " | ".join(notes_parts) if notes_parts else None
+
     result = FirefightingInstallationRequirement(
-        fire_extinguisher=tier["fireExtinguisher"],
-        first_aid_hose_reel=tier["firstAidHoseReel"],
-        wet_riser=tier["wetRiser"],
-        down_comer=tier["downComer"],
-        yard_hydrant=tier["yardHydrant"],
-        automatic_sprinkler=tier["automaticSprinkler"],
-        manual_fire_alarm=tier["manualFireAlarm"],
-        auto_detection_alarm=tier["autoDetectionAlarm"],
-        underground_tank_litres=tier.get("undergroundTankLitres"),
-        terrace_tank_litres=tier.get("terraceTankLitres"),
-        underground_pump_lpm=tier.get("undergroundPumpLpm"),
-        terrace_pump_lpm=tier.get("terracePumpLpm"),
+        fire_extinguisher=base_values["fireExtinguisher"],
+        first_aid_hose_reel=base_values["firstAidHoseReel"],
+        wet_riser=base_values["wetRiser"],
+        down_comer=base_values["downComer"],
+        yard_hydrant=base_values["yardHydrant"],
+        automatic_sprinkler=base_values["automaticSprinkler"],
+        manual_fire_alarm=base_values["manualFireAlarm"],
+        auto_detection_alarm=base_values["autoDetectionAlarm"],
+        underground_tank_litres=base_values["undergroundTankLitres"],
+        terrace_tank_litres=base_values["terraceTankLitres"],
+        underground_pump_lpm=base_values["undergroundPumpLpm"],
+        terrace_pump_lpm=base_values["terracePumpLpm"],
         height_tier_label=tier["label"],
         occupancy_label=subdivision or group,
         clause_ref="NBC 2016 Part IV, Table 7",
-        notes=tier.get("notes"),
+        notes=legacy_notes,
+        evaluated_notes=evaluated_notes,
     )
 
     return {"result": result}
@@ -346,6 +432,7 @@ def run_nbc_checks(inp: BuildingInput) -> NBCCheckResult:
             inp.building_height,
             floor_area_m2=max_floor_area,
             num_floors=inp.number_of_floors,
+            basement_area_m2=inp.basement_area,
         )
 
         if fi_check.get("violation"):

@@ -65,6 +65,7 @@ class BuildingInput(BaseModel):
     construction_type: Optional[ConstructionType] = Field(alias="constructionType", default=None)
     has_sprinklers: Optional[bool] = Field(alias="hasSprinklers", default=None)
     travel_distance_m: Optional[float] = Field(alias="travelDistanceM", default=None)
+    basement_area: float = Field(alias="basementArea", default=0)
 
 
 # ── Rule Engine Output Models ──────────────────────────────────────────
@@ -95,6 +96,18 @@ class Violation(BaseModel):
 # ── NBC Compliance Detail ──────────────────────────────────────────────
 
 
+class EvaluatedNote(BaseModel):
+    """A Table 7 note that has been evaluated against actual building inputs."""
+    model_config = {"populate_by_name": True}
+
+    note_id: int = Field(alias="noteId")
+    field: Optional[str] = Field(default=None, description="Which installation field this note applies to, e.g. 'automaticSprinkler'")
+    condition: str = Field(description="Machine-readable condition key, e.g. 'basement_area_gt_200'")
+    is_met: bool = Field(alias="isMet", description="Whether the condition is satisfied by the building inputs")
+    description: str = Field(description="Full text of the note from NBC 2016")
+    additional_value: Optional[float] = Field(alias="additionalValue", default=None, description="Extra value to add when condition is met (e.g. +5000 litres)")
+
+
 class FirefightingInstallationRequirement(BaseModel):
     model_config = {"populate_by_name": True}
 
@@ -114,6 +127,7 @@ class FirefightingInstallationRequirement(BaseModel):
     occupancy_label: str = Field(alias="occupancyLabel")
     clause_ref: str = Field(alias="clauseRef")
     notes: Optional[str] = Field(default=None)
+    evaluated_notes: list[EvaluatedNote] = Field(alias="evaluatedNotes", default_factory=list)
 
 
 class OccupantLoadData(BaseModel):

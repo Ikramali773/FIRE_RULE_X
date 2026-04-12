@@ -208,27 +208,51 @@ export default function NBCCompliancePanel({ data }: NBCCompliancePanelProps) {
                         <div className="p-4">
                             {/* Systems grid */}
                             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                                {[
-                                    { label: 'Fire Extinguisher', value: data.firefightingInstallations.fireExtinguisher },
-                                    { label: 'Hose Reel', value: data.firefightingInstallations.firstAidHoseReel },
-                                    { label: 'Wet Riser', value: data.firefightingInstallations.wetRiser },
-                                    { label: 'Down Comer', value: data.firefightingInstallations.downComer },
-                                    { label: 'Yard Hydrant', value: data.firefightingInstallations.yardHydrant },
-                                    { label: 'Sprinkler System', value: data.firefightingInstallations.automaticSprinkler },
-                                    { label: 'Manual Fire Alarm', value: data.firefightingInstallations.manualFireAlarm },
-                                    { label: 'Auto Detection', value: data.firefightingInstallations.autoDetectionAlarm },
-                                ].map((item) => (
-                                    <div
-                                        key={item.label}
-                                        className={`px-3 py-2 rounded-lg border text-center text-xs font-medium ${item.value
-                                                ? 'bg-emerald-50 border-emerald-200 text-emerald-700'
-                                                : 'bg-slate-50 border-slate-100 text-slate-400'
-                                            }`}
-                                    >
-                                        <span className="mr-1">{item.value ? '✅' : '—'}</span>
-                                        {item.label}
-                                    </div>
-                                ))}
+                                {([
+                                    { label: 'Fire Extinguisher', key: 'fireExtinguisher', value: data.firefightingInstallations.fireExtinguisher },
+                                    { label: 'Hose Reel', key: 'firstAidHoseReel', value: data.firefightingInstallations.firstAidHoseReel },
+                                    { label: 'Wet Riser', key: 'wetRiser', value: data.firefightingInstallations.wetRiser },
+                                    { label: 'Down Comer', key: 'downComer', value: data.firefightingInstallations.downComer },
+                                    { label: 'Yard Hydrant', key: 'yardHydrant', value: data.firefightingInstallations.yardHydrant },
+                                    { label: 'Sprinkler System', key: 'automaticSprinkler', value: data.firefightingInstallations.automaticSprinkler },
+                                    { label: 'Manual Fire Alarm', key: 'manualFireAlarm', value: data.firefightingInstallations.manualFireAlarm },
+                                    { label: 'Auto Detection', key: 'autoDetectionAlarm', value: data.firefightingInstallations.autoDetectionAlarm },
+                                ] as const).map((item) => {
+                                    // Find notes that apply to this field
+                                    const fieldNotes = (data.firefightingInstallations.evaluatedNotes || [])
+                                        .filter(n => n.field === item.key);
+
+                                    return (
+                                        <div
+                                            key={item.label}
+                                            className={`px-3 py-2 rounded-lg border text-center text-xs font-medium relative ${item.value
+                                                    ? 'bg-emerald-50 border-emerald-200 text-emerald-700'
+                                                    : 'bg-slate-50 border-slate-100 text-slate-400'
+                                                }`}
+                                        >
+                                            <span className="mr-1">{item.value ? '✅' : '—'}</span>
+                                            {item.label}
+                                            {/* Show note badges */}
+                                            {fieldNotes.length > 0 && (
+                                                <div className="mt-1.5 flex flex-wrap gap-1 justify-center">
+                                                    {fieldNotes.map((note, idx) => (
+                                                        <span
+                                                            key={`${note.noteId}-${idx}`}
+                                                            title={note.description}
+                                                            className={`inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-semibold cursor-help ${
+                                                                note.isMet
+                                                                    ? 'bg-emerald-100 text-emerald-700 border border-emerald-200'
+                                                                    : 'bg-amber-50 text-amber-600 border border-amber-200'
+                                                            }`}
+                                                        >
+                                                            {note.isMet ? '✓' : '✗'} Note {note.noteId}
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
+                                    );
+                                })}
                             </div>
 
                             {/* Tank & Pump specs */}
@@ -269,6 +293,58 @@ export default function NBCCompliancePanel({ data }: NBCCompliancePanelProps) {
                                                 <div className="text-[10px] text-slate-400">Terrace Pump (L/min)</div>
                                             </div>
                                         )}
+                                    </div>
+                                )}
+
+                            {/* Evaluated Notes Section */}
+                            {data.firefightingInstallations.evaluatedNotes &&
+                                data.firefightingInstallations.evaluatedNotes.length > 0 && (
+                                    <div className="mt-4 rounded-lg border border-slate-100 overflow-hidden">
+                                        <div className="px-3 py-2 bg-slate-50 border-b border-slate-100">
+                                            <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
+                                                📋 Applicable Notes (Table 7)
+                                            </span>
+                                        </div>
+                                        <div className="divide-y divide-slate-50">
+                                            {data.firefightingInstallations.evaluatedNotes.map((note, idx) => (
+                                                <div
+                                                    key={`${note.noteId}-${idx}`}
+                                                    className={`px-3 py-2 flex items-start gap-2 ${
+                                                        note.isMet ? 'bg-emerald-50/30' : 'bg-white'
+                                                    }`}
+                                                >
+                                                    <span className={`text-xs font-bold mt-0.5 shrink-0 ${
+                                                        note.isMet ? 'text-emerald-600' : 'text-amber-500'
+                                                    }`}>
+                                                        {note.isMet ? '✓' : '✗'}
+                                                    </span>
+                                                    <div className="min-w-0">
+                                                        <div className="flex items-center gap-1.5 flex-wrap">
+                                                            <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${
+                                                                note.isMet
+                                                                    ? 'bg-emerald-100 text-emerald-700'
+                                                                    : 'bg-amber-100 text-amber-700'
+                                                            }`}>
+                                                                Note {note.noteId}
+                                                            </span>
+                                                            <span className={`text-[10px] font-medium ${
+                                                                note.isMet ? 'text-emerald-600' : 'text-amber-500'
+                                                            }`}>
+                                                                {note.isMet ? 'CONDITION MET' : 'CONDITION NOT MET'}
+                                                            </span>
+                                                            {note.additionalValue && (
+                                                                <span className="text-[10px] text-slate-400">
+                                                                    {note.isMet ? `(+${note.additionalValue.toLocaleString()})` : `(+${note.additionalValue.toLocaleString()} if met)`}
+                                                                </span>
+                                                            )}
+                                                        </div>
+                                                        <p className="text-[11px] text-slate-500 mt-0.5 leading-relaxed">
+                                                            {note.description}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
                                     </div>
                                 )}
                         </div>

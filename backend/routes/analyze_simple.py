@@ -71,6 +71,7 @@ async def analyze_simple(body: SimpleManualInput):
             occupancy_subdivision=subdivision,
             construction_type="type12",  # Default to fire-resistive (safer)
             has_sprinklers=False,
+            basement_area=body.basement_area,
         )
 
         # 4. Run rule engine

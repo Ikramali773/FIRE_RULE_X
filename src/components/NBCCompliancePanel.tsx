@@ -332,6 +332,11 @@ export default function NBCCompliancePanel({ data }: NBCCompliancePanelProps) {
                                                             }`}>
                                                                 {note.isMet ? 'CONDITION MET' : 'CONDITION NOT MET'}
                                                             </span>
+                                                            {note.setValue && (
+                                                                <span className="text-[10px] text-slate-400">
+                                                                    {note.isMet ? `(= ${note.setValue.toLocaleString()} LPM)` : `(= ${note.setValue.toLocaleString()} LPM if met)`}
+                                                                </span>
+                                                            )}
                                                             {note.additionalValue && (
                                                                 <span className="text-[10px] text-slate-400">
                                                                     {note.isMet ? `(+${note.additionalValue.toLocaleString()})` : `(+${note.additionalValue.toLocaleString()} if met)`}

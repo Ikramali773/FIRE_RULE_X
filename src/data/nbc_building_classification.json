@@ -777,7 +777,8 @@
                             "noteId": 10,
                             "field": "undergroundPumpLpm",
                             "condition": "always",
-                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 2280 litre/min and one electric pump of capacity 180 litre/min."
+                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 2280 litre/min and one electric pump of capacity 180 litre/min.",
+                            "setValue": 2280
                         }
                     ]
                 },
@@ -801,7 +802,8 @@
                             "noteId": 11,
                             "field": "undergroundPumpLpm",
                             "condition": "always",
-                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min."
+                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min.",
+                            "setValue": 2280
                         }
                     ]
                 },
@@ -825,7 +827,8 @@
                             "noteId": 12,
                             "field": "undergroundPumpLpm",
                             "condition": "always",
-                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2850 litre/min and two electric pump of capacity 180 litre/min."
+                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2850 litre/min and two electric pump of capacity 180 litre/min.",
+                            "setValue": 2850
                         },
                         {
                             "noteId": 13,
@@ -937,7 +940,8 @@
                             "noteId": 10,
                             "field": "undergroundPumpLpm",
                             "condition": "always",
-                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 2280 litre/min and one electric pump of capacity 180 litre/min."
+                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 2280 litre/min and one electric pump of capacity 180 litre/min.",
+                            "setValue": 2280
                         }
                     ]
                 },
@@ -961,7 +965,8 @@
                             "noteId": 11,
                             "field": "undergroundPumpLpm",
                             "condition": "always",
-                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min."
+                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min.",
+                            "setValue": 2280
                         }
                     ]
                 },
@@ -985,7 +990,8 @@
                             "noteId": 12,
                             "field": "undergroundPumpLpm",
                             "condition": "always",
-                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2850 litre/min and two electric pump of capacity 180 litre/min."
+                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2850 litre/min and two electric pump of capacity 180 litre/min.",
+                            "setValue": 2850
                         },
                         {
                             "noteId": 13,
@@ -1084,7 +1090,8 @@
                             "noteId": 14,
                             "field": "undergroundPumpLpm",
                             "condition": "always",
-                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 1620 litre/min and one electric pump of capacity 180 litre/min."
+                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 1620 litre/min and one electric pump of capacity 180 litre/min.",
+                            "setValue": 1620
                         }
                     ]
                 },
@@ -1127,7 +1134,8 @@
                             "noteId": 14,
                             "field": "undergroundPumpLpm",
                             "condition": "always",
-                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 1620 litre/min and one electric pump of capacity 180 litre/min."
+                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 1620 litre/min and one electric pump of capacity 180 litre/min.",
+                            "setValue": 1620
                         }
                     ]
                 },
@@ -1151,7 +1159,8 @@
                             "noteId": 11,
                             "field": "undergroundPumpLpm",
                             "condition": "always",
-                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min."
+                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min.",
+                            "setValue": 2280
                         }
                     ]
                 },
@@ -1175,7 +1184,8 @@
                             "noteId": 11,
                             "field": "undergroundPumpLpm",
                             "condition": "always",
-                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min."
+                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min.",
+                            "setValue": 2280
                         }
                     ]
                 }
@@ -1201,7 +1211,8 @@
                             "noteId": 12,
                             "field": "undergroundPumpLpm",
                             "condition": "always",
-                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2850 litre/min and two electric pump of capacity 180 litre/min."
+                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2850 litre/min and two electric pump of capacity 180 litre/min.",
+                            "setValue": 2850
                         }
                     ]
                 }
@@ -1293,6 +1304,13 @@
                         },
                         {
                             "noteId": 6,
+                            "field": "undergroundTankLitres",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 25000,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
                             "field": "terraceTankLitres",
                             "condition": "basement_area_gt_200",
                             "additionalValue": 5000,
@@ -1302,7 +1320,8 @@
                             "noteId": 14,
                             "field": "undergroundPumpLpm",
                             "condition": "always",
-                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 1620 litre/min and one electric pump of capacity 180 litre/min."
+                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 1620 litre/min and one electric pump of capacity 180 litre/min.",
+                            "setValue": 1620
                         }
                     ]
                 }
@@ -1448,7 +1467,8 @@
                             "noteId": 14,
                             "field": "undergroundPumpLpm",
                             "condition": "always",
-                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 1620 litre/min and one electric pump of capacity 180 litre/min."
+                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 1620 litre/min and one electric pump of capacity 180 litre/min.",
+                            "setValue": 1620
                         }
                     ]
                 },
@@ -1478,7 +1498,8 @@
                             "noteId": 14,
                             "field": "undergroundPumpLpm",
                             "condition": "always",
-                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 1620 litre/min and one electric pump of capacity 180 litre/min."
+                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 1620 litre/min and one electric pump of capacity 180 litre/min.",
+                            "setValue": 1620
                         }
                     ]
                 },
@@ -1502,7 +1523,8 @@
                             "noteId": 10,
                             "field": "undergroundPumpLpm",
                             "condition": "always",
-                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 2280 litre/min and one electric pump of capacity 180 litre/min."
+                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 2280 litre/min and one electric pump of capacity 180 litre/min.",
+                            "setValue": 2280
                         }
                     ]
                 },
@@ -1526,7 +1548,8 @@
                             "noteId": 11,
                             "field": "undergroundPumpLpm",
                             "condition": "always",
-                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min."
+                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min.",
+                            "setValue": 2280
                         }
                     ]
                 }
@@ -1632,6 +1655,13 @@
                         },
                         {
                             "noteId": 6,
+                            "field": "undergroundTankLitres",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 25000,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
                             "field": "terraceTankLitres",
                             "condition": "basement_area_gt_200",
                             "additionalValue": 5000,
@@ -1641,7 +1671,8 @@
                             "noteId": 10,
                             "field": "undergroundPumpLpm",
                             "condition": "always",
-                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 2280 litre/min and one electric pump of capacity 180 litre/min."
+                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 2280 litre/min and one electric pump of capacity 180 litre/min.",
+                            "setValue": 2280
                         }
                     ]
                 },
@@ -1665,7 +1696,8 @@
                             "noteId": 11,
                             "field": "undergroundPumpLpm",
                             "condition": "always",
-                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min."
+                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min.",
+                            "setValue": 2280
                         }
                     ]
                 },
@@ -1689,7 +1721,8 @@
                             "noteId": 11,
                             "field": "undergroundPumpLpm",
                             "condition": "always",
-                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min."
+                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min.",
+                            "setValue": 2280
                         }
                     ]
                 }
@@ -1795,6 +1828,13 @@
                         },
                         {
                             "noteId": 6,
+                            "field": "undergroundTankLitres",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 25000,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
                             "field": "terraceTankLitres",
                             "condition": "basement_area_gt_200",
                             "additionalValue": 5000,
@@ -1804,7 +1844,8 @@
                             "noteId": 10,
                             "field": "undergroundPumpLpm",
                             "condition": "always",
-                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 2280 litre/min and one electric pump of capacity 180 litre/min."
+                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 2280 litre/min and one electric pump of capacity 180 litre/min.",
+                            "setValue": 2280
                         }
                     ]
                 },
@@ -1828,7 +1869,8 @@
                             "noteId": 11,
                             "field": "undergroundPumpLpm",
                             "condition": "always",
-                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min."
+                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min.",
+                            "setValue": 2280
                         }
                     ]
                 },
@@ -1852,7 +1894,8 @@
                             "noteId": 11,
                             "field": "undergroundPumpLpm",
                             "condition": "always",
-                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min."
+                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min.",
+                            "setValue": 2280
                         }
                     ]
                 }
@@ -1957,6 +2000,13 @@
                             "description": "MOEFA System shall also include talk-back system and public address system."
                         },
                         {
+                            "noteId": 6,
+                            "field": "undergroundTankLitres",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 25000,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        },
+                        {
                             "noteId": 4,
                             "field": "automaticSprinkler",
                             "condition": "basement_area_gt_200",
@@ -1980,7 +2030,8 @@
                             "noteId": 10,
                             "field": "undergroundPumpLpm",
                             "condition": "always",
-                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 2280 litre/min and one electric pump of capacity 180 litre/min."
+                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 2280 litre/min and one electric pump of capacity 180 litre/min.",
+                            "setValue": 2280
                         }
                     ]
                 },
@@ -2004,7 +2055,8 @@
                             "noteId": 10,
                             "field": "undergroundPumpLpm",
                             "condition": "always",
-                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 2280 litre/min and one electric pump of capacity 180 litre/min."
+                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 2280 litre/min and one electric pump of capacity 180 litre/min.",
+                            "setValue": 2280
                         }
                     ]
                 },
@@ -2028,7 +2080,8 @@
                             "noteId": 11,
                             "field": "undergroundPumpLpm",
                             "condition": "always",
-                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min."
+                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min.",
+                            "setValue": 2280
                         }
                     ]
                 }
@@ -2054,7 +2107,8 @@
                             "noteId": 12,
                             "field": "undergroundPumpLpm",
                             "condition": "always",
-                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2850 litre/min and two electric pump of capacity 180 litre/min."
+                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2850 litre/min and two electric pump of capacity 180 litre/min.",
+                            "setValue": 2850
                         }
                     ]
                 }
@@ -2122,6 +2176,13 @@
                         },
                         {
                             "noteId": 6,
+                            "field": "undergroundTankLitres",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 25000,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
                             "field": "terraceTankLitres",
                             "condition": "basement_area_gt_200",
                             "additionalValue": 5000,
@@ -2138,7 +2199,8 @@
                             "noteId": 14,
                             "field": "undergroundPumpLpm",
                             "condition": "always",
-                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 1620 litre/min and one electric pump of capacity 180 litre/min."
+                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 1620 litre/min and one electric pump of capacity 180 litre/min.",
+                            "setValue": 1620
                         }
                     ]
                 },
@@ -2162,7 +2224,8 @@
                             "noteId": 10,
                             "field": "undergroundPumpLpm",
                             "condition": "always",
-                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 2280 litre/min and one electric pump of capacity 180 litre/min."
+                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 2280 litre/min and one electric pump of capacity 180 litre/min.",
+                            "setValue": 2280
                         }
                     ]
                 },
@@ -2186,7 +2249,8 @@
                             "noteId": 11,
                             "field": "undergroundPumpLpm",
                             "condition": "always",
-                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min."
+                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min.",
+                            "setValue": 2280
                         }
                     ]
                 },
@@ -2210,7 +2274,8 @@
                             "noteId": 12,
                             "field": "undergroundPumpLpm",
                             "condition": "always",
-                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2850 litre/min and two electric pump of capacity 180 litre/min."
+                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2850 litre/min and two electric pump of capacity 180 litre/min.",
+                            "setValue": 2850
                         }
                     ]
                 }
@@ -2355,7 +2420,8 @@
                             "noteId": 10,
                             "field": "undergroundPumpLpm",
                             "condition": "always",
-                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 2280 litre/min and one electric pump of capacity 180 litre/min."
+                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 2280 litre/min and one electric pump of capacity 180 litre/min.",
+                            "setValue": 2280
                         }
                     ]
                 },
@@ -2379,7 +2445,8 @@
                             "noteId": 11,
                             "field": "undergroundPumpLpm",
                             "condition": "always",
-                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min."
+                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min.",
+                            "setValue": 2280
                         }
                     ]
                 }
@@ -2524,7 +2591,8 @@
                             "noteId": 10,
                             "field": "undergroundPumpLpm",
                             "condition": "always",
-                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 2280 litre/min and one electric pump of capacity 180 litre/min."
+                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 2280 litre/min and one electric pump of capacity 180 litre/min.",
+                            "setValue": 2280
                         }
                     ]
                 },
@@ -2548,7 +2616,8 @@
                             "noteId": 11,
                             "field": "undergroundPumpLpm",
                             "condition": "always",
-                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min."
+                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min.",
+                            "setValue": 2280
                         }
                     ]
                 }
@@ -2574,7 +2643,8 @@
                             "noteId": 11,
                             "field": "undergroundPumpLpm",
                             "condition": "always",
-                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min."
+                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min.",
+                            "setValue": 2280
                         }
                     ]
                 }
@@ -2730,6 +2800,13 @@
                         },
                         {
                             "noteId": 6,
+                            "field": "undergroundTankLitres",
+                            "condition": "basement_area_gt_200",
+                            "additionalValue": 25000,
+                            "description": "Additional value given in parenthesis shall be added if basement area exceeds 200 m²."
+                        },
+                        {
+                            "noteId": 6,
                             "field": "terraceTankLitres",
                             "condition": "basement_area_gt_200",
                             "additionalValue": 5000,
@@ -2739,7 +2816,8 @@
                             "noteId": 14,
                             "field": "undergroundPumpLpm",
                             "condition": "always",
-                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 1620 litre/min and one electric pump of capacity 180 litre/min."
+                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 1620 litre/min and one electric pump of capacity 180 litre/min.",
+                            "setValue": 1620
                         }
                     ]
                 }
@@ -2824,7 +2902,8 @@
                             "noteId": 14,
                             "field": "undergroundPumpLpm",
                             "condition": "always",
-                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 1620 litre/min and one electric pump of capacity 180 litre/min."
+                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 1620 litre/min and one electric pump of capacity 180 litre/min.",
+                            "setValue": 1620
                         }
                     ]
                 },
@@ -2849,7 +2928,8 @@
                             "noteId": 11,
                             "field": "undergroundPumpLpm",
                             "condition": "always",
-                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min."
+                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min.",
+                            "setValue": 2280
                         }
                     ]
                 }
@@ -2914,7 +2994,8 @@
                             "noteId": 14,
                             "field": "undergroundPumpLpm",
                             "condition": "always",
-                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 1620 litre/min and one electric pump of capacity 180 litre/min."
+                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 1620 litre/min and one electric pump of capacity 180 litre/min.",
+                            "setValue": 1620
                         }
                     ]
                 },
@@ -2940,7 +3021,8 @@
                             "noteId": 10,
                             "field": "undergroundPumpLpm",
                             "condition": "always",
-                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 2280 litre/min and one electric pump of capacity 180 litre/min."
+                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 2280 litre/min and one electric pump of capacity 180 litre/min.",
+                            "setValue": 2280
                         }
                     ]
                 },
@@ -2965,7 +3047,8 @@
                             "noteId": 11,
                             "field": "undergroundPumpLpm",
                             "condition": "always",
-                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min."
+                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min.",
+                            "setValue": 2280
                         }
                     ]
                 }
@@ -3011,7 +3094,8 @@
                             "noteId": 14,
                             "field": "undergroundPumpLpm",
                             "condition": "always",
-                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 1620 litre/min and one electric pump of capacity 180 litre/min."
+                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 1620 litre/min and one electric pump of capacity 180 litre/min.",
+                            "setValue": 1620
                         }
                     ]
                 },
@@ -3038,7 +3122,8 @@
                             "noteId": 10,
                             "field": "undergroundPumpLpm",
                             "condition": "always",
-                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 2280 litre/min and one electric pump of capacity 180 litre/min."
+                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 2280 litre/min and one electric pump of capacity 180 litre/min.",
+                            "setValue": 2280
                         }
                     ]
                 },
@@ -3064,7 +3149,8 @@
                             "noteId": 10,
                             "field": "undergroundPumpLpm",
                             "condition": "always",
-                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 2280 litre/min and one electric pump of capacity 180 litre/min."
+                            "description": "Provide required number of sets of pumps each consisting of one electric and one diesel pump (stand by) of capacity 2280 litre/min and one electric pump of capacity 180 litre/min.",
+                            "setValue": 2280
                         }
                     ]
                 },
@@ -3088,7 +3174,8 @@
                             "noteId": 11,
                             "field": "undergroundPumpLpm",
                             "condition": "always",
-                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min."
+                            "description": "Provide required number of sets of pumps each consisting of two electric and one diesel pump (stand by) of capacity 2280 litre/min and two electric pump of capacity 180 litre/min.",
+                            "setValue": 2280
                         }
                     ]
                 }

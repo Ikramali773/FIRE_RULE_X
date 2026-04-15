@@ -112,7 +112,7 @@ class TestFirefightingInstallations:
         assert fi.wet_riser is True
         assert fi.yard_hydrant is True
         assert fi.automatic_sprinkler is True
-        assert fi.underground_tank_litres == 250000
+        assert fi.underground_tank_litres is None
 
     def test_notes_field_present(self):
         """Tier results should include notes where applicable"""

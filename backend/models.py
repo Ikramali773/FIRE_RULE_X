@@ -106,6 +106,7 @@ class EvaluatedNote(BaseModel):
     is_met: bool = Field(alias="isMet", description="Whether the condition is satisfied by the building inputs")
     description: str = Field(description="Full text of the note from NBC 2016")
     additional_value: Optional[float] = Field(alias="additionalValue", default=None, description="Extra value to add when condition is met (e.g. +5000 litres)")
+    set_value: Optional[float] = Field(alias="setValue", default=None, description="Direct value to assign when condition is met (e.g. pump capacity in LPM)")
 
 
 class FirefightingInstallationRequirement(BaseModel):

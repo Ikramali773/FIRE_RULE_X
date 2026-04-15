@@ -72,6 +72,7 @@ export interface EvaluatedNote {
     isMet: boolean;
     description: string;
     additionalValue?: number;
+    setValue?: number;
 }
 
 export interface FirefightingInstallationRequirement {

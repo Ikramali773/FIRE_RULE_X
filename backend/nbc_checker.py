@@ -281,6 +281,7 @@ def check_firefighting_installations(
                 is_met=is_met,
                 description=cn["description"],
                 additional_value=cn.get("additionalValue"),
+                set_value=cn.get("setValue"),
             )
         )
 
@@ -288,8 +289,13 @@ def check_firefighting_installations(
         if is_met:
             field = cn.get("field")
             additional_value = cn.get("additionalValue")
+            set_value = cn.get("setValue")
 
-            if field and additional_value is not None:
+            if field and set_value is not None:
+                # Direct value assignment (e.g., Notes 10/11/12/14: set pump capacity)
+                base_values[field] = int(set_value)
+
+            elif field and additional_value is not None:
                 # Additive value (e.g., Note 6: +5000L to terraceTankLitres)
                 current = base_values.get(field) or 0
                 base_values[field] = int(current + additional_value)

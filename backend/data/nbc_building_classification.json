@@ -410,54 +410,56 @@
         }
     },
     "capacityFactors": {
-        "_clause": "Table 4 — Capacity Factors",
-        "_description": "Number of occupants permitted per unit width of exit component. Unit width is typically 500mm.",
+        "_clause": "Table 4 — Capacity Factors (NBC 2016 Part IV, cl 4.4.2.3)",
+        "_description": "Width in mm required per person for each exit component. Exit width = occupant_count × factor_mm_per_person. Per NBC 2016: stairways and level components (doors, corridors, ramps) have separate factors.",
+        "_notes": [
+            "Stairways: width in mm per person for staircase exits",
+            "Level components: width in mm per person for doors, corridors, ramps, and passageways",
+            "Minimum stairway width shall not be less than 1000mm (one unit) per NBC",
+            "Minimum door width shall not be less than 1000mm per NBC"
+        ],
         "factors": {
             "A": {
-                "stairways": 25,
-                "corridors": 50,
-                "doors": 75
+                "stairwaysMmPerPerson": 10.0,
+                "levelMmPerPerson": 6.5
             },
             "B": {
-                "stairways": 25,
-                "corridors": 50,
-                "doors": 75
+                "stairwaysMmPerPerson": 10.0,
+                "levelMmPerPerson": 6.5
             },
             "C": {
-                "stairways": 25,
-                "corridors": 50,
-                "doors": 75
+                "stairwaysMmPerPerson": 10.0,
+                "levelMmPerPerson": 6.5
             },
             "D": {
-                "stairways": 40,
-                "corridors": 60,
-                "doors": 90
+                "stairwaysMmPerPerson": 6.0,
+                "levelMmPerPerson": 5.0
             },
             "E": {
-                "stairways": 50,
-                "corridors": 75,
-                "doors": 100
+                "stairwaysMmPerPerson": 10.0,
+                "levelMmPerPerson": 6.5
             },
             "F": {
-                "stairways": 50,
-                "corridors": 75,
-                "doors": 100
+                "stairwaysMmPerPerson": 10.0,
+                "levelMmPerPerson": 6.5
             },
             "G": {
-                "stairways": 50,
-                "corridors": 75,
-                "doors": 100
+                "stairwaysMmPerPerson": 10.0,
+                "levelMmPerPerson": 6.5
             },
             "H": {
-                "stairways": 50,
-                "corridors": 75,
-                "doors": 100
+                "stairwaysMmPerPerson": 10.0,
+                "levelMmPerPerson": 6.5
             },
             "J": {
-                "stairways": 25,
-                "corridors": 40,
-                "doors": 60
+                "stairwaysMmPerPerson": 10.0,
+                "levelMmPerPerson": 6.5
             }
+        },
+        "minimumWidths": {
+            "stairwayMinMm": 1000,
+            "doorMinMm": 1000,
+            "corridorMinMm": 1000
         }
     },
     "travelDistance": {

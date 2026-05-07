@@ -131,26 +131,48 @@ class FirefightingInstallationRequirement(BaseModel):
     evaluated_notes: list[EvaluatedNote] = Field(alias="evaluatedNotes", default_factory=list)
 
 
+class FloorOccupantLoad(BaseModel):
+    """Occupant load for a single floor."""
+    model_config = {"populate_by_name": True}
+
+    floor_index: int = Field(alias="floorIndex", description="0-based floor index (0 = ground)")
+    floor_label: str = Field(alias="floorLabel", description="Human-readable floor name, e.g. 'Ground Floor', 'Floor 1'")
+    floor_area: float = Field(alias="floorArea", description="Area of this floor in m²")
+    occupant_count: int = Field(alias="occupantCount", description="Calculated occupants for this floor")
+
+
 class OccupantLoadData(BaseModel):
     model_config = {"populate_by_name": True}
 
-    max_occupants: int = Field(alias="maxOccupants")
+    total_occupants: int = Field(alias="totalOccupants", description="Sum of occupants across all floors")
+    max_occupants: int = Field(alias="maxOccupants", description="Max occupants on any single floor (for rule checks)")
     load_factor: float = Field(alias="loadFactor")
-    floor_area_used: float = Field(alias="floorAreaUsed")
+    floor_area_used: float = Field(alias="floorAreaUsed", description="Total floor area used")
     group: OccupancyGroup
+    floor_wise: list[FloorOccupantLoad] = Field(alias="floorWise", default_factory=list)
+
+
+class FloorExitCapacity(BaseModel):
+    """Exit width requirements for a single floor."""
+    model_config = {"populate_by_name": True}
+
+    floor_index: int = Field(alias="floorIndex")
+    floor_label: str = Field(alias="floorLabel")
+    occupant_count: int = Field(alias="occupantCount", description="Occupants on this floor")
+    stairway_width_mm: float = Field(alias="stairwayWidthMm", description="Required stairway width in mm")
+    level_width_mm: float = Field(alias="levelWidthMm", description="Required door/corridor/ramp width in mm")
 
 
 class ExitCapacityData(BaseModel):
     model_config = {"populate_by_name": True}
 
-    stairway_units: int = Field(alias="stairwayUnits")
-    corridor_units: int = Field(alias="corridorUnits")
-    door_units: int = Field(alias="doorUnits")
-    stairway_width_mm: int = Field(alias="stairwayWidthMm")
-    corridor_width_mm: int = Field(alias="corridorWidthMm")
-    door_width_mm: int = Field(alias="doorWidthMm")
-    occupant_count: int = Field(alias="occupantCount")
+    stairway_mm_per_person: float = Field(alias="stairwayMmPerPerson", description="NBC Table 4 factor")
+    level_mm_per_person: float = Field(alias="levelMmPerPerson", description="NBC Table 4 factor")
+    max_stairway_width_mm: float = Field(alias="maxStairwayWidthMm", description="Widest stairway required (max floor)")
+    max_level_width_mm: float = Field(alias="maxLevelWidthMm", description="Widest door/corridor required (max floor)")
+    total_occupant_count: int = Field(alias="totalOccupantCount")
     group: OccupancyGroup
+    floor_wise: list[FloorExitCapacity] = Field(alias="floorWise", default_factory=list)
 
 
 class TravelDistanceData(BaseModel):
@@ -163,6 +185,30 @@ class TravelDistanceData(BaseModel):
     group: OccupancyGroup
 
 
+class FloorDetectorCount(BaseModel):
+    """Sprinkler and smoke detector count for a single floor."""
+    model_config = {"populate_by_name": True}
+
+    floor_index: int = Field(alias="floorIndex")
+    floor_label: str = Field(alias="floorLabel")
+    floor_area: float = Field(alias="floorArea", description="Floor area in m²")
+    sprinkler_count: int = Field(alias="sprinklerCount")
+    smoke_detector_count: int = Field(alias="smokeDetectorCount")
+
+
+class DetectorCountData(BaseModel):
+    """Sprinkler and smoke detector counts — total and floor-wise."""
+    model_config = {"populate_by_name": True}
+
+    total_sprinklers: int = Field(alias="totalSprinklers")
+    total_smoke_detectors: int = Field(alias="totalSmokeDetectors")
+    sprinkler_spacing_m: float = Field(alias="sprinklerSpacingM", default=2.8)
+    smoke_detector_spacing_m: float = Field(alias="smokeDetectorSpacingM", default=5.0)
+    sprinkler_coverage_m2: float = Field(alias="sprinklerCoverageM2", description="Coverage area per sprinkler")
+    smoke_detector_coverage_m2: float = Field(alias="smokeDetectorCoverageM2", description="Coverage area per detector")
+    floor_wise: list[FloorDetectorCount] = Field(alias="floorWise", default_factory=list)
+
+
 class NBCComplianceData(BaseModel):
     model_config = {"populate_by_name": True}
 
@@ -172,6 +218,7 @@ class NBCComplianceData(BaseModel):
     firefighting_installations: Optional[FirefightingInstallationRequirement] = Field(
         alias="firefightingInstallations", default=None
     )
+    detector_counts: Optional[DetectorCountData] = Field(alias="detectorCounts", default=None)
 
 
 class AnalysisResult(BaseModel):

@@ -9,7 +9,7 @@ interface SimpleInput {
     buildingType: string;
     buildingHeight: number;
     numberOfFloors: number;
-    maxFloorArea: number;
+    floorAreas: number[];
     basementArea: number;
 }
 
@@ -17,7 +17,7 @@ const defaultInput: SimpleInput = {
     buildingType: '',
     buildingHeight: 0,
     numberOfFloors: 1,
-    maxFloorArea: 0,
+    floorAreas: [0],
     basementArea: 0,
 };
 
@@ -45,8 +45,44 @@ export default function ManualPage() {
             });
     }, []);
 
-    const updateField = (field: keyof SimpleInput, value: string | number) => {
+    const updateField = (field: keyof SimpleInput, value: string | number | number[]) => {
         setForm((prev) => ({ ...prev, [field]: value }));
+    };
+
+    // When number of floors changes, resize the floorAreas array
+    const handleFloorCountChange = (count: number) => {
+        const newCount = Math.max(1, count);
+        setForm((prev) => {
+            const newAreas = [...prev.floorAreas];
+            if (newCount > newAreas.length) {
+                // Add new floors — pre-fill with last floor's value for convenience
+                const lastValue = newAreas.length > 0 ? newAreas[newAreas.length - 1] : 0;
+                while (newAreas.length < newCount) {
+                    newAreas.push(lastValue);
+                }
+            } else {
+                // Remove extra floors
+                newAreas.length = newCount;
+            }
+            return { ...prev, numberOfFloors: newCount, floorAreas: newAreas };
+        });
+    };
+
+    const updateFloorArea = (index: number, value: number) => {
+        setForm((prev) => {
+            const newAreas = [...prev.floorAreas];
+            newAreas[index] = value;
+            return { ...prev, floorAreas: newAreas };
+        });
+    };
+
+    const applyToAllFloors = () => {
+        if (form.floorAreas.length === 0) return;
+        const firstValue = form.floorAreas[0];
+        setForm((prev) => ({
+            ...prev,
+            floorAreas: prev.floorAreas.map(() => firstValue),
+        }));
     };
 
     const handleSubmit = async () => {
@@ -63,8 +99,8 @@ export default function ManualPage() {
             setError('Please enter a valid number of floors.');
             return;
         }
-        if (!form.maxFloorArea || form.maxFloorArea <= 0) {
-            setError('Please enter a valid floor area.');
+        if (form.floorAreas.some(a => !a || a <= 0)) {
+            setError('Please enter a valid area for each floor.');
             return;
         }
 
@@ -77,7 +113,7 @@ export default function ManualPage() {
                 building_type: form.buildingType,
                 building_height: form.buildingHeight,
                 number_of_floors: form.numberOfFloors,
-                max_floor_area: form.maxFloorArea,
+                floor_areas: form.floorAreas,
                 basement_area: hasBasement ? form.basementArea : 0,
             };
 
@@ -102,7 +138,8 @@ export default function ManualPage() {
         }
     };
 
-    const isValid = form.buildingType && form.buildingHeight > 0 && form.numberOfFloors > 0 && form.maxFloorArea > 0;
+    const totalArea = form.floorAreas.reduce((s, a) => s + a, 0) + (hasBasement ? form.basementArea : 0);
+    const isValid = form.buildingType && form.buildingHeight > 0 && form.numberOfFloors > 0 && form.floorAreas.every(a => a > 0);
 
     return (
         <main className="min-h-screen bg-[var(--background)]">
@@ -174,7 +211,7 @@ export default function ManualPage() {
                                 id="num-floors-input"
                                 type="number"
                                 value={form.numberOfFloors || ''}
-                                onChange={(e) => updateField('numberOfFloors', Math.max(1, Number(e.target.value)))}
+                                onChange={(e) => handleFloorCountChange(Number(e.target.value))}
                                 placeholder="e.g. 4"
                                 min={1}
                                 max={100}
@@ -182,21 +219,44 @@ export default function ManualPage() {
                             />
                         </div>
 
-                        {/* 4. Highest Floor Area */}
+                        {/* 4. Per-Floor Area Inputs */}
                         <div>
-                            <label className="block text-sm font-semibold text-slate-700 mb-1.5">
-                                Highest Floor Area (m²) <span className="text-red-400">*</span>
-                            </label>
-                            <p className="text-xs text-slate-400 mb-1.5">Area of the floor which has the largest area</p>
-                            <input
-                                id="max-floor-area-input"
-                                type="number"
-                                value={form.maxFloorArea || ''}
-                                onChange={(e) => updateField('maxFloorArea', Number(e.target.value))}
-                                placeholder="e.g. 500"
-                                min={0}
-                                className="w-full px-3 py-2.5 rounded-lg border border-slate-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none transition text-sm"
-                            />
+                            <div className="flex items-center justify-between mb-2">
+                                <label className="text-sm font-semibold text-slate-700">
+                                    Floor Areas (m²) <span className="text-red-400">*</span>
+                                </label>
+                                {form.numberOfFloors > 1 && form.floorAreas[0] > 0 && (
+                                    <button
+                                        type="button"
+                                        onClick={applyToAllFloors}
+                                        className="text-xs text-orange-500 hover:text-orange-600 font-medium transition-colors"
+                                    >
+                                        Apply Ground Floor area to all ↓
+                                    </button>
+                                )}
+                            </div>
+                            <p className="text-xs text-slate-400 mb-2">
+                                Enter the area of each floor separately
+                            </p>
+                            <div className="space-y-2 max-h-64 overflow-y-auto pr-1">
+                                {form.floorAreas.map((area, idx) => (
+                                    <div key={idx} className="flex items-center gap-2">
+                                        <span className="text-xs text-slate-400 w-24 shrink-0 font-medium">
+                                            {idx === 0 ? 'Ground Floor' : `Floor ${idx}`}
+                                        </span>
+                                        <input
+                                            id={`floor-area-input-${idx}`}
+                                            type="number"
+                                            value={area || ''}
+                                            onChange={(e) => updateFloorArea(idx, Number(e.target.value))}
+                                            placeholder="e.g. 500"
+                                            min={0}
+                                            className="flex-1 px-3 py-2 rounded-lg border border-slate-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none transition text-sm"
+                                        />
+                                        <span className="text-xs text-slate-400">m²</span>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
 
                         {/* 5. Basement */}
@@ -242,8 +302,9 @@ export default function ManualPage() {
                                     <span className="text-slate-400">Type:</span> {form.buildingType}
                                 </div>
                                 <div>
-                                    <span className="text-slate-400">Derived Total Area:</span>{' '}
-                                    {(form.maxFloorArea * form.numberOfFloors + (hasBasement ? form.basementArea : 0)).toLocaleString()} m²
+                                    <span className="text-slate-400">Total Area:</span>{' '}
+                                    {totalArea.toLocaleString()} m²
+                                    <span className="text-xs text-slate-400 ml-1">(sum of all floors{hasBasement && form.basementArea > 0 ? ' + basement' : ''})</span>
                                 </div>
                                 <div>
                                     <span className="text-slate-400">Height:</span> {form.buildingHeight}m
@@ -255,6 +316,9 @@ export default function ManualPage() {
                                             <span className="text-slate-400">Basement:</span> {form.basementArea} m²
                                         </>
                                     )}
+                                </div>
+                                <div className="mt-1 text-xs text-slate-400">
+                                    Floor areas: {form.floorAreas.map((a, i) => `${i === 0 ? 'G' : i}: ${a}m²`).join(' · ')}
                                 </div>
                             </div>
                         )}

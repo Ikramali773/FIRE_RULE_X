@@ -2,8 +2,8 @@
 # POST /api/analyze-simple — Simplified manual input endpoint
 # GET  /api/building-types  — List available building types
 #
-# Accepts 5 fields: building_type, building_height, number_of_floors,
-#                    max_floor_area, basement_area
+# Accepts: building_type, building_height, number_of_floors,
+#          floor_areas (per-floor), basement_area
 # Auto-derives occupancy group, subdivision, and all BuildingInput fields.
 
 from datetime import datetime, timezone
@@ -20,11 +20,14 @@ router = APIRouter()
 
 
 class SimpleManualInput(BaseModel):
-    """Simplified 5-field manual input for fire safety analysis."""
+    """Simplified manual input for fire safety analysis.
+
+    Now accepts per-floor areas instead of a single max floor area.
+    """
     building_type: str = Field(description="Human-readable building type from dropdown")
     building_height: float = Field(gt=0, description="Building height in metres")
     number_of_floors: int = Field(ge=1, description="Number of floors/storeys")
-    max_floor_area: float = Field(gt=0, description="Area of the largest floor in m²")
+    floor_areas: list[float] = Field(description="Area of each floor in m² (index 0 = ground)")
     basement_area: float = Field(ge=0, default=0, description="Basement area in m² (0 = no basement)")
 
 
@@ -36,7 +39,7 @@ async def list_building_types():
 
 @router.post("/api/analyze-simple")
 async def analyze_simple(body: SimpleManualInput):
-    """Simplified analysis — accepts 5 fields, derives everything else."""
+    """Simplified analysis — accepts per-floor areas, derives everything else."""
     try:
         # 1. Resolve building type → occupancy group + subdivision
         mapping = get_mapping(body.building_type)
@@ -49,16 +52,32 @@ async def analyze_simple(body: SimpleManualInput):
         group = mapping["group"]
         subdivision = mapping.get("subdivision")
 
-        # 2. Derive floor areas and total area
-        floor_areas = [body.max_floor_area] * body.number_of_floors
-        total_floor_area = body.max_floor_area * body.number_of_floors + body.basement_area
+        # 2. Validate floor areas
+        if not body.floor_areas or len(body.floor_areas) == 0:
+            return JSONResponse(
+                content={"error": "At least one floor area must be provided."},
+                status_code=400,
+            )
 
-        # 3. Build full BuildingInput with sensible defaults
+        if any(a <= 0 for a in body.floor_areas):
+            return JSONResponse(
+                content={"error": "All floor areas must be greater than 0."},
+                status_code=400,
+            )
+
+        # 3. Derive total area from individual floors
+        floor_areas = body.floor_areas
+        total_floor_area = sum(floor_areas) + body.basement_area
+
+        # Ensure number_of_floors matches floor_areas length
+        num_floors = len(floor_areas)
+
+        # 4. Build full BuildingInput with sensible defaults
         building_input = BuildingInput(
             building_name=f"{body.building_type} Analysis",
             building_type=body.building_type,
             total_floor_area=total_floor_area,
-            number_of_floors=body.number_of_floors,
+            number_of_floors=num_floors,
             floor_areas=floor_areas,
             building_height=body.building_height,
             occupant_count=0,  # Will be calculated by NBC occupant load
@@ -74,11 +93,11 @@ async def analyze_simple(body: SimpleManualInput):
             basement_area=body.basement_area,
         )
 
-        # 4. Run rule engine
+        # 5. Run rule engine
         analysis = run_rule_engine(building_input)
         analysis.analysis_method = "manual_override"
 
-        # 5. Build response
+        # 6. Build response
         response = AnalyzeResponse(
             extraction=building_input,
             analysis=analysis,

@@ -95,22 +95,59 @@ export interface FirefightingInstallationRequirement {
     evaluatedNotes?: EvaluatedNote[];
 }
 
+// --- Floor-wise Occupant Load ---
+export interface FloorOccupantLoad {
+    floorIndex: number;
+    floorLabel: string;
+    floorArea: number;
+    occupantCount: number;
+}
+
+// --- Floor-wise Exit Capacity ---
+export interface FloorExitCapacity {
+    floorIndex: number;
+    floorLabel: string;
+    occupantCount: number;
+    stairwayWidthMm: number;
+    levelWidthMm: number;
+}
+
+// --- Floor-wise Detector Counts ---
+export interface FloorDetectorCount {
+    floorIndex: number;
+    floorLabel: string;
+    floorArea: number;
+    sprinklerCount: number;
+    smokeDetectorCount: number;
+}
+
+export interface DetectorCountData {
+    totalSprinklers: number;
+    totalSmokeDetectors: number;
+    sprinklerSpacingM: number;
+    smokeDetectorSpacingM: number;
+    sprinklerCoverageM2: number;
+    smokeDetectorCoverageM2: number;
+    floorWise: FloorDetectorCount[];
+}
+
 export interface NBCComplianceData {
     occupantLoad?: {
+        totalOccupants: number;
         maxOccupants: number;
         loadFactor: number;
         floorAreaUsed: number;
         group: OccupancyGroup;
+        floorWise: FloorOccupantLoad[];
     };
     exitCapacity?: {
-        stairwayUnits: number;
-        corridorUnits: number;
-        doorUnits: number;
-        stairwayWidthMm: number;
-        corridorWidthMm: number;
-        doorWidthMm: number;
-        occupantCount: number;
+        stairwayMmPerPerson: number;
+        levelMmPerPerson: number;
+        maxStairwayWidthMm: number;
+        maxLevelWidthMm: number;
+        totalOccupantCount: number;
         group: OccupancyGroup;
+        floorWise: FloorExitCapacity[];
     };
     travelDistance?: {
         maxDistanceM: number;
@@ -120,6 +157,7 @@ export interface NBCComplianceData {
         group: OccupancyGroup;
     };
     firefightingInstallations?: FirefightingInstallationRequirement;
+    detectorCounts?: DetectorCountData;
 }
 
 export interface AnalysisResult {

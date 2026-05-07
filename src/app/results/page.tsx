@@ -134,8 +134,12 @@ function ResultsContent() {
                                 </div>
                                 <div className="p-3 bg-slate-50 rounded-lg border border-slate-100">
                                     <div className="text-xs text-slate-500 uppercase tracking-wider mb-1">Occupant Load</div>
-                                    <div className="font-semibold text-slate-800">{extraction.occupantCount ? extraction.occupantCount.toLocaleString() : 'N/A'}</div>
-                                    <div className="text-[10px] text-slate-400 mt-1">persons</div>
+                                    <div className="font-semibold text-slate-800">
+                                        {analysis.nbcCompliance?.occupantLoad?.totalOccupants
+                                            ? analysis.nbcCompliance.occupantLoad.totalOccupants.toLocaleString()
+                                            : extraction.occupantCount ? extraction.occupantCount.toLocaleString() : 'N/A'}
+                                    </div>
+                                    <div className="text-[10px] text-slate-400 mt-1">persons (total)</div>
                                 </div>
                                 <div className="p-3 bg-slate-50 rounded-lg border border-slate-100">
                                     <div className="text-xs text-slate-500 uppercase tracking-wider mb-1">Height</div>

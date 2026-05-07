@@ -87,6 +87,7 @@ def run_rule_engine(inp: BuildingInput) -> AnalysisResult:
             exit_capacity=nbc_result.exit_capacity,
             travel_distance=nbc_result.travel_distance,
             firefighting_installations=nbc_result.firefighting_installations,
+            detector_counts=nbc_result.detector_counts,
         )
 
     # Step 8: Compliance score

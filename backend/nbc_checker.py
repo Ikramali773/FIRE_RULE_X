@@ -2,10 +2,11 @@
 # NBC 2016 Part IV — Building Classification & Safety Rule Checker
 #
 # Evaluates NBC compliance for:
-#   1. Occupant Load (Table 3)
-#   2. Exit Capacity (Table 4)
+#   1. Occupant Load (Table 3) — floor-wise + total
+#   2. Exit Capacity (Table 4) — floor-wise min widths (mm/person)
 #   3. Travel Distance (Table 5)
 #   4. Firefighting Installations (Table 7)
+#   5. Sprinkler & Smoke Detector Counts — floor-wise
 
 from __future__ import annotations
 
@@ -20,8 +21,12 @@ from models import (
     ConstructionType,
     FirefightingInstallationRequirement,
     OccupantLoadData,
+    FloorOccupantLoad,
     ExitCapacityData,
+    FloorExitCapacity,
     TravelDistanceData,
+    DetectorCountData,
+    FloorDetectorCount,
     Violation,
 )
 
@@ -30,7 +35,15 @@ _DATA_PATH = Path(__file__).parent / "data" / "nbc_building_classification.json"
 with open(_DATA_PATH, "r", encoding="utf-8") as f:
     _NBC_DATA = json.load(f)
 
-UNIT_WIDTH_MM = 500  # One unit exit width = 500mm per NBC
+
+# ── Helper: floor label ────────────────────────────────────────────
+
+
+def _floor_label(index: int) -> str:
+    """Return a human-readable floor name for a 0-based index."""
+    if index == 0:
+        return "Ground Floor"
+    return f"Floor {index}"
 
 
 # ── Helper: get occupant load factor ────────────────────────────────
@@ -58,50 +71,121 @@ def _get_occupant_load_factor(group: str, sub_type: Optional[str] = None) -> Opt
     return None
 
 
-# ── 1. Occupant Load (Table 3) ─────────────────────────────────────
+# ── 1. Occupant Load (Table 3) — floor-wise ────────────────────────
 
 
 def calculate_occupant_load(
-    group: str, floor_area_m2: float, sub_type: Optional[str] = None
+    group: str, floor_areas: list[float], sub_type: Optional[str] = None
 ) -> Optional[OccupantLoadData]:
+    """Calculate occupant load per floor and total.
+
+    Args:
+        group: NBC occupancy group (A-J)
+        floor_areas: list of floor areas in m², index 0 = ground
+        sub_type: optional occupancy sub-type for groups C, D, F
+
+    Returns:
+        OccupantLoadData with floor-wise breakdown and totals
+    """
     factor = _get_occupant_load_factor(group, sub_type)
     if factor is None:
         return None
 
-    max_occupants = math.floor(floor_area_m2 / factor)
+    floor_wise: list[FloorOccupantLoad] = []
+    total_occupants = 0
+    max_occupants = 0
+
+    for i, area in enumerate(floor_areas):
+        occ = math.floor(area / factor)
+        floor_wise.append(
+            FloorOccupantLoad(
+                floor_index=i,
+                floor_label=_floor_label(i),
+                floor_area=area,
+                occupant_count=occ,
+            )
+        )
+        total_occupants += occ
+        if occ > max_occupants:
+            max_occupants = occ
+
+    total_area = sum(floor_areas)
 
     return OccupantLoadData(
+        total_occupants=total_occupants,
         max_occupants=max_occupants,
         load_factor=factor,
-        floor_area_used=floor_area_m2,
+        floor_area_used=total_area,
         group=group,
+        floor_wise=floor_wise,
     )
 
 
-# ── 2. Exit Capacity (Table 4) ─────────────────────────────────────
+# ── 2. Exit Capacity (Table 4) — floor-wise, mm/person ────────────
 
 
 def calculate_exit_capacity(
-    group: str, occupant_count: int
+    group: str, floor_occupant_loads: list[FloorOccupantLoad]
 ) -> Optional[ExitCapacityData]:
+    """Calculate required exit widths per floor using NBC Table 4 (mm/person).
+
+    Per NBC 2016 cl 4.4.2.3:
+      stairway_width = occupants × stairway_mm_per_person
+      level_width (doors/corridors) = occupants × level_mm_per_person
+
+    Args:
+        group: NBC occupancy group
+        floor_occupant_loads: per-floor occupant data
+
+    Returns:
+        ExitCapacityData with floor-wise width requirements
+    """
     factors = _NBC_DATA["capacityFactors"]["factors"]
     group_factors = factors.get(group)
     if not group_factors:
         return None
 
-    stairway_units = math.ceil(occupant_count / group_factors["stairways"])
-    corridor_units = math.ceil(occupant_count / group_factors["corridors"])
-    door_units = math.ceil(occupant_count / group_factors["doors"])
+    stairway_mm = group_factors["stairwaysMmPerPerson"]
+    level_mm = group_factors["levelMmPerPerson"]
+
+    # Minimum widths from NBC
+    min_widths = _NBC_DATA["capacityFactors"].get("minimumWidths", {})
+    stairway_min = min_widths.get("stairwayMinMm", 1000)
+    level_min = min_widths.get("doorMinMm", 1000)
+
+    floor_wise: list[FloorExitCapacity] = []
+    max_stairway_width = 0.0
+    max_level_width = 0.0
+    total_occupants = 0
+
+    for fl in floor_occupant_loads:
+        s_width = max(fl.occupant_count * stairway_mm, stairway_min)
+        l_width = max(fl.occupant_count * level_mm, level_min)
+
+        floor_wise.append(
+            FloorExitCapacity(
+                floor_index=fl.floor_index,
+                floor_label=fl.floor_label,
+                occupant_count=fl.occupant_count,
+                stairway_width_mm=round(s_width, 1),
+                level_width_mm=round(l_width, 1),
+            )
+        )
+
+        if s_width > max_stairway_width:
+            max_stairway_width = s_width
+        if l_width > max_level_width:
+            max_level_width = l_width
+        total_occupants += fl.occupant_count
 
     return ExitCapacityData(
-        stairway_units=stairway_units,
-        corridor_units=corridor_units,
-        door_units=door_units,
-        stairway_width_mm=stairway_units * UNIT_WIDTH_MM,
-        corridor_width_mm=corridor_units * UNIT_WIDTH_MM,
-        door_width_mm=door_units * UNIT_WIDTH_MM,
-        occupant_count=occupant_count,
+        stairway_mm_per_person=stairway_mm,
+        level_mm_per_person=level_mm,
+        max_stairway_width_mm=round(max_stairway_width, 1),
+        max_level_width_mm=round(max_level_width, 1),
+        total_occupant_count=total_occupants,
         group=group,
+        floor_wise=floor_wise,
     )
 
 
@@ -334,6 +418,62 @@ def check_firefighting_installations(
     return {"result": result}
 
 
+# ── 5. Sprinkler & Smoke Detector Counts — floor-wise ──────────────
+
+
+def calculate_detector_counts(
+    floor_areas: list[float],
+    sprinkler_spacing: float = 2.8,
+    smoke_detector_spacing: float = 5.0,
+) -> DetectorCountData:
+    """Calculate sprinkler and smoke detector counts per floor.
+
+    Uses grid-based coverage: coverage_area = spacing²
+    Sprinklers: spacing = 2.8m → coverage = 7.84 m²/sprinkler
+    Smoke detectors: spacing = 5.0m → coverage = 25.0 m²/detector
+
+    Args:
+        floor_areas: list of floor areas in m²
+        sprinkler_spacing: spacing between sprinklers in metres
+        smoke_detector_spacing: spacing between smoke detectors in metres
+
+    Returns:
+        DetectorCountData with per-floor and total counts
+    """
+    sprinkler_coverage = sprinkler_spacing ** 2
+    detector_coverage = smoke_detector_spacing ** 2
+
+    floor_wise: list[FloorDetectorCount] = []
+    total_sprinklers = 0
+    total_detectors = 0
+
+    for i, area in enumerate(floor_areas):
+        s_count = math.ceil(area / sprinkler_coverage)
+        d_count = math.ceil(area / detector_coverage)
+
+        floor_wise.append(
+            FloorDetectorCount(
+                floor_index=i,
+                floor_label=_floor_label(i),
+                floor_area=area,
+                sprinkler_count=s_count,
+                smoke_detector_count=d_count,
+            )
+        )
+        total_sprinklers += s_count
+        total_detectors += d_count
+
+    return DetectorCountData(
+        total_sprinklers=total_sprinklers,
+        total_smoke_detectors=total_detectors,
+        sprinkler_spacing_m=sprinkler_spacing,
+        smoke_detector_spacing_m=smoke_detector_spacing,
+        sprinkler_coverage_m2=round(sprinkler_coverage, 2),
+        smoke_detector_coverage_m2=round(detector_coverage, 2),
+        floor_wise=floor_wise,
+    )
+
+
 # ── Orchestrator ───────────────────────────────────────────────────
 
 
@@ -343,6 +483,7 @@ class NBCCheckResult:
         self.exit_capacity: Optional[ExitCapacityData] = None
         self.travel_distance: Optional[TravelDistanceData] = None
         self.firefighting_installations: Optional[FirefightingInstallationRequirement] = None
+        self.detector_counts: Optional[DetectorCountData] = None
         self.violations: list[Violation] = []
         self.passed_rules: list[str] = []
 
@@ -353,28 +494,29 @@ def run_nbc_checks(inp: BuildingInput) -> NBCCheckResult:
     if not group:
         return result
 
-    # ── Occupant Load ──
-    load_result = calculate_occupant_load(group, inp.total_floor_area)
+    # Ensure we have floor areas; fall back to deriving from total_floor_area
+    floor_areas = inp.floor_areas if inp.floor_areas else [inp.total_floor_area]
+
+    # ── Occupant Load (floor-wise) ──
+    load_result = calculate_occupant_load(group, floor_areas)
     if load_result:
         result.occupant_load = load_result
         result.passed_rules.append(
-            f"Max occupant load: {load_result.max_occupants} persons "
-            f"(Group {group}, {load_result.load_factor} m²/person, {inp.total_floor_area}m² area)"
+            f"Occupant load: {load_result.total_occupants} total persons across {len(floor_areas)} floor(s) "
+            f"(Group {group}, {load_result.load_factor} m²/person, max single-floor = {load_result.max_occupants})"
         )
 
-    # ── Exit Capacity (based on calculated max occupant load) ──
-    occupant_count_for_exit = load_result.max_occupants if load_result else inp.occupant_count
-    capacity_result = calculate_exit_capacity(group, occupant_count_for_exit)
-    if capacity_result:
-        result.exit_capacity = capacity_result
-        result.passed_rules.append(
-            f"Exit capacity calculated: stairways {capacity_result.stairway_units} units "
-            f"({capacity_result.stairway_width_mm}mm), "
-            f"corridors {capacity_result.corridor_units} units "
-            f"({capacity_result.corridor_width_mm}mm), "
-            f"doors {capacity_result.door_units} units "
-            f"({capacity_result.door_width_mm}mm)"
-        )
+    # ── Exit Capacity (floor-wise, based on per-floor occupant loads) ──
+    if load_result and load_result.floor_wise:
+        capacity_result = calculate_exit_capacity(group, load_result.floor_wise)
+        if capacity_result:
+            result.exit_capacity = capacity_result
+            result.passed_rules.append(
+                f"Exit capacity (Table 4): stairway factor {capacity_result.stairway_mm_per_person} mm/person, "
+                f"level factor {capacity_result.level_mm_per_person} mm/person — "
+                f"max stairway width {capacity_result.max_stairway_width_mm}mm, "
+                f"max level width {capacity_result.max_level_width_mm}mm"
+            )
 
     # ── Travel Distance ──
     if inp.construction_type:
@@ -430,8 +572,8 @@ def run_nbc_checks(inp: BuildingInput) -> NBCCheckResult:
 
     # ── Firefighting Installations (Table 7) ──
     if inp.building_height > 0:
-        # Use max floor area for tier matching; fallback to total_floor_area
-        max_floor_area = max(inp.floor_areas) if inp.floor_areas else inp.total_floor_area
+        # Use max floor area for tier matching (Table 7 criteria)
+        max_floor_area = max(floor_areas) if floor_areas else inp.total_floor_area
         fi_check = check_firefighting_installations(
             group,
             inp.occupancy_subdivision or None,
@@ -470,5 +612,16 @@ def run_nbc_checks(inp: BuildingInput) -> NBCCheckResult:
                 f"Firefighting installations identified (Table 7, {fi_result.height_tier_label}): "
                 + ", ".join(required_items)
             )
+
+    # ── Sprinkler & Smoke Detector Counts (floor-wise) ──
+    if floor_areas:
+        detector_result = calculate_detector_counts(floor_areas)
+        result.detector_counts = detector_result
+        result.passed_rules.append(
+            f"Detection devices: {detector_result.total_sprinklers} sprinklers "
+            f"(spacing {detector_result.sprinkler_spacing_m}m, coverage {detector_result.sprinkler_coverage_m2}m²/unit), "
+            f"{detector_result.total_smoke_detectors} smoke detectors "
+            f"(spacing {detector_result.smoke_detector_spacing_m}m, coverage {detector_result.smoke_detector_coverage_m2}m²/unit)"
+        )
 
     return result

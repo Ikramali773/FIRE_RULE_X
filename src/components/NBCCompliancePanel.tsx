@@ -314,7 +314,7 @@ export default function NBCCompliancePanel({ data }: NBCCompliancePanelProps) {
                                     { label: 'Manual Fire Alarm', key: 'manualFireAlarm', value: data.firefightingInstallations.manualFireAlarm },
                                     { label: 'Auto Detection', key: 'autoDetectionAlarm', value: data.firefightingInstallations.autoDetectionAlarm },
                                 ] as const).map((item) => {
-                                    const fieldNotes = (data.firefightingInstallations!.evaluatedNotes || [])
+                                    const fieldNotes = (data.firefightingInstallations?.evaluatedNotes || [])
                                         .filter(n => n.field === item.key);
                                     return (
                                         <div

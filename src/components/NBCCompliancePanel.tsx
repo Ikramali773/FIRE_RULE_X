@@ -16,6 +16,8 @@ export default function NBCCompliancePanel({ data }: NBCCompliancePanelProps) {
         return null;
     }
 
+    const { occupantLoad, exitCapacity, travelDistance, firefightingInstallations, detectorCounts } = data;
+
     return (
         <div id="nbc-compliance-panel" className="card card-elevated !p-0 overflow-hidden">
             {/* Header */}
@@ -29,7 +31,7 @@ export default function NBCCompliancePanel({ data }: NBCCompliancePanelProps) {
 
             <div className="p-5 space-y-5">
                 {/* ── Occupant Load ── */}
-                {data.occupantLoad && (
+                {occupantLoad && (
                     <div className="rounded-xl border border-slate-100 overflow-hidden">
                         <div className="px-4 py-2.5 bg-slate-50 border-b border-slate-100 flex items-center gap-2">
                             <span className="text-sm">👥</span>
@@ -41,32 +43,32 @@ export default function NBCCompliancePanel({ data }: NBCCompliancePanelProps) {
                             <div className="grid grid-cols-3 gap-4 text-center">
                                 <div>
                                     <div className="text-2xl font-bold text-indigo-600">
-                                        {data.occupantLoad.totalOccupants}
+                                        {occupantLoad.totalOccupants}
                                     </div>
                                     <div className="text-[11px] text-slate-400 mt-0.5">Total Occupants</div>
                                 </div>
                                 <div>
                                     <div className="text-2xl font-bold text-slate-700">
-                                        {data.occupantLoad.loadFactor}
+                                        {occupantLoad.loadFactor}
                                     </div>
                                     <div className="text-[11px] text-slate-400 mt-0.5">m²/person</div>
                                 </div>
                                 <div>
                                     <div className="text-2xl font-bold text-slate-700">
-                                        {data.occupantLoad.floorAreaUsed.toLocaleString()}
+                                        {occupantLoad.floorAreaUsed.toLocaleString()}
                                     </div>
                                     <div className="text-[11px] text-slate-400 mt-0.5">Total Area (m²)</div>
                                 </div>
                             </div>
                             <div className="mt-3 text-center">
-                                <span className="badge badge-info text-[10px]">Group {data.occupantLoad.group}</span>
+                                <span className="badge badge-info text-[10px]">Group {occupantLoad.group}</span>
                                 <span className="ml-2 text-[10px] text-slate-400">
-                                    Max single floor: {data.occupantLoad.maxOccupants} persons
+                                    Max single floor: {occupantLoad.maxOccupants} persons
                                 </span>
                             </div>
 
                             {/* Floor-wise breakdown */}
-                            {data.occupantLoad.floorWise && data.occupantLoad.floorWise.length > 0 && (
+                            {occupantLoad.floorWise && occupantLoad.floorWise.length > 0 && (
                                 <div className="mt-3">
                                     <button
                                         onClick={() => setShowFloorOccupants(!showFloorOccupants)}
@@ -84,7 +86,7 @@ export default function NBCCompliancePanel({ data }: NBCCompliancePanelProps) {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {data.occupantLoad.floorWise.map((fl) => (
+                                                {occupantLoad.floorWise.map((fl) => (
                                                     <tr key={fl.floorIndex} className="border-b border-slate-50">
                                                         <td className="px-3 py-1.5 text-slate-600">{fl.floorLabel}</td>
                                                         <td className="px-3 py-1.5 text-right font-mono text-slate-500">{fl.floorArea.toLocaleString()}</td>
@@ -101,7 +103,7 @@ export default function NBCCompliancePanel({ data }: NBCCompliancePanelProps) {
                 )}
 
                 {/* ── Exit Capacity ── */}
-                {data.exitCapacity && (
+                {exitCapacity && (
                     <div className="rounded-xl border border-slate-100 overflow-hidden">
                         <div className="px-4 py-2.5 bg-slate-50 border-b border-slate-100 flex items-center gap-2">
                             <span className="text-sm">🚪</span>
@@ -109,31 +111,31 @@ export default function NBCCompliancePanel({ data }: NBCCompliancePanelProps) {
                                 Exit Capacity — Table 4
                             </span>
                             <span className="ml-auto text-[10px] text-slate-400">
-                                {data.exitCapacity.totalOccupantCount} total occupants
+                                {exitCapacity.totalOccupantCount} total occupants
                             </span>
                         </div>
                         <div className="p-4">
                             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
                                 <div>
-                                    <div className="text-lg font-bold text-indigo-600">{data.exitCapacity.stairwayMmPerPerson}</div>
+                                    <div className="text-lg font-bold text-indigo-600">{exitCapacity.stairwayMmPerPerson}</div>
                                     <div className="text-[10px] text-slate-400">Stairway (mm/person)</div>
                                 </div>
                                 <div>
-                                    <div className="text-lg font-bold text-indigo-600">{data.exitCapacity.levelMmPerPerson}</div>
+                                    <div className="text-lg font-bold text-indigo-600">{exitCapacity.levelMmPerPerson}</div>
                                     <div className="text-[10px] text-slate-400">Door/Corridor (mm/person)</div>
                                 </div>
                                 <div>
-                                    <div className="text-lg font-bold text-slate-700">{data.exitCapacity.maxStairwayWidthMm}</div>
+                                    <div className="text-lg font-bold text-slate-700">{exitCapacity.maxStairwayWidthMm}</div>
                                     <div className="text-[10px] text-slate-400">Max Stairway Width (mm)</div>
                                 </div>
                                 <div>
-                                    <div className="text-lg font-bold text-slate-700">{data.exitCapacity.maxLevelWidthMm}</div>
+                                    <div className="text-lg font-bold text-slate-700">{exitCapacity.maxLevelWidthMm}</div>
                                     <div className="text-[10px] text-slate-400">Max Door/Corridor (mm)</div>
                                 </div>
                             </div>
 
                             {/* Floor-wise exit widths */}
-                            {data.exitCapacity.floorWise && data.exitCapacity.floorWise.length > 0 && (
+                            {exitCapacity.floorWise && exitCapacity.floorWise.length > 0 && (
                                 <div className="mt-3">
                                     <button
                                         onClick={() => setShowFloorExits(!showFloorExits)}
@@ -153,7 +155,7 @@ export default function NBCCompliancePanel({ data }: NBCCompliancePanelProps) {
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {data.exitCapacity.floorWise.map((fl) => (
+                                                    {exitCapacity.floorWise.map((fl) => (
                                                         <tr key={fl.floorIndex} className="border-b border-slate-50">
                                                             <td className="px-3 py-1.5 text-slate-600">{fl.floorLabel}</td>
                                                             <td className="px-3 py-1.5 text-right font-mono text-slate-500">{fl.occupantCount}</td>
@@ -172,7 +174,7 @@ export default function NBCCompliancePanel({ data }: NBCCompliancePanelProps) {
                 )}
 
                 {/* ── Sprinkler & Smoke Detector Counts ── */}
-                {data.detectorCounts && (
+                {detectorCounts && (
                     <div className="rounded-xl border border-slate-100 overflow-hidden">
                         <div className="px-4 py-2.5 bg-slate-50 border-b border-slate-100 flex items-center gap-2">
                             <span className="text-sm">🔥</span>
@@ -183,28 +185,28 @@ export default function NBCCompliancePanel({ data }: NBCCompliancePanelProps) {
                         <div className="p-4">
                             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
                                 <div>
-                                    <div className="text-2xl font-bold text-indigo-600">{data.detectorCounts.totalSprinklers}</div>
+                                    <div className="text-2xl font-bold text-indigo-600">{detectorCounts.totalSprinklers}</div>
                                     <div className="text-[10px] text-slate-400">Total Sprinklers</div>
                                 </div>
                                 <div>
-                                    <div className="text-2xl font-bold text-indigo-600">{data.detectorCounts.totalSmokeDetectors}</div>
+                                    <div className="text-2xl font-bold text-indigo-600">{detectorCounts.totalSmokeDetectors}</div>
                                     <div className="text-[10px] text-slate-400">Total Smoke Detectors</div>
                                 </div>
                                 <div>
-                                    <div className="text-lg font-bold text-slate-700">{data.detectorCounts.sprinklerSpacingM}m</div>
+                                    <div className="text-lg font-bold text-slate-700">{detectorCounts.sprinklerSpacingM}m</div>
                                     <div className="text-[10px] text-slate-400">Sprinkler Spacing</div>
                                 </div>
                                 <div>
-                                    <div className="text-lg font-bold text-slate-700">{data.detectorCounts.smokeDetectorSpacingM}m</div>
+                                    <div className="text-lg font-bold text-slate-700">{detectorCounts.smokeDetectorSpacingM}m</div>
                                     <div className="text-[10px] text-slate-400">Detector Spacing</div>
                                 </div>
                             </div>
                             <div className="mt-2 text-center text-[10px] text-slate-400">
-                                Coverage: {data.detectorCounts.sprinklerCoverageM2} m²/sprinkler · {data.detectorCounts.smokeDetectorCoverageM2} m²/detector
+                                Coverage: {detectorCounts.sprinklerCoverageM2} m²/sprinkler · {detectorCounts.smokeDetectorCoverageM2} m²/detector
                             </div>
 
                             {/* Floor-wise breakdown */}
-                            {data.detectorCounts.floorWise && data.detectorCounts.floorWise.length > 0 && (
+                            {detectorCounts.floorWise && detectorCounts.floorWise.length > 0 && (
                                 <div className="mt-3">
                                     <button
                                         onClick={() => setShowFloorDetectors(!showFloorDetectors)}
@@ -224,7 +226,7 @@ export default function NBCCompliancePanel({ data }: NBCCompliancePanelProps) {
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {data.detectorCounts.floorWise.map((fl) => (
+                                                    {detectorCounts.floorWise.map((fl) => (
                                                         <tr key={fl.floorIndex} className="border-b border-slate-50">
                                                             <td className="px-3 py-1.5 text-slate-600">{fl.floorLabel}</td>
                                                             <td className="px-3 py-1.5 text-right font-mono text-slate-500">{fl.floorArea.toLocaleString()}</td>
@@ -243,7 +245,7 @@ export default function NBCCompliancePanel({ data }: NBCCompliancePanelProps) {
                 )}
 
                 {/* ── Travel Distance ── */}
-                {data.travelDistance && (
+                {travelDistance && (
                     <div className="rounded-xl border border-slate-100 overflow-hidden">
                         <div className="px-4 py-2.5 bg-slate-50 border-b border-slate-100 flex items-center gap-2">
                             <span className="text-sm">📏</span>
@@ -252,46 +254,46 @@ export default function NBCCompliancePanel({ data }: NBCCompliancePanelProps) {
                             </span>
                         </div>
                         <div className="p-4">
-                            {data.travelDistance.maxDistanceM === -1 ? (
+                            {travelDistance.maxDistanceM === -1 ? (
                                 <div className="px-3 py-2 rounded-lg bg-red-50 border border-red-100">
                                     <p className="text-sm font-semibold text-red-700">⛔ Construction Type NOT PERMITTED</p>
                                     <p className="text-xs text-red-500 mt-1">
-                                        Type 3/4 construction is not allowed for Group {data.travelDistance.group}.
+                                        Type 3/4 construction is not allowed for Group {travelDistance.group}.
                                         Must use Type 1 or Type 2 (fire-resistive/non-combustible).
                                     </p>
                                 </div>
                             ) : (
                                 <div className="grid grid-cols-3 gap-4 text-center">
                                     <div>
-                                        <div className="text-2xl font-bold text-indigo-600">{data.travelDistance.maxDistanceM}m</div>
+                                        <div className="text-2xl font-bold text-indigo-600">{travelDistance.maxDistanceM}m</div>
                                         <div className="text-[11px] text-slate-400 mt-0.5">Max Allowed</div>
                                     </div>
                                     <div>
-                                        <div className="text-2xl font-bold text-slate-700">{data.travelDistance.baseDistanceM}m</div>
+                                        <div className="text-2xl font-bold text-slate-700">{travelDistance.baseDistanceM}m</div>
                                         <div className="text-[11px] text-slate-400 mt-0.5">Base Distance</div>
                                     </div>
                                     <div>
                                         <div className="text-2xl font-bold text-slate-700">
-                                            {data.travelDistance.constructionType === 'type12' ? '1 & 2' : '3 & 4'}
+                                            {travelDistance.constructionType === 'type12' ? '1 & 2' : '3 & 4'}
                                         </div>
                                         <div className="text-[11px] text-slate-400 mt-0.5">Construction Type</div>
                                     </div>
                                 </div>
                             )}
-                            {data.travelDistance.sprinklerApplied && data.travelDistance.maxDistanceM !== -1 && (
+                            {travelDistance.sprinklerApplied && travelDistance.maxDistanceM !== -1 && (
                                 <div className="mt-3 px-3 py-1.5 rounded-lg bg-emerald-50 border border-emerald-100 text-center">
                                     <span className="text-xs text-emerald-600 font-medium">💧 Sprinkler bonus applied (+50%)</span>
                                 </div>
                             )}
                             <div className="mt-3 text-center">
-                                <span className="badge badge-info text-[10px]">Group {data.travelDistance.group}</span>
+                                <span className="badge badge-info text-[10px]">Group {travelDistance.group}</span>
                             </div>
                         </div>
                     </div>
                 )}
 
                 {/* ── Firefighting Installations — Table 7 ── */}
-                {data.firefightingInstallations && (
+                {firefightingInstallations && (
                     <div className="rounded-xl border border-slate-100 overflow-hidden">
                         <div className="px-4 py-2.5 bg-slate-50 border-b border-slate-100 flex items-center gap-2">
                             <span className="text-sm">🧯</span>
@@ -299,22 +301,22 @@ export default function NBCCompliancePanel({ data }: NBCCompliancePanelProps) {
                                 Firefighting Installations — Table 7
                             </span>
                             <span className="ml-auto text-[10px] text-slate-400">
-                                {data.firefightingInstallations.occupancyLabel} · {data.firefightingInstallations.heightTierLabel}
+                                {firefightingInstallations.occupancyLabel} · {firefightingInstallations.heightTierLabel}
                             </span>
                         </div>
                         <div className="p-4">
                             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                                 {([
-                                    { label: 'Fire Extinguisher', key: 'fireExtinguisher', value: data.firefightingInstallations.fireExtinguisher },
-                                    { label: 'Hose Reel', key: 'firstAidHoseReel', value: data.firefightingInstallations.firstAidHoseReel },
-                                    { label: 'Wet Riser', key: 'wetRiser', value: data.firefightingInstallations.wetRiser },
-                                    { label: 'Down Comer', key: 'downComer', value: data.firefightingInstallations.downComer },
-                                    { label: 'Yard Hydrant', key: 'yardHydrant', value: data.firefightingInstallations.yardHydrant },
-                                    { label: 'Sprinkler System', key: 'automaticSprinkler', value: data.firefightingInstallations.automaticSprinkler },
-                                    { label: 'Manual Fire Alarm', key: 'manualFireAlarm', value: data.firefightingInstallations.manualFireAlarm },
-                                    { label: 'Auto Detection', key: 'autoDetectionAlarm', value: data.firefightingInstallations.autoDetectionAlarm },
+                                    { label: 'Fire Extinguisher', key: 'fireExtinguisher', value: firefightingInstallations.fireExtinguisher },
+                                    { label: 'Hose Reel', key: 'firstAidHoseReel', value: firefightingInstallations.firstAidHoseReel },
+                                    { label: 'Wet Riser', key: 'wetRiser', value: firefightingInstallations.wetRiser },
+                                    { label: 'Down Comer', key: 'downComer', value: firefightingInstallations.downComer },
+                                    { label: 'Yard Hydrant', key: 'yardHydrant', value: firefightingInstallations.yardHydrant },
+                                    { label: 'Sprinkler System', key: 'automaticSprinkler', value: firefightingInstallations.automaticSprinkler },
+                                    { label: 'Manual Fire Alarm', key: 'manualFireAlarm', value: firefightingInstallations.manualFireAlarm },
+                                    { label: 'Auto Detection', key: 'autoDetectionAlarm', value: firefightingInstallations.autoDetectionAlarm },
                                 ] as const).map((item) => {
-                                    const fieldNotes = (data.firefightingInstallations?.evaluatedNotes || [])
+                                    const fieldNotes = (firefightingInstallations?.evaluatedNotes || [])
                                         .filter(n => n.field === item.key);
                                     return (
                                         <div
@@ -349,39 +351,39 @@ export default function NBCCompliancePanel({ data }: NBCCompliancePanelProps) {
                             </div>
 
                             {/* Tank & Pump specs */}
-                            {(data.firefightingInstallations.undergroundTankLitres ||
-                                data.firefightingInstallations.terraceTankLitres ||
-                                data.firefightingInstallations.undergroundPumpLpm ||
-                                data.firefightingInstallations.terracePumpLpm) && (
+                            {(firefightingInstallations.undergroundTankLitres ||
+                                firefightingInstallations.terraceTankLitres ||
+                                firefightingInstallations.undergroundPumpLpm ||
+                                firefightingInstallations.terracePumpLpm) && (
                                     <div className="mt-3 grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
-                                        {data.firefightingInstallations.undergroundTankLitres && (
+                                        {firefightingInstallations.undergroundTankLitres && (
                                             <div>
                                                 <div className="text-lg font-bold text-indigo-600">
-                                                    {(data.firefightingInstallations.undergroundTankLitres / 1000).toLocaleString()}k
+                                                    {(firefightingInstallations.undergroundTankLitres / 1000).toLocaleString()}k
                                                 </div>
                                                 <div className="text-[10px] text-slate-400">UG Tank (L)</div>
                                             </div>
                                         )}
-                                        {data.firefightingInstallations.terraceTankLitres && (
+                                        {firefightingInstallations.terraceTankLitres && (
                                             <div>
                                                 <div className="text-lg font-bold text-indigo-600">
-                                                    {(data.firefightingInstallations.terraceTankLitres / 1000).toLocaleString()}k
+                                                    {(firefightingInstallations.terraceTankLitres / 1000).toLocaleString()}k
                                                 </div>
                                                 <div className="text-[10px] text-slate-400">Terrace Tank (L)</div>
                                             </div>
                                         )}
-                                        {data.firefightingInstallations.undergroundPumpLpm && (
+                                        {firefightingInstallations.undergroundPumpLpm && (
                                             <div>
                                                 <div className="text-lg font-bold text-slate-700">
-                                                    {data.firefightingInstallations.undergroundPumpLpm.toLocaleString()}
+                                                    {firefightingInstallations.undergroundPumpLpm.toLocaleString()}
                                                 </div>
                                                 <div className="text-[10px] text-slate-400">UG Pump (L/min)</div>
                                             </div>
                                         )}
-                                        {data.firefightingInstallations.terracePumpLpm && (
+                                        {firefightingInstallations.terracePumpLpm && (
                                             <div>
                                                 <div className="text-lg font-bold text-slate-700">
-                                                    {data.firefightingInstallations.terracePumpLpm.toLocaleString()}
+                                                    {firefightingInstallations.terracePumpLpm.toLocaleString()}
                                                 </div>
                                                 <div className="text-[10px] text-slate-400">Terrace Pump (L/min)</div>
                                             </div>
@@ -390,8 +392,8 @@ export default function NBCCompliancePanel({ data }: NBCCompliancePanelProps) {
                                 )}
 
                             {/* Evaluated Notes */}
-                            {data.firefightingInstallations.evaluatedNotes &&
-                                data.firefightingInstallations.evaluatedNotes.length > 0 && (
+                            {firefightingInstallations.evaluatedNotes &&
+                                firefightingInstallations.evaluatedNotes.length > 0 && (
                                     <div className="mt-4 rounded-lg border border-slate-100 overflow-hidden">
                                         <div className="px-3 py-2 bg-slate-50 border-b border-slate-100">
                                             <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
@@ -399,7 +401,7 @@ export default function NBCCompliancePanel({ data }: NBCCompliancePanelProps) {
                                             </span>
                                         </div>
                                         <div className="divide-y divide-slate-50">
-                                            {data.firefightingInstallations.evaluatedNotes.map((note, idx) => (
+                                            {firefightingInstallations.evaluatedNotes.map((note, idx) => (
                                                 <div
                                                     key={`${note.noteId}-${idx}`}
                                                     className={`px-3 py-2 flex items-start gap-2 ${note.isMet ? 'bg-emerald-50/30' : 'bg-white'}`}

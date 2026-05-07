@@ -136,7 +136,7 @@ function ResultsContent() {
                                     <div className="text-xs text-slate-500 uppercase tracking-wider mb-1">Occupant Load</div>
                                     <div className="font-semibold text-slate-800">
                                         {analysis.nbcCompliance?.occupantLoad?.totalOccupants
-                                            ? analysis.nbcCompliance.occupantLoad.totalOccupants.toLocaleString()
+                                            ? analysis.nbcCompliance!.occupantLoad!.totalOccupants.toLocaleString()
                                             : extraction.occupantCount ? extraction.occupantCount.toLocaleString() : 'N/A'}
                                     </div>
                                     <div className="text-[10px] text-slate-400 mt-1">persons (total)</div>

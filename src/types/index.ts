@@ -38,6 +38,16 @@ export interface BuildingInput {
     hasElectricalHazards: boolean;       // server rooms, electrical panels
     state?: string;                      // e.g. 'MH' for Maharashtra
 
+    // --- Phase 1: Building Basics fields ---
+    projectName?: string;
+    city?: string;
+    buildingStatus?: 'proposed' | 'existing' | 'under_construction';
+    plotArea?: number;
+    totalBuiltUpArea?: number;
+    basementCount?: number;
+    parkingType?: 'open' | 'stilt' | 'basement' | 'mlcp';
+    sprinklerProposed?: boolean;
+
     // --- NBC 2016 Part IV fields (optional, additive) ---
     occupancyGroup?: OccupancyGroup;
     occupancySubdivision?: OccupancySubdivision;
@@ -131,6 +141,15 @@ export interface DetectorCountData {
     floorWise: FloorDetectorCount[];
 }
 
+export interface NBCSApplicabilityResult {
+    isApplicable: boolean;
+    reason: string;
+    clauseRef: string;
+    occupancyLabel: string;
+    heightThresholdM?: number;
+    areaThresholdM2?: number;
+}
+
 export interface NBCComplianceData {
     occupantLoad?: {
         totalOccupants: number;
@@ -158,6 +177,7 @@ export interface NBCComplianceData {
     };
     firefightingInstallations?: FirefightingInstallationRequirement;
     detectorCounts?: DetectorCountData;
+    nbcsApplicability?: NBCSApplicabilityResult;
 }
 
 export interface AnalysisResult {

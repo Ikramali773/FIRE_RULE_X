@@ -59,6 +59,22 @@ class BuildingInput(BaseModel):
     has_electrical_hazards: bool = Field(alias="hasElectricalHazards", default=False)
     state: Optional[str] = None
 
+    # Phase 1 — Building Basics fields (Software Scope Screen 1)
+    project_name: str = Field(alias="projectName", default="")
+    city: str = Field(alias="city", default="")
+    building_status: Optional[str] = Field(
+        alias="buildingStatus", default=None,
+        description="proposed | existing | under_construction",
+    )
+    plot_area: Optional[float] = Field(alias="plotArea", default=None, description="Plot area in m²")
+    total_built_up_area: Optional[float] = Field(alias="totalBuiltUpArea", default=None, description="Total built-up area in m²")
+    basement_count: int = Field(alias="basementCount", default=0, description="Number of basement levels")
+    parking_type: Optional[str] = Field(
+        alias="parkingType", default=None,
+        description="open | stilt | basement | mlcp",
+    )
+    sprinkler_proposed: Optional[bool] = Field(alias="sprinklerProposed", default=None)
+
     # NBC 2016 Part IV fields (optional)
     occupancy_group: Optional[OccupancyGroup] = Field(alias="occupancyGroup", default=None)
     occupancy_subdivision: Optional[str] = Field(alias="occupancySubdivision", default=None)
@@ -209,6 +225,21 @@ class DetectorCountData(BaseModel):
     floor_wise: list[FloorDetectorCount] = Field(alias="floorWise", default_factory=list)
 
 
+# ── NBCS 2026 Applicability ─────────────────────────────────────────────
+
+
+class NBCSApplicabilityResult(BaseModel):
+    """Result of NBCS 2026 Part F Section 1.2 applicability check."""
+    model_config = {"populate_by_name": True}
+
+    is_applicable: bool = Field(alias="isApplicable", description="Whether NBCS Part F provisions apply")
+    reason: str = Field(description="Human-readable explanation")
+    clause_ref: str = Field(alias="clauseRef", description="NBCS section reference")
+    occupancy_label: str = Field(alias="occupancyLabel", description="Display name of the occupancy")
+    height_threshold_m: Optional[float] = Field(alias="heightThresholdM", default=None)
+    area_threshold_m2: Optional[float] = Field(alias="areaThresholdM2", default=None)
+
+
 class NBCComplianceData(BaseModel):
     model_config = {"populate_by_name": True}
 
@@ -219,6 +250,7 @@ class NBCComplianceData(BaseModel):
         alias="firefightingInstallations", default=None
     )
     detector_counts: Optional[DetectorCountData] = Field(alias="detectorCounts", default=None)
+    nbcs_applicability: Optional[NBCSApplicabilityResult] = Field(alias="nbcsApplicability", default=None)
 
 
 class AnalysisResult(BaseModel):

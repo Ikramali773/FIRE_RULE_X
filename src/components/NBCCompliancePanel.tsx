@@ -30,6 +30,41 @@ export default function NBCCompliancePanel({ data }: NBCCompliancePanelProps) {
             </div>
 
             <div className="p-5 space-y-5">
+                {/* ── NBCS 2026 Applicability (Phase 1 Tracking Layer) ── */}
+                {data.nbcsApplicability && (
+                    <div className="rounded-xl border border-slate-100 overflow-hidden">
+                        <div className="px-4 py-2.5 bg-slate-50 border-b border-slate-100 flex items-center gap-2">
+                            <span className="text-sm">📋</span>
+                            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                                NBCS 2026 Part F Applicability
+                            </span>
+                            {data.nbcsApplicability.isApplicable ? (
+                                <span className="badge badge-success text-[10px] ml-auto">APPLICABLE</span>
+                            ) : (
+                                <span className="badge badge-warning text-[10px] ml-auto">NOT APPLICABLE</span>
+                            )}
+                        </div>
+                        <div className="p-4 bg-white">
+                            <div className="flex flex-col gap-2">
+                                <p className="text-sm text-slate-700">
+                                    {data.nbcsApplicability.reason}
+                                </p>
+                                <div className="flex items-center gap-4 mt-2 border-t border-slate-100 pt-3">
+                                    <div className="text-xs text-slate-500">
+                                        <span className="font-semibold text-slate-700">Occupancy:</span> {data.nbcsApplicability.occupancyLabel}
+                                    </div>
+                                    <div className="text-xs text-slate-500 border-l border-slate-200 pl-4">
+                                        <span className="font-semibold text-slate-700">Clause:</span> {data.nbcsApplicability.clauseRef}
+                                    </div>
+                                    <div className="text-[10px] text-slate-400 border-l border-slate-200 pl-4">
+                                        (Tracking layer only — calculation logic remains NBC 2016)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
                 {/* ── Occupant Load ── */}
                 {occupantLoad && (
                     <div className="rounded-xl border border-slate-100 overflow-hidden">

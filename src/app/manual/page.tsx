@@ -6,19 +6,37 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
 interface SimpleInput {
+    projectName: string;
+    state: string;
+    city: string;
+    buildingStatus: string;
     buildingType: string;
     buildingHeight: number;
     numberOfFloors: number;
     floorAreas: number[];
+    basementCount: number;
     basementArea: number;
+    plotArea: number | null;
+    totalBuiltUpArea: number | null;
+    parkingType: string;
+    sprinklerProposed: boolean;
 }
 
 const defaultInput: SimpleInput = {
+    projectName: '',
+    state: '',
+    city: '',
+    buildingStatus: 'proposed',
     buildingType: '',
     buildingHeight: 0,
     numberOfFloors: 1,
     floorAreas: [0],
+    basementCount: 0,
     basementArea: 0,
+    plotArea: null,
+    totalBuiltUpArea: null,
+    parkingType: 'open',
+    sprinklerProposed: false,
 };
 
 export default function ManualPage() {
@@ -45,8 +63,8 @@ export default function ManualPage() {
             });
     }, []);
 
-    const updateField = (field: keyof SimpleInput, value: string | number | number[]) => {
-        setForm((prev) => ({ ...prev, [field]: value }));
+    const updateField = (field: keyof SimpleInput, value: string | number | number[] | boolean | null) => {
+        setForm((prev) => ({ ...prev, [field]: value as never }));
     };
 
     // When number of floors changes, resize the floorAreas array
@@ -110,11 +128,20 @@ export default function ManualPage() {
         try {
             const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
             const payload = {
+                project_name: form.projectName,
+                state: form.state,
+                city: form.city,
+                building_status: form.buildingStatus,
                 building_type: form.buildingType,
                 building_height: form.buildingHeight,
                 number_of_floors: form.numberOfFloors,
                 floor_areas: form.floorAreas,
+                basement_count: form.basementCount,
                 basement_area: hasBasement ? form.basementArea : 0,
+                plot_area: form.plotArea,
+                total_built_up_area: form.totalBuiltUpArea,
+                parking_type: form.parkingType,
+                sprinkler_proposed: form.sprinklerProposed,
             };
 
             const response = await fetch(`${API_BASE_URL}/api/analyze-simple`, {
@@ -159,6 +186,66 @@ export default function ManualPage() {
 
                     {/* Form */}
                     <div className="card card-elevated space-y-6">
+                        {/* 0. Project Context */}
+                        <div className="space-y-4 pb-4 border-b border-slate-100">
+                            <h3 className="text-sm font-bold text-indigo-600 uppercase tracking-wider mb-2">Project Context</h3>
+                            
+                            <div>
+                                <label className="block text-sm font-semibold text-slate-700 mb-1.5">Project Name</label>
+                                <input
+                                    type="text"
+                                    value={form.projectName}
+                                    onChange={(e) => updateField('projectName', e.target.value)}
+                                    placeholder="e.g. Skyline Towers"
+                                    className="w-full px-3 py-2.5 rounded-lg border border-slate-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none transition text-sm"
+                                />
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-sm font-semibold text-slate-700 mb-1.5">State</label>
+                                    <input
+                                        type="text"
+                                        value={form.state}
+                                        onChange={(e) => updateField('state', e.target.value)}
+                                        placeholder="e.g. Maharashtra"
+                                        className="w-full px-3 py-2.5 rounded-lg border border-slate-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none transition text-sm"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-semibold text-slate-700 mb-1.5">City</label>
+                                    <input
+                                        type="text"
+                                        value={form.city}
+                                        onChange={(e) => updateField('city', e.target.value)}
+                                        placeholder="e.g. Mumbai"
+                                        className="w-full px-3 py-2.5 rounded-lg border border-slate-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none transition text-sm"
+                                    />
+                                </div>
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-semibold text-slate-700 mb-1.5">Building Status</label>
+                                <div className="flex gap-4">
+                                    {['proposed', 'existing', 'under_construction'].map((status) => (
+                                        <label key={status} className="flex items-center gap-2 cursor-pointer">
+                                            <input
+                                                type="radio"
+                                                name="buildingStatus"
+                                                value={status}
+                                                checked={form.buildingStatus === status}
+                                                onChange={(e) => updateField('buildingStatus', e.target.value)}
+                                                className="w-4 h-4 text-orange-500 focus:ring-orange-400"
+                                            />
+                                            <span className="text-sm text-slate-600 capitalize">{status.replace('_', ' ')}</span>
+                                        </label>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+
+                        <h3 className="text-sm font-bold text-indigo-600 uppercase tracking-wider mb-2">Building Specifications</h3>
+
                         {/* 1. Building Type */}
                         <div>
                             <label className="block text-sm font-semibold text-slate-700 mb-1.5">
@@ -274,6 +361,7 @@ export default function ManualPage() {
                                             setHasBasement(e.target.checked);
                                             if (!e.target.checked) {
                                                 updateField('basementArea', 0);
+                                                updateField('basementCount', 0);
                                             }
                                         }}
                                         className="w-4 h-4 rounded border-slate-300 text-orange-500 focus:ring-orange-400"
@@ -282,16 +370,72 @@ export default function ManualPage() {
                                 </label>
                             </div>
                             {hasBasement && (
-                                <input
-                                    id="basement-area-input"
-                                    type="number"
-                                    value={form.basementArea || ''}
-                                    onChange={(e) => updateField('basementArea', Number(e.target.value))}
-                                    placeholder="Basement area in m²"
-                                    min={0}
-                                    className="w-full px-3 py-2.5 rounded-lg border border-slate-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none transition text-sm"
-                                />
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label className="block text-xs font-semibold text-slate-500 mb-1">Total Basement Area (m²)</label>
+                                        <input
+                                            id="basement-area-input"
+                                            type="number"
+                                            value={form.basementArea || ''}
+                                            onChange={(e) => updateField('basementArea', Number(e.target.value))}
+                                            placeholder="Area in m²"
+                                            min={0}
+                                            className="w-full px-3 py-2.5 rounded-lg border border-slate-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none transition text-sm"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-semibold text-slate-500 mb-1">Number of Basements</label>
+                                        <input
+                                            type="number"
+                                            value={form.basementCount || ''}
+                                            onChange={(e) => updateField('basementCount', Number(e.target.value))}
+                                            placeholder="Count"
+                                            min={1}
+                                            className="w-full px-3 py-2.5 rounded-lg border border-slate-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none transition text-sm"
+                                        />
+                                    </div>
+                                </div>
                             )}
+                        </div>
+
+                        {/* 6. Additional Specs */}
+                        <div className="space-y-4 pt-4 border-t border-slate-100">
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-sm font-semibold text-slate-700 mb-1.5">Plot Area (m²) <span className="font-normal text-slate-400">(opt)</span></label>
+                                    <input
+                                        type="number"
+                                        value={form.plotArea || ''}
+                                        onChange={(e) => updateField('plotArea', Number(e.target.value))}
+                                        placeholder="e.g. 2000"
+                                        min={0}
+                                        className="w-full px-3 py-2.5 rounded-lg border border-slate-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none transition text-sm"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-semibold text-slate-700 mb-1.5">Built-up Area (m²) <span className="font-normal text-slate-400">(opt)</span></label>
+                                    <input
+                                        type="number"
+                                        value={form.totalBuiltUpArea || ''}
+                                        onChange={(e) => updateField('totalBuiltUpArea', Number(e.target.value))}
+                                        placeholder="e.g. 15000"
+                                        min={0}
+                                        className="w-full px-3 py-2.5 rounded-lg border border-slate-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none transition text-sm"
+                                    />
+                                </div>
+                            </div>
+                            
+                            <div className="flex items-center gap-8">
+                                <label className="flex items-center gap-2 cursor-pointer">
+                                    <input
+                                        type="checkbox"
+                                        checked={form.sprinklerProposed}
+                                        onChange={(e) => updateField('sprinklerProposed', e.target.checked)}
+                                        className="w-4 h-4 rounded border-slate-300 text-orange-500 focus:ring-orange-400"
+                                    />
+                                    <span className="text-sm font-semibold text-slate-700">Sprinkler System Proposed</span>
+                                </label>
+                            </div>
                         </div>
 
                         {/* Summary */}

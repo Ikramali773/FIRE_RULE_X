@@ -5,7 +5,7 @@ import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from models import BuildingInput
+from models import BuildingInput, FloorOccupantLoad
 from nbc_checker import (
     calculate_occupant_load,
     calculate_exit_capacity,
@@ -17,25 +17,27 @@ from nbc_checker import (
 
 class TestOccupantLoad:
     def test_group_e_office(self):
-        result = calculate_occupant_load("E", 1000)
+        result = calculate_occupant_load("E", [1000])
         assert result is not None
         assert result.max_occupants > 0
         assert result.group == "E"
 
     def test_returns_none_for_unknown_group(self):
-        result = calculate_occupant_load("Z", 1000)
+        result = calculate_occupant_load("Z", [1000])
         assert result is None
 
 
 class TestExitCapacity:
     def test_group_e(self):
-        result = calculate_exit_capacity("E", 100)
+        fl = FloorOccupantLoad(floor_index=0, floor_label="Ground Floor", floor_area=1000, occupant_count=100)
+        result = calculate_exit_capacity("E", [fl])
         assert result is not None
-        assert result.stairway_units > 0
-        assert result.stairway_width_mm == result.stairway_units * 500
+        assert result.max_stairway_width_mm > 0
+        assert result.max_stairway_width_mm == 100 * 10.0  # 100 occupants * 10mm/person
 
     def test_returns_none_for_unknown_group(self):
-        result = calculate_exit_capacity("Z", 100)
+        fl = FloorOccupantLoad(floor_index=0, floor_label="Ground Floor", floor_area=1000, occupant_count=100)
+        result = calculate_exit_capacity("Z", [fl])
         assert result is None
 
 
@@ -170,7 +172,7 @@ class TestRunNBCChecks:
         ol_violations = [v for v in result.violations if v.rule_id == "NBC-OL-EXCEED"]
         assert len(ol_violations) == 0
         # Should have max occupant info in passed_rules
-        assert any("Max occupant load" in r for r in result.passed_rules)
+        assert any("max single-floor" in r for r in result.passed_rules)
 
     def test_exit_capacity_uses_max_load(self):
         """Exit capacity should use calculated max occupants, not input count"""
@@ -192,7 +194,7 @@ class TestRunNBCChecks:
         result = run_nbc_checks(inp)
         assert result.exit_capacity is not None
         # Max occupants for 1000m² Group E = 1000/10 = 100
-        assert result.exit_capacity.occupant_count == 100
+        assert result.exit_capacity.total_occupant_count == 100
 
     def test_no_group_returns_empty(self):
         inp = BuildingInput(

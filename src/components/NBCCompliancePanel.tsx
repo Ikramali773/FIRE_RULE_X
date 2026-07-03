@@ -30,6 +30,41 @@ export default function NBCCompliancePanel({ data }: NBCCompliancePanelProps) {
             </div>
 
             <div className="p-5 space-y-5">
+                {/* ── NBCS 2026 Applicability (Phase 1 Tracking Layer) ── */}
+                {data.nbcsApplicability && (
+                    <div className="rounded-xl border border-slate-100 overflow-hidden">
+                        <div className="px-4 py-2.5 bg-slate-50 border-b border-slate-100 flex items-center gap-2">
+                            <span className="text-sm">📋</span>
+                            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                                NBCS 2026 Part F Applicability
+                            </span>
+                            {data.nbcsApplicability.isApplicable ? (
+                                <span className="badge badge-success text-[10px] ml-auto">APPLICABLE</span>
+                            ) : (
+                                <span className="badge badge-warning text-[10px] ml-auto">NOT APPLICABLE</span>
+                            )}
+                        </div>
+                        <div className="p-4 bg-white">
+                            <div className="flex flex-col gap-2">
+                                <p className="text-sm text-slate-700">
+                                    {data.nbcsApplicability.reason}
+                                </p>
+                                <div className="flex items-center gap-4 mt-2 border-t border-slate-100 pt-3">
+                                    <div className="text-xs text-slate-500">
+                                        <span className="font-semibold text-slate-700">Occupancy:</span> {data.nbcsApplicability.occupancyLabel}
+                                    </div>
+                                    <div className="text-xs text-slate-500 border-l border-slate-200 pl-4">
+                                        <span className="font-semibold text-slate-700">Clause:</span> {data.nbcsApplicability.clauseRef}
+                                    </div>
+                                    <div className="text-[10px] text-slate-400 border-l border-slate-200 pl-4">
+                                        (Tracking layer only — calculation logic remains NBC 2016)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
                 {/* ── Occupant Load ── */}
                 {occupantLoad && (
                     <div className="rounded-xl border border-slate-100 overflow-hidden">
@@ -96,6 +131,34 @@ export default function NBCCompliancePanel({ data }: NBCCompliancePanelProps) {
                                             </tbody>
                                         </table>
                                     )}
+                                </div>
+                            )}
+                            
+                            {/* ── NBCS Tracking ── */}
+                            {data.nbcsOccupantLoad && (
+                                <div className="mt-4 pt-3 border-t border-indigo-50 bg-indigo-50/30 -mx-4 -mb-4 p-4">
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <span className="badge badge-indigo bg-indigo-100 text-indigo-700 text-[9px] uppercase tracking-wide">NBCS 2026 Tracking</span>
+                                        <span className="text-xs text-slate-500">{data.nbcsOccupantLoad.note}</span>
+                                    </div>
+                                    <div className="grid grid-cols-3 gap-4 text-center">
+                                        <div>
+                                            <div className="text-xl font-bold text-indigo-700">{data.nbcsOccupantLoad.totalOccupants}</div>
+                                            <div className="text-[10px] text-slate-500">NBCS Total Occupants</div>
+                                        </div>
+                                        {data.nbcsOccupantLoad.loadFactorNet !== undefined && data.nbcsOccupantLoad.loadFactorNet !== null && (
+                                            <div>
+                                                <div className="text-lg font-bold text-slate-600">{data.nbcsOccupantLoad.loadFactorNet}</div>
+                                                <div className="text-[10px] text-slate-500">Net m²/person</div>
+                                            </div>
+                                        )}
+                                        {data.nbcsOccupantLoad.loadFactorGross !== undefined && data.nbcsOccupantLoad.loadFactorGross !== null && (
+                                            <div>
+                                                <div className="text-lg font-bold text-slate-600">{data.nbcsOccupantLoad.loadFactorGross}</div>
+                                                <div className="text-[10px] text-slate-500">Gross m²/person</div>
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
                             )}
                         </div>
@@ -167,6 +230,34 @@ export default function NBCCompliancePanel({ data }: NBCCompliancePanelProps) {
                                             </table>
                                         </div>
                                     )}
+                                </div>
+                            )}
+
+                            {/* ── NBCS Tracking ── */}
+                            {data.nbcsExitCapacity && (
+                                <div className="mt-4 pt-3 border-t border-indigo-50 bg-indigo-50/30 -mx-4 -mb-4 p-4">
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <span className="badge badge-indigo bg-indigo-100 text-indigo-700 text-[9px] uppercase tracking-wide">NBCS 2026 Tracking</span>
+                                        <span className="text-xs text-slate-500">{data.nbcsExitCapacity.note}</span>
+                                    </div>
+                                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+                                        <div>
+                                            <div className="text-lg font-bold text-indigo-700">{data.nbcsExitCapacity.stairwayMmPerPerson}</div>
+                                            <div className="text-[10px] text-slate-500">Stairway (mm/person)</div>
+                                        </div>
+                                        <div>
+                                            <div className="text-lg font-bold text-indigo-700">{data.nbcsExitCapacity.levelMmPerPerson}</div>
+                                            <div className="text-[10px] text-slate-500">Level (mm/person)</div>
+                                        </div>
+                                        <div>
+                                            <div className="text-lg font-bold text-slate-600">{data.nbcsExitCapacity.maxStairwayWidthMm}</div>
+                                            <div className="text-[10px] text-slate-500">Max Stair Width (mm)</div>
+                                        </div>
+                                        <div>
+                                            <div className="text-lg font-bold text-slate-600">{data.nbcsExitCapacity.deadEndLimitM}</div>
+                                            <div className="text-[10px] text-slate-500">Dead End Limit (m)</div>
+                                        </div>
+                                    </div>
                                 </div>
                             )}
                         </div>
@@ -288,6 +379,26 @@ export default function NBCCompliancePanel({ data }: NBCCompliancePanelProps) {
                             <div className="mt-3 text-center">
                                 <span className="badge badge-info text-[10px]">Group {travelDistance.group}</span>
                             </div>
+
+                            {/* ── NBCS Tracking ── */}
+                            {data.nbcsTravelDistance && (
+                                <div className="mt-4 pt-3 border-t border-indigo-50 bg-indigo-50/30 -mx-4 -mb-4 p-4">
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <span className="badge badge-indigo bg-indigo-100 text-indigo-700 text-[9px] uppercase tracking-wide">NBCS 2026 Tracking</span>
+                                        <span className="text-xs text-slate-500">{data.nbcsTravelDistance.note}</span>
+                                    </div>
+                                    <div className="text-center">
+                                        {data.nbcsTravelDistance.maxDistanceM === -1 || data.nbcsTravelDistance.maxDistanceM === null || data.nbcsTravelDistance.maxDistanceM === undefined ? (
+                                            <div className="text-sm font-semibold text-red-600">Type 3/4 construction NOT PERMITTED under NBCS</div>
+                                        ) : (
+                                            <div>
+                                                <span className="text-xl font-bold text-indigo-700">{data.nbcsTravelDistance.maxDistanceM}m</span>
+                                                <span className="text-xs text-slate-500 ml-2">NBCS Max Allowed</span>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 )}
@@ -439,6 +550,57 @@ export default function NBCCompliancePanel({ data }: NBCCompliancePanelProps) {
                                         </div>
                                     </div>
                                 )}
+
+                            {/* ── NBCS Tracking ── */}
+                            {data.nbcsFirefightingInstallations && (
+                                <div className="mt-4 pt-3 border-t border-indigo-50 bg-indigo-50/30 -mx-4 -mb-4 p-4">
+                                    <div className="flex items-center gap-2 mb-3">
+                                        <span className="badge badge-indigo bg-indigo-100 text-indigo-700 text-[9px] uppercase tracking-wide">NBCS 2026 Tracking</span>
+                                        <span className="text-xs text-slate-500">
+                                            {data.nbcsFirefightingInstallations.nbcsTableRef} · Protection Level: <strong className="text-slate-700">{data.nbcsFirefightingInstallations.protectionLevel}</strong>
+                                        </span>
+                                        {data.nbcsFirefightingInstallations.differsFromNbc && (
+                                            <span className="badge badge-amber text-[9px] ml-auto">DIFFERS FROM NBC</span>
+                                        )}
+                                    </div>
+                                    
+                                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                                        {([
+                                            { label: 'Extinguisher', value: data.nbcsFirefightingInstallations.fireExtinguisher },
+                                            { label: 'Hose Reel', value: data.nbcsFirefightingInstallations.firstAidHoseReel },
+                                            { label: 'Wet Riser', value: data.nbcsFirefightingInstallations.wetRiser },
+                                            { label: 'Down Comer', value: data.nbcsFirefightingInstallations.downComer },
+                                            { label: 'Yard Hydrant', value: data.nbcsFirefightingInstallations.yardHydrant },
+                                            { label: 'Sprinkler', value: data.nbcsFirefightingInstallations.automaticSprinkler },
+                                            { label: 'Auto Detect', value: data.nbcsFirefightingInstallations.autoDetectionAlarm },
+                                            { label: 'PA & Voice', value: data.nbcsFirefightingInstallations.publicAddressVoiceEvacuation },
+                                        ] as const).map((item) => (
+                                            <div
+                                                key={`nbcs-${item.label}`}
+                                                className={`px-2 py-1.5 rounded border text-center text-[10px] font-medium ${
+                                                    item.value
+                                                        ? 'bg-indigo-100 border-indigo-200 text-indigo-700'
+                                                        : 'bg-white border-slate-200 text-slate-400'
+                                                }`}
+                                            >
+                                                <span className="mr-1">{item.value ? '✅' : '—'}</span>
+                                                {item.label}
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    {data.nbcsFirefightingInstallations.triggeredNotes && data.nbcsFirefightingInstallations.triggeredNotes.length > 0 && (
+                                        <div className="mt-3 text-[11px] text-slate-600 space-y-1">
+                                            {data.nbcsFirefightingInstallations.triggeredNotes.map((note, i) => (
+                                                <div key={i} className="flex items-start gap-1">
+                                                    <span className="text-indigo-400">ℹ️</span>
+                                                    <span>{note}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            )}
                         </div>
                     </div>
                 )}

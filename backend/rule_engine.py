@@ -2,7 +2,15 @@
 # FireRuleX Rule Engine — Main Orchestrator
 #
 # Accepts BuildingInput and evaluates all fire safety rules:
-#   IS 2190:2024, NBC 2016 Part IV
+#   IS 2190:2024, NBC 2016 Part IV, NBCS 2026 Part F (tracking layer)
+#
+# Architecture: Three-layer compliance stack (Software Scope Phase 1)
+#   1. Code Engine — NBC/NBCS national code logic
+#   2. Standards Engine — BIS technical standards evaluation
+#   3. Jurisdiction Engine — State/local approval overlay
+#
+# This module orchestrates all three engines and aggregates their
+# results into a single AnalysisResult.
 
 from models import (
     BuildingInput,
@@ -10,13 +18,14 @@ from models import (
     Violation,
     ExtinguisherRequirement,
     NBCComplianceData,
+    NBCSApplicabilityResult,
 )
 from hazard_classifier import determine_hazard_type
 from class_a_checker import check_class_a
 from class_bc_checker import check_class_bc
 from class_f_checker import check_class_f
 from electrical_checker import check_electrical
-from nbc_checker import run_nbc_checks
+from engines import code_engine, standards_engine, jurisdiction_engine
 
 
 def run_rule_engine(inp: BuildingInput) -> AnalysisResult:
@@ -24,6 +33,8 @@ def run_rule_engine(inp: BuildingInput) -> AnalysisResult:
     passed_rules: list[str] = []
     all_requirements: list[ExtinguisherRequirement] = []
     nbc_compliance: NBCComplianceData | None = None
+
+    # ── IS 2190:2024 — Fire Extinguisher Requirements ──
 
     # Step 1: Determine hazard type
     hazard_result = determine_hazard_type(inp)
@@ -75,22 +86,60 @@ def run_rule_engine(inp: BuildingInput) -> AnalysisResult:
             )
         )
 
-    # Step 7: NBC 2016 Part IV checks
-    if inp.occupancy_group:
-        nbc_result = run_nbc_checks(inp)
+    # ── Engine Layer 1: Code Engine (NBC 2016 + NBCS 2026 tracking) ──
 
-        violations.extend(nbc_result.violations)
-        passed_rules.extend(nbc_result.passed_rules)
+    code_result = code_engine.evaluate(inp)
 
-        nbc_compliance = NBCComplianceData(
-            occupant_load=nbc_result.occupant_load,
-            exit_capacity=nbc_result.exit_capacity,
-            travel_distance=nbc_result.travel_distance,
-            firefighting_installations=nbc_result.firefighting_installations,
-            detector_counts=nbc_result.detector_counts,
-        )
+    violations.extend(code_result.violations)
+    passed_rules.extend(code_result.passed_rules)
 
-    # Step 8: Compliance score
+    if code_result.nbc_compliance:
+        nbc_compliance = code_result.nbc_compliance
+
+        # Attach NBCS applicability result to NBC compliance data
+        if code_result.nbcs_applicability:
+            thresholds = code_result.nbcs_applicability.get("thresholds") or {}
+            nbc_compliance.nbcs_applicability = NBCSApplicabilityResult(
+                is_applicable=code_result.nbcs_applicability["is_applicable"],
+                reason=code_result.nbcs_applicability["reason"],
+                clause_ref=code_result.nbcs_applicability["clause_ref"],
+                occupancy_label=code_result.nbcs_applicability["occupancy_label"],
+                height_threshold_m=thresholds.get("height_threshold_m"),
+                area_threshold_m2=thresholds.get("area_threshold_m2"),
+            )
+            
+        if code_result.nbcs_firefighting_installations:
+            nbc_compliance.nbcs_firefighting_installations = code_result.nbcs_firefighting_installations
+            
+        if code_result.nbcs_occupant_load:
+            nbc_compliance.nbcs_occupant_load = code_result.nbcs_occupant_load
+            
+        if code_result.nbcs_exit_capacity:
+            nbc_compliance.nbcs_exit_capacity = code_result.nbcs_exit_capacity
+            
+        if code_result.nbcs_travel_distance:
+            nbc_compliance.nbcs_travel_distance = code_result.nbcs_travel_distance
+
+    # ── Engine Layer 2: Standards Engine (BIS standards — stub) ──
+
+    _standards_result = standards_engine.evaluate(
+        inp,
+        code_findings={"nbc_compliance": nbc_compliance},
+    )
+    # Standards violations and passed_rules will be merged here
+    # once the engine is implemented in Increment 3.
+
+    # ── Engine Layer 3: Jurisdiction Engine (State overlay — stub) ──
+
+    _jurisdiction_result = jurisdiction_engine.evaluate(
+        inp,
+        code_findings={"nbc_compliance": nbc_compliance},
+    )
+    # Jurisdiction violations will be merged here once the engine
+    # is implemented in Phase 4.
+
+    # ── Compliance Scoring ──
+
     penalty_points = sum(
         20 if v.severity == "high" else (10 if v.severity == "medium" else 5)
         for v in violations
@@ -110,4 +159,5 @@ def run_rule_engine(inp: BuildingInput) -> AnalysisResult:
         passed_rules=passed_rules,
         analysis_method="structured_input",
         nbc_compliance=nbc_compliance,
+        system_cards=_standards_result.system_cards,
     )

@@ -23,12 +23,25 @@ class SimpleManualInput(BaseModel):
     """Simplified manual input for fire safety analysis.
 
     Now accepts per-floor areas instead of a single max floor area.
+    Phase 1: Added optional fields for project context and NBCS applicability.
     """
     building_type: str = Field(description="Human-readable building type from dropdown")
     building_height: float = Field(gt=0, description="Building height in metres")
     number_of_floors: int = Field(ge=1, description="Number of floors/storeys")
     floor_areas: list[float] = Field(description="Area of each floor in m² (index 0 = ground)")
     basement_area: float = Field(ge=0, default=0, description="Basement area in m² (0 = no basement)")
+
+    # Phase 1 — Building Basics (optional, backward compatible)
+    project_name: str = Field(default="", description="Project name for report identification")
+    state: str = Field(default="", description="Indian state/UT for jurisdiction logic")
+    city: str = Field(default="", description="City or approving authority")
+    building_status: str | None = Field(
+        default=None,
+        description="proposed | existing | under_construction",
+    )
+    basement_count: int = Field(ge=0, default=0, description="Number of basement levels")
+    sprinkler_proposed: bool | None = Field(default=None, description="Whether sprinkler system is proposed")
+
 
 
 @router.get("/api/building-types")
@@ -74,7 +87,7 @@ async def analyze_simple(body: SimpleManualInput):
 
         # 4. Build full BuildingInput with sensible defaults
         building_input = BuildingInput(
-            building_name=f"{body.building_type} Analysis",
+            building_name=body.project_name or f"{body.building_type} Analysis",
             building_type=body.building_type,
             total_floor_area=total_floor_area,
             number_of_floors=num_floors,
@@ -89,8 +102,15 @@ async def analyze_simple(body: SimpleManualInput):
             occupancy_group=group,
             occupancy_subdivision=subdivision,
             construction_type="type12",  # Default to fire-resistive (safer)
-            has_sprinklers=False,
+            has_sprinklers=body.sprinkler_proposed if body.sprinkler_proposed is not None else False,
             basement_area=body.basement_area,
+            # Phase 1 — Building Basics
+            project_name=body.project_name,
+            state=body.state or None,
+            city=body.city,
+            building_status=body.building_status,
+            basement_count=body.basement_count,
+            sprinkler_proposed=body.sprinkler_proposed,
         )
 
         # 5. Run rule engine

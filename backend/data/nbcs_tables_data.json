@@ -1,0 +1,74 @@
+{
+    "_metadata": {
+        "standard": "NBCS 2026 Part F — Fire and Life Safety",
+        "title": "NBCS 2026 Tables 2, 3, 4 Data",
+        "version": "2026",
+        "created": "2026-07-03",
+        "note": "TRACKING DATA ONLY. Used by Code Engine to compute alternative compliance metrics alongside NBC 2016."
+    },
+    "occupantLoad": {
+        "A": { "net_m2_per_person": 12.5 },
+        "B": { "net_m2_per_person": 3.0 },
+        "C": {
+            "default": { "gross_m2_per_person": 12.0 },
+            "C-I_inpatient": { "net_m2_per_person": 11.0 },
+            "C-I_outpatient": { "net_m2_per_person": 7.0 }
+        },
+        "D": {
+            "default": { "net_m2_per_person": 1.40 },
+            "concentrated": { "net_m2_per_person": 0.65 },
+            "dining": { "net_m2_per_person": 1.80 },
+            "gymnasium": { "net_m2_per_person": 4.6 }
+        },
+        "E": { 
+            "default": { "net_m2_per_person": 7.1 },
+            "E-II": { "gross_m2_per_person": 20.0 }
+        },
+        "F": {
+            "default": { "gross_m2_per_person": 2.1 },
+            "basement": { "gross_m2_per_person": 3.0 },
+            "mall_food_court": { "gross_m2_per_person": 1.8 }
+        },
+        "G": {
+            "G-I": { "gross_m2_per_person": 20.0 },
+            "G-II": { "gross_m2_per_person": 15.0 },
+            "G-III": { "gross_m2_per_person": 10.0 }
+        },
+        "H": { "gross_m2_per_person": 30.0 },
+        "J": { "gross_m2_per_person": 10.0 },
+        "K": { "gross_m2_per_person": 10.0 }
+    },
+    "capacityFactors": {
+        "A": { "stairways_mm": 10.0, "level_ramps_mm": 6.5 },
+        "B": { "stairways_mm": 10.0, "level_ramps_mm": 6.5 },
+        "C": { "stairways_mm": 15.0, "level_ramps_mm": 13.0 },
+        "D": { "stairways_mm": 10.0, "level_ramps_mm": 6.5 },
+        "E": { "stairways_mm": 10.0, "level_ramps_mm": 6.5 },
+        "F": { "stairways_mm": 10.0, "level_ramps_mm": 6.5 },
+        "G": { "stairways_mm": 10.0, "level_ramps_mm": 6.5 },
+        "H": { "stairways_mm": 10.0, "level_ramps_mm": 6.5 },
+        "J": { "stairways_mm": 18.0, "level_ramps_mm": 10.0 },
+        "K": { "stairways_mm": 10.0, "level_ramps_mm": 6.5 }
+    },
+    "travelDistance": {
+        "A": { "unsp_1_2": 30.0, "sp_1_2": 60.0, "type_3_4": 22.5 },
+        "B": { "unsp_1_2": 30.0, "sp_1_2": 45.0, "type_3_4": 22.5 },
+        "C": { "unsp_1_2": 30.0, "sp_1_2": 45.0, "type_3_4": 22.5 },
+        "D": { "unsp_1_2": 30.0, "sp_1_2": 45.0, "type_3_4": 30.0 },
+        "E": { "unsp_1_2": 30.0, "sp_1_2": 60.0, "type_3_4": 30.0 },
+        "E-II": { "unsp_1_2": null, "sp_1_2": 60.0, "type_3_4": null },
+        "F": { "unsp_1_2": 30.0, "sp_1_2": 45.0, "type_3_4": 30.0 },
+        "G-I": { "unsp_1_2": 45.0, "sp_1_2": 60.0, "type_3_4": null },
+        "G-II": { "unsp_1_2": 45.0, "sp_1_2": 60.0, "type_3_4": null },
+        "G-III": { "unsp_1_2": 22.5, "sp_1_2": 45.0, "type_3_4": null },
+        "H": { "unsp_1_2": 30.0, "sp_1_2": 90.0, "type_3_4": null },
+        "J": { "unsp_1_2": 22.5, "sp_1_2": 30.0, "type_3_4": null },
+        "K": { "unsp_1_2": 30.0, "sp_1_2": 45.0, "type_3_4": null }
+    },
+    "deadEndCorridorLimit": {
+        "B": 6.0,
+        "C": 6.0,
+        "D": 6.0,
+        "default": 15.0
+    }
+}

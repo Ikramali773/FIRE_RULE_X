@@ -23,6 +23,13 @@ from models import (
 )
 from nbc_checker import run_nbc_checks
 from nbcs_applicability import check_nbcs_applicability
+from nbcs_checker import run_nbcs_firefighting_check, run_nbcs_tables_check
+from models import (
+    NBCSFirefightingInstallationRequirement,
+    NBCSOccupantLoadData,
+    NBCSExitCapacityData,
+    NBCSTravelDistanceData,
+)
 
 
 class CodeEngineResult:
@@ -31,6 +38,10 @@ class CodeEngineResult:
     def __init__(self) -> None:
         self.nbc_compliance: Optional[NBCComplianceData] = None
         self.nbcs_applicability: Optional[dict] = None
+        self.nbcs_firefighting_installations: Optional[NBCSFirefightingInstallationRequirement] = None
+        self.nbcs_occupant_load: Optional[NBCSOccupantLoadData] = None
+        self.nbcs_exit_capacity: Optional[NBCSExitCapacityData] = None
+        self.nbcs_travel_distance: Optional[NBCSTravelDistanceData] = None
         self.violations: list[Violation] = []
         self.passed_rules: list[str] = []
 
@@ -66,6 +77,16 @@ def evaluate(inp: BuildingInput) -> CodeEngineResult:
             firefighting_installations=nbc_result.firefighting_installations,
             detector_counts=nbc_result.detector_counts,
         )
+        
+        # ── NBCS 2026 Part F Tables 7A-7J (Tracking layer) ──
+        result.nbcs_firefighting_installations = run_nbcs_firefighting_check(
+            inp, nbc_active_result=nbc_result.firefighting_installations
+        )
+        
+        occ_data, cap_data, td_data = run_nbcs_tables_check(inp)
+        result.nbcs_occupant_load = occ_data
+        result.nbcs_exit_capacity = cap_data
+        result.nbcs_travel_distance = td_data
 
     # ── NBCS 2026 Part F applicability check ──
     if inp.occupancy_group:

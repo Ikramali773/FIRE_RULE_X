@@ -8,6 +8,7 @@ import ComplianceScore from '@/components/ComplianceScore';
 import ViolationCard from '@/components/ViolationCard';
 import ExtinguisherTable from '@/components/ExtinguisherTable';
 import NBCCompliancePanel from '@/components/NBCCompliancePanel';
+import SystemCardPanel from '@/components/SystemCardPanel';
 import type { AnalyzeResponse } from '@/types';
 import nbcData from '@/data/nbc_building_classification.json';
 
@@ -170,6 +171,9 @@ function ResultsContent() {
 
                         {/* NBC Compliance */}
                         <NBCCompliancePanel data={analysis.nbcCompliance} />
+
+                        {/* Triggered Standards (System Cards) */}
+                        <SystemCardPanel cards={analysis.systemCards} />
 
                         {/* Passed rules */}
                         {analysis.passedRules.length > 0 && (

@@ -16,16 +16,19 @@ from pydantic import BaseModel, Field
 
 HazardType = Literal["low", "moderate", "high"]
 FireClass = Literal["A", "B", "C", "D", "F"]
-OccupancyGroup = Literal["A", "B", "C", "D", "E", "F", "G", "H", "J"]
+OccupancyGroup = Literal["A", "B", "C", "D", "E", "F", "G", "H", "J", "K"]
 OccupancySubdivision = Literal[
     "A-1", "A-2", "A-3", "A-4", "A-5", "A-6",
     "B-1", "B-2",
     "C-1", "C-2", "C-3",
     "D-1", "D-2", "D-3", "D-4", "D-5", "D-6", "D-7",
     "E-1", "E-2", "E-3", "E-4", "E-5",
+    "E-I", "E-II",  # NBCS 2026 Part F, Section 3.1.6
     "F-1", "F-2", "F-3",
+    "F-I", "F-II",  # NBCS 2026 Part F, Section 3.1.7
     "G-1", "G-2", "G-3",
     "H", "J",
+    "K",  # NBCS 2026 Part F, Section 3.1.11 — Mixed Occupancy
 ]
 ConstructionType = Literal["type12", "type34"]
 ConfidenceLevel = Literal["high", "medium", "low"]
@@ -83,6 +86,18 @@ class BuildingInput(BaseModel):
     travel_distance_m: Optional[float] = Field(alias="travelDistanceM", default=None)
     basement_area: float = Field(alias="basementArea", default=0)
 
+    # NBCS 2026 Part F — additional input fields
+    has_ev_parking: bool = Field(
+        alias="hasEvParking", default=False,
+        description="Whether building has EV parking/charging in podium or basements. "
+                    "NBCS 2026 Table 7A Note 3: triggers CL-5 sprinkler protection.",
+    )
+    dead_end_corridor_m: Optional[float] = Field(
+        alias="deadEndCorridorM", default=None,
+        description="Longest dead-end corridor length in metres. "
+                    "NBCS 2026 Part F, Section 4.4.2.2(c).",
+    )
+
 
 # ── Rule Engine Output Models ──────────────────────────────────────────
 
@@ -136,6 +151,12 @@ class FirefightingInstallationRequirement(BaseModel):
     automatic_sprinkler: bool = Field(alias="automaticSprinkler")
     manual_fire_alarm: bool = Field(alias="manualFireAlarm")
     auto_detection_alarm: bool = Field(alias="autoDetectionAlarm")
+    # NBCS 2026 Part F Tables 7A–7J, Column 10 — new requirement
+    public_address_voice_evacuation: bool = Field(
+        alias="publicAddressVoiceEvacuation", default=False,
+        description="Public Address and Voice Evacuation System. "
+                    "NBCS 2026 Part F Tables 7A–7J, Column 10.",
+    )
     underground_tank_litres: Optional[int] = Field(alias="undergroundTankLitres", default=None)
     terrace_tank_litres: Optional[int] = Field(alias="terraceTankLitres", default=None)
     underground_pump_lpm: Optional[int] = Field(alias="undergroundPumpLpm", default=None)
@@ -225,7 +246,34 @@ class DetectorCountData(BaseModel):
     floor_wise: list[FloorDetectorCount] = Field(alias="floorWise", default_factory=list)
 
 
-# ── NBCS 2026 Applicability ─────────────────────────────────────────────
+# ── NBCS 2026 Applicability & Tracking ─────────────────────────────────
+
+
+class NBCSOccupantLoadData(BaseModel):
+    model_config = {"populate_by_name": True}
+
+    total_occupants: int = Field(alias="totalOccupants", description="NBCS calculated occupants")
+    load_factor_net: Optional[float] = Field(alias="loadFactorNet", default=None)
+    load_factor_gross: Optional[float] = Field(alias="loadFactorGross", default=None)
+    note: str = Field(alias="note", default="Based on NBCS 2026 Table 2")
+
+
+class NBCSExitCapacityData(BaseModel):
+    model_config = {"populate_by_name": True}
+
+    stairway_mm_per_person: float = Field(alias="stairwayMmPerPerson")
+    level_mm_per_person: float = Field(alias="levelMmPerPerson")
+    max_stairway_width_mm: float = Field(alias="maxStairwayWidthMm")
+    max_level_width_mm: float = Field(alias="maxLevelWidthMm")
+    dead_end_limit_m: float = Field(alias="deadEndLimitM")
+    note: str = Field(alias="note", default="Based on NBCS 2026 Table 3")
+
+
+class NBCSTravelDistanceData(BaseModel):
+    model_config = {"populate_by_name": True}
+
+    max_distance_m: Optional[float] = Field(alias="maxDistanceM")
+    note: str = Field(alias="note", default="Based on NBCS 2026 Table 4")
 
 
 class NBCSApplicabilityResult(BaseModel):
@@ -240,6 +288,66 @@ class NBCSApplicabilityResult(BaseModel):
     area_threshold_m2: Optional[float] = Field(alias="areaThresholdM2", default=None)
 
 
+# NBCS 2026 Part F — Protection Level Labels
+# Ref: Tables 7A–7J tier definitions
+NBCSProtectionLevel = Literal["HL-1", "HL-2", "HL-3", "CL-3", "CL-4", "CL-5", "SELF-CERT"]
+
+
+class NBCSFirefightingInstallationRequirement(BaseModel):
+    """NBCS 2026 Part F Tables 7A–7J tracking result.
+
+    This is a TRACKING model — it runs in parallel with NBC 2016
+    firefighting installation requirements but does NOT replace them.
+
+    Software Scope reference:
+      "FireRuleX should support both a baseline NBC 2016 library and
+       an NBCS tracking layer, but should not switch live calculation
+       logic to NBCS nationally until the applicable state or
+       approving authority clearly adopts and enforces it."
+    """
+
+    model_config = {"populate_by_name": True}
+
+    # Core installation R/NR flags (mirrors NBC 2016 but from NBCS tables)
+    fire_extinguisher: bool = Field(alias="fireExtinguisher")
+    first_aid_hose_reel: bool = Field(alias="firstAidHoseReel")
+    wet_riser: bool = Field(alias="wetRiser")
+    down_comer: bool = Field(alias="downComer")
+    yard_hydrant: bool = Field(alias="yardHydrant")
+    automatic_sprinkler: bool = Field(alias="automaticSprinkler")
+    auto_detection_alarm: bool = Field(alias="autoDetectionAlarm")
+    # New in NBCS 2026 — Column 10 of Tables 7A–7J
+    public_address_voice_evacuation: bool = Field(
+        alias="publicAddressVoiceEvacuation",
+        description="NBCS 2026 Tables 7A–7J, Column 10.",
+    )
+
+    # NBCS-specific metadata
+    protection_level: NBCSProtectionLevel = Field(
+        alias="protectionLevel",
+        description="NBCS protection tier label (HL-1/HL-2/HL-3/CL-3/CL-4/CL-5).",
+    )
+    nbcs_table_ref: str = Field(
+        alias="nbcsTableRef",
+        description="Specific NBCS table reference (e.g. 'Table 7A', 'Table 7E').",
+    )
+    occupancy_label: str = Field(alias="occupancyLabel")
+    clause_ref: str = Field(alias="clauseRef")
+    self_certification_eligible: bool = Field(
+        alias="selfCertificationEligible", default=False,
+        description="True if building falls within the self-certification threshold "
+                    "(≤500 m² and ≤15/24m height, per NBCS table header).",
+    )
+    triggered_notes: list[str] = Field(
+        alias="triggeredNotes", default_factory=list,
+        description="Active conditional notes (e.g. 'Note 1: Kitchen upgrades to HL-2').",
+    )
+    differs_from_nbc: bool = Field(
+        alias="differsFromNbc", default=False,
+        description="True if NBCS requirements differ from active NBC 2016 requirements.",
+    )
+
+
 class NBCComplianceData(BaseModel):
     model_config = {"populate_by_name": True}
 
@@ -251,6 +359,24 @@ class NBCComplianceData(BaseModel):
     )
     detector_counts: Optional[DetectorCountData] = Field(alias="detectorCounts", default=None)
     nbcs_applicability: Optional[NBCSApplicabilityResult] = Field(alias="nbcsApplicability", default=None)
+    nbcs_firefighting_installations: Optional["NBCSFirefightingInstallationRequirement"] = Field(
+        alias="nbcsFirefightingInstallations", default=None,
+        description="NBCS 2026 Part F Tables 7A–7J tracking result (parallel to NBC 2016).",
+    )
+    nbcs_occupant_load: Optional[NBCSOccupantLoadData] = Field(alias="nbcsOccupantLoad", default=None)
+    nbcs_exit_capacity: Optional[NBCSExitCapacityData] = Field(alias="nbcsExitCapacity", default=None)
+    nbcs_travel_distance: Optional[NBCSTravelDistanceData] = Field(alias="nbcsTravelDistance", default=None)
+
+
+class SystemCard(BaseModel):
+    model_config = {"populate_by_name": True}
+
+    system_name: str = Field(alias="systemName")
+    status: str = Field(description="e.g. 'REQUIRED', 'NOT REQUIRED'")
+    triggered_by: str = Field(alias="triggeredBy")
+    relevant_standards: list[str] = Field(alias="relevantStandards")
+    missing_inputs: list[str] = Field(alias="missingInputs", default_factory=list)
+    next_steps: list[str] = Field(alias="nextSteps", default_factory=list)
 
 
 class AnalysisResult(BaseModel):
@@ -265,6 +391,7 @@ class AnalysisResult(BaseModel):
     passed_rules: list[str] = Field(alias="passedRules")
     analysis_method: AnalysisMethod = Field(alias="analysisMethod")
     nbc_compliance: Optional[NBCComplianceData] = Field(alias="nbcCompliance", default=None)
+    system_cards: list[SystemCard] = Field(alias="systemCards", default_factory=list)
 
 
 # ── Extraction & API Response ──────────────────────────────────────────

@@ -1,0 +1,1109 @@
+{
+    "_metadata": {
+        "standard": "NBCS 2026 Part F — Fire and Life Safety",
+        "title": "Requirements for Firefighting Installations",
+        "version": "2026",
+        "created": "2026-07-03",
+        "source_tables": "Tables 7A through 7J",
+        "note": "TRACKING DATA ONLY — runs in parallel with NBC 2016. Per Software Scope: NBCS should not replace active NBC calculation logic until state adoption confirmed.",
+        "columns": [
+            "(3) Fire Extinguisher",
+            "(4) First Aid Hose Reel",
+            "(5) Down Comer",
+            "(6) Wet Riser",
+            "(7) Yard Hydrant",
+            "(8) Automatic Wet Sprinkler System",
+            "(9) Automatic Detection and Alarm System",
+            "(10) Public Address and Voice Evacuation System"
+        ]
+    },
+    "tables": {
+        "7A": {
+            "title": "Requirements for Firefighting Installations – For Residential Buildings",
+            "occupancy_group": "A",
+            "clause_refs": "Clauses 4.9(a), 4.9(c), 4.9(e), 5.1.1(a), 5.1.1(d), 5.1.2.1, 5.1.3(a), D-6.1, G-2(f) and Table 31",
+            "subdivisions": {
+                "A-I": {
+                    "label": "Lodging and Rooming Houses",
+                    "self_cert_threshold": {"max_area_m2": 500, "max_height_m": 24},
+                    "tiers": [
+                        {
+                            "tier_id": "A-I_HL1",
+                            "protection_level": "HL-1",
+                            "description": "24m+ height OR <24m with floor area 501–1000 m²",
+                            "height_min_m": null,
+                            "height_max_m": null,
+                            "area_min_m2": 501,
+                            "area_max_m2": 1000,
+                            "note_refs": [1, 2, 3, 4],
+                            "installations": {
+                                "fire_extinguisher": true,
+                                "first_aid_hose_reel": true,
+                                "down_comer": false,
+                                "wet_riser": false,
+                                "yard_hydrant": false,
+                                "automatic_sprinkler": false,
+                                "auto_detection_alarm": true,
+                                "public_address_voice_evacuation": false
+                            }
+                        },
+                        {
+                            "tier_id": "A-I_HL2",
+                            "protection_level": "HL-2",
+                            "description": "Floor area 1001 m² and above",
+                            "height_min_m": null,
+                            "height_max_m": null,
+                            "area_min_m2": 1001,
+                            "area_max_m2": null,
+                            "note_refs": [2, 3, 4],
+                            "installations": {
+                                "fire_extinguisher": true,
+                                "first_aid_hose_reel": true,
+                                "down_comer": true,
+                                "wet_riser": false,
+                                "yard_hydrant": false,
+                                "automatic_sprinkler": false,
+                                "auto_detection_alarm": true,
+                                "public_address_voice_evacuation": true
+                            }
+                        }
+                    ]
+                },
+                "A-II": {
+                    "label": "Dormitories",
+                    "self_cert_threshold": {"max_area_m2": 500, "max_height_m": 24},
+                    "tiers": [
+                        {
+                            "tier_id": "A-II_HL1",
+                            "protection_level": "HL-1",
+                            "description": "Floor area 501–1000 m²",
+                            "area_min_m2": 501,
+                            "area_max_m2": 1000,
+                            "note_refs": [1, 2, 3, 4],
+                            "installations": {
+                                "fire_extinguisher": true,
+                                "first_aid_hose_reel": true,
+                                "down_comer": false,
+                                "wet_riser": false,
+                                "yard_hydrant": false,
+                                "automatic_sprinkler": false,
+                                "auto_detection_alarm": false,
+                                "public_address_voice_evacuation": false
+                            }
+                        },
+                        {
+                            "tier_id": "A-II_HL2",
+                            "protection_level": "HL-2",
+                            "description": "Floor area 1001 m² and above",
+                            "area_min_m2": 1001,
+                            "area_max_m2": null,
+                            "note_refs": [2, 3, 4],
+                            "installations": {
+                                "fire_extinguisher": true,
+                                "first_aid_hose_reel": true,
+                                "down_comer": true,
+                                "wet_riser": false,
+                                "yard_hydrant": false,
+                                "automatic_sprinkler": false,
+                                "auto_detection_alarm": true,
+                                "public_address_voice_evacuation": false
+                            }
+                        }
+                    ]
+                },
+                "A-III": {
+                    "label": "Apartment Houses",
+                    "self_cert_threshold": {"max_area_m2": 500, "max_height_m": 24},
+                    "tiers": [
+                        {
+                            "tier_id": "A-III_HL2",
+                            "protection_level": "HL-2",
+                            "description": "24m+ but ≤60m OR <24m with area 501–1000 m²",
+                            "height_min_m": null,
+                            "height_max_m": 60,
+                            "area_min_m2": 501,
+                            "area_max_m2": 1000,
+                            "note_refs": [2, 3, 4, 7, 9],
+                            "installations": {
+                                "fire_extinguisher": true,
+                                "first_aid_hose_reel": true,
+                                "down_comer": true,
+                                "wet_riser": false,
+                                "yard_hydrant": false,
+                                "automatic_sprinkler": false,
+                                "auto_detection_alarm": false,
+                                "public_address_voice_evacuation": false
+                            }
+                        },
+                        {
+                            "tier_id": "A-III_HL3",
+                            "protection_level": "HL-3",
+                            "description": "Area 1001 m² and above (≤60m height)",
+                            "height_min_m": null,
+                            "height_max_m": 60,
+                            "area_min_m2": 1001,
+                            "area_max_m2": null,
+                            "note_refs": [2, 3, 4, 5, 7, 9, 10],
+                            "installations": {
+                                "fire_extinguisher": true,
+                                "first_aid_hose_reel": true,
+                                "down_comer": false,
+                                "wet_riser": true,
+                                "yard_hydrant": true,
+                                "automatic_sprinkler": false,
+                                "auto_detection_alarm": true,
+                                "public_address_voice_evacuation": true
+                            }
+                        },
+                        {
+                            "tier_id": "A-III_CL4",
+                            "protection_level": "CL-4",
+                            "description": "Above 60m height",
+                            "height_min_m": 60,
+                            "height_max_m": null,
+                            "area_min_m2": null,
+                            "area_max_m2": null,
+                            "note_refs": [3, 4, 5, 7, 8, 9, 10],
+                            "installations": {
+                                "fire_extinguisher": true,
+                                "first_aid_hose_reel": true,
+                                "down_comer": false,
+                                "wet_riser": true,
+                                "yard_hydrant": true,
+                                "automatic_sprinkler": true,
+                                "auto_detection_alarm": true,
+                                "public_address_voice_evacuation": true
+                            }
+                        }
+                    ]
+                },
+                "A-IV": {
+                    "label": "Hotels (up to 4 Star)",
+                    "self_cert_threshold": {"max_area_m2": 500, "max_height_m": 24},
+                    "tiers": [
+                        {
+                            "tier_id": "A-IV_HL3",
+                            "protection_level": "HL-3",
+                            "description": "≤24m height, area 501–1000 m²",
+                            "height_min_m": null,
+                            "height_max_m": 24,
+                            "area_min_m2": 501,
+                            "area_max_m2": 1000,
+                            "note_refs": [2, 3, 4, 7, 9],
+                            "installations": {
+                                "fire_extinguisher": true,
+                                "first_aid_hose_reel": true,
+                                "down_comer": true,
+                                "wet_riser": false,
+                                "yard_hydrant": false,
+                                "automatic_sprinkler": false,
+                                "auto_detection_alarm": true,
+                                "public_address_voice_evacuation": false
+                            }
+                        },
+                        {
+                            "tier_id": "A-IV_CL3",
+                            "protection_level": "CL-3",
+                            "description": "≤24m height, area 1001 m² and above",
+                            "height_min_m": null,
+                            "height_max_m": 24,
+                            "area_min_m2": 1001,
+                            "area_max_m2": null,
+                            "note_refs": [3, 4, 7, 9],
+                            "installations": {
+                                "fire_extinguisher": true,
+                                "first_aid_hose_reel": true,
+                                "down_comer": false,
+                                "wet_riser": true,
+                                "yard_hydrant": false,
+                                "automatic_sprinkler": true,
+                                "auto_detection_alarm": true,
+                                "public_address_voice_evacuation": true
+                            }
+                        },
+                        {
+                            "tier_id": "A-IV_CL4",
+                            "protection_level": "CL-4",
+                            "description": "24m+ but ≤60m OR 3/4 Star Hotels",
+                            "height_min_m": 24,
+                            "height_max_m": 60,
+                            "area_min_m2": null,
+                            "area_max_m2": null,
+                            "note_refs": [3, 4, 5, 7, 8, 9],
+                            "installations": {
+                                "fire_extinguisher": true,
+                                "first_aid_hose_reel": true,
+                                "down_comer": false,
+                                "wet_riser": true,
+                                "yard_hydrant": true,
+                                "automatic_sprinkler": true,
+                                "auto_detection_alarm": true,
+                                "public_address_voice_evacuation": true
+                            }
+                        }
+                    ]
+                },
+                "A-V": {
+                    "label": "Starred (5 Star+) Hotels",
+                    "self_cert_threshold": null,
+                    "tiers": [
+                        {
+                            "tier_id": "A-V_CL5",
+                            "protection_level": "CL-5",
+                            "description": "Up to 60m",
+                            "height_min_m": null,
+                            "height_max_m": 60,
+                            "area_min_m2": null,
+                            "area_max_m2": null,
+                            "note_refs": [4],
+                            "installations": {
+                                "fire_extinguisher": true,
+                                "first_aid_hose_reel": true,
+                                "down_comer": false,
+                                "wet_riser": true,
+                                "yard_hydrant": true,
+                                "automatic_sprinkler": true,
+                                "auto_detection_alarm": true,
+                                "public_address_voice_evacuation": true
+                            }
+                        }
+                    ]
+                }
+            },
+            "notes": {
+                "1": "If the building has kitchen, the protection level will be HL-2.",
+                "2": "If the building has basement to be protected with sprinklers, the protection level should comply with CL-3.",
+                "3": "If the building has EV parks in podium or basements, it should be protected with sprinklers and complying to CL-5.",
+                "4": "Rate of rise heat sensor/detection in EV parks. Smoke sensors in basements. CO sensors in ICE vehicle parks.",
+                "5": "If building height exceeds 60m, hydraulic calculations with multi-level pumping required. Pumps ≤12 bar shutoff.",
+                "6": "Pump pressure and quantity supported by hydraulic calculations.",
+                "7": "2500 lpm at 10 bar common pumping and 255000 litre storage for cluster of max 5 buildings. Buildings ≥9m apart. EV parking triggers CL-5.",
+                "8": "Multi-level pumping for cluster buildings >45m. Water storage at every 45m above.",
+                "9": "Cluster >5 buildings requires another set of pumps and storage. Max 2 sets.",
+                "10": "Table 7K and Table 7M for water quantity calculations."
+            }
+        },
+        "7B": {
+            "title": "Requirements for Firefighting Installations – For Educational Buildings",
+            "occupancy_group": "B",
+            "clause_refs": "Clauses 4.9(a), 4.9(c), 4.9(e), 5.1.1(a), 5.1.1(d), 5.1.2.1, 5.1.3(a), D-6.1, G-2(f) and Table 31",
+            "subdivisions": {
+                "B": {
+                    "label": "Educational Buildings",
+                    "self_cert_threshold": {"max_area_m2": 500, "max_height_m": 24},
+                    "tiers": [
+                        {
+                            "tier_id": "B_HL3",
+                            "protection_level": "HL-3",
+                            "description": "24m+ but ≤45m OR <24m with area 501–1000 m²",
+                            "height_min_m": null,
+                            "height_max_m": 45,
+                            "area_min_m2": 501,
+                            "area_max_m2": 1000,
+                            "note_refs": [1, 2, 3, 5, 7, 9],
+                            "installations": {
+                                "fire_extinguisher": true,
+                                "first_aid_hose_reel": true,
+                                "down_comer": false,
+                                "wet_riser": true,
+                                "yard_hydrant": true,
+                                "automatic_sprinkler": false,
+                                "auto_detection_alarm": true,
+                                "public_address_voice_evacuation": true
+                            }
+                        },
+                        {
+                            "tier_id": "B_CL4_area",
+                            "protection_level": "CL-4",
+                            "description": "Area 1001 m² and above (≤45m height)",
+                            "height_min_m": null,
+                            "height_max_m": 45,
+                            "area_min_m2": 1001,
+                            "area_max_m2": null,
+                            "note_refs": [3, 5, 7, 9, 10],
+                            "installations": {
+                                "fire_extinguisher": true,
+                                "first_aid_hose_reel": true,
+                                "down_comer": false,
+                                "wet_riser": true,
+                                "yard_hydrant": true,
+                                "automatic_sprinkler": true,
+                                "auto_detection_alarm": true,
+                                "public_address_voice_evacuation": true
+                            }
+                        },
+                        {
+                            "tier_id": "B_CL4_height",
+                            "protection_level": "CL-4",
+                            "description": "45m+ but ≤60m height",
+                            "height_min_m": 45,
+                            "height_max_m": 60,
+                            "area_min_m2": null,
+                            "area_max_m2": null,
+                            "note_refs": [5, 6, 7, 8, 9, 10],
+                            "installations": {
+                                "fire_extinguisher": true,
+                                "first_aid_hose_reel": true,
+                                "down_comer": false,
+                                "wet_riser": true,
+                                "yard_hydrant": true,
+                                "automatic_sprinkler": true,
+                                "auto_detection_alarm": true,
+                                "public_address_voice_evacuation": true
+                            }
+                        }
+                    ]
+                }
+            },
+            "notes": {
+                "1": "If there are laboratories, AV/computer rooms, auditoriums, they should be protected with sprinkler. Protection level should comply with CL-3.",
+                "2": "If the building has basement to be protected with sprinklers, the protection level should comply with CL-3.",
+                "3": "If the building has EV parks in podium or basements, comply with CL-5.",
+                "4": "Rate of rise heat sensor in EV parks. Smoke sensors in basements. CO sensors in ICE parks.",
+                "5": "If building height exceeds 60m, multi-level pumping. Pumps ≤12 bar shutoff.",
+                "6": "Pump pressure and quantity supported by hydraulic calculations.",
+                "7": "2500 lpm at 10 bar, 255000 litre storage for cluster of max 5 buildings.",
+                "8": "Multi-level pumping for cluster >45m.",
+                "9": "Cluster >5 buildings requires another set.",
+                "10": "Table 7K and Table 7M for water quantity calculations."
+            }
+        },
+        "7C": {
+            "title": "Requirements for Firefighting Installations – For Institutional Buildings",
+            "occupancy_group": "C",
+            "clause_refs": "Clauses 4.9(a), 4.9(c), 4.9(e), 5.1.1(a), 5.1.1(d), 5.1.2.1, 5.1.3(a), D-6.1, G-2(f) and Table 31",
+            "subdivisions": {
+                "C-nursing": {
+                    "label": "Nursing Homes and Sanatoria",
+                    "self_cert_threshold": {"max_area_m2": 500, "max_height_m": 24},
+                    "tiers": [
+                        {
+                            "tier_id": "C-nursing_HL3",
+                            "protection_level": "HL-3",
+                            "description": "Height >15m OR ≤15m with area 501 m² and above",
+                            "height_min_m": null,
+                            "height_max_m": null,
+                            "area_min_m2": 501,
+                            "area_max_m2": null,
+                            "note_refs": [1, 2, 4, 6, 9],
+                            "installations": {
+                                "fire_extinguisher": true,
+                                "first_aid_hose_reel": true,
+                                "down_comer": true,
+                                "wet_riser": false,
+                                "yard_hydrant": false,
+                                "automatic_sprinkler": false,
+                                "auto_detection_alarm": true,
+                                "public_address_voice_evacuation": false
+                            }
+                        }
+                    ]
+                },
+                "C-I": {
+                    "label": "Hospitals",
+                    "self_cert_threshold": {"max_area_m2": 500, "max_height_m": 24},
+                    "tiers": [
+                        {
+                            "tier_id": "C-I_CL3",
+                            "protection_level": "CL-3",
+                            "description": "≤45m height, area 501–1000 m²",
+                            "height_min_m": null,
+                            "height_max_m": 45,
+                            "area_min_m2": 501,
+                            "area_max_m2": 1000,
+                            "note_refs": [2, 4, 6, 7, 9, 10],
+                            "installations": {
+                                "fire_extinguisher": true,
+                                "first_aid_hose_reel": true,
+                                "down_comer": false,
+                                "wet_riser": true,
+                                "yard_hydrant": true,
+                                "automatic_sprinkler": true,
+                                "auto_detection_alarm": true,
+                                "public_address_voice_evacuation": false
+                            }
+                        },
+                        {
+                            "tier_id": "C-I_CL4",
+                            "protection_level": "CL-4",
+                            "description": "≤45m height, area 1001 m² and above",
+                            "height_min_m": null,
+                            "height_max_m": 45,
+                            "area_min_m2": 1001,
+                            "area_max_m2": null,
+                            "note_refs": [2, 4, 6, 7, 9, 10],
+                            "installations": {
+                                "fire_extinguisher": true,
+                                "first_aid_hose_reel": true,
+                                "down_comer": false,
+                                "wet_riser": true,
+                                "yard_hydrant": true,
+                                "automatic_sprinkler": true,
+                                "auto_detection_alarm": true,
+                                "public_address_voice_evacuation": true
+                            }
+                        },
+                        {
+                            "tier_id": "C-I_CL5",
+                            "protection_level": "CL-5",
+                            "description": "45m+ but ≤60m height",
+                            "height_min_m": 45,
+                            "height_max_m": 60,
+                            "area_min_m2": null,
+                            "area_max_m2": null,
+                            "note_refs": [4, 6, 7, 9, 10],
+                            "installations": {
+                                "fire_extinguisher": true,
+                                "first_aid_hose_reel": true,
+                                "down_comer": false,
+                                "wet_riser": true,
+                                "yard_hydrant": true,
+                                "automatic_sprinkler": true,
+                                "auto_detection_alarm": true,
+                                "public_address_voice_evacuation": true
+                            }
+                        }
+                    ]
+                },
+                "C-II_III": {
+                    "label": "Custodial, Penal and Mental Institutions (C-II and C-III)",
+                    "self_cert_threshold": {"max_area_m2": 500, "max_height_m": 24},
+                    "tiers": [
+                        {
+                            "tier_id": "C-II_HL2",
+                            "protection_level": "HL-2",
+                            "description": "≤45m height, area 501–1000 m²",
+                            "height_min_m": null,
+                            "height_max_m": 45,
+                            "area_min_m2": 501,
+                            "area_max_m2": 1000,
+                            "note_refs": [1, 2, 4, 6],
+                            "installations": {
+                                "fire_extinguisher": true,
+                                "first_aid_hose_reel": true,
+                                "down_comer": true,
+                                "wet_riser": false,
+                                "yard_hydrant": false,
+                                "automatic_sprinkler": false,
+                                "auto_detection_alarm": false,
+                                "public_address_voice_evacuation": true
+                            }
+                        },
+                        {
+                            "tier_id": "C-II_HL3",
+                            "protection_level": "HL-3",
+                            "description": "≤45m height, area 1001 m² and above",
+                            "height_min_m": null,
+                            "height_max_m": 45,
+                            "area_min_m2": 1001,
+                            "area_max_m2": null,
+                            "note_refs": [1, 2, 4, 6, 9],
+                            "installations": {
+                                "fire_extinguisher": true,
+                                "first_aid_hose_reel": true,
+                                "down_comer": false,
+                                "wet_riser": true,
+                                "yard_hydrant": true,
+                                "automatic_sprinkler": false,
+                                "auto_detection_alarm": true,
+                                "public_address_voice_evacuation": true
+                            }
+                        },
+                        {
+                            "tier_id": "C-II_HL4",
+                            "protection_level": "HL-3",
+                            "description": "Above 45m",
+                            "height_min_m": 45,
+                            "height_max_m": null,
+                            "area_min_m2": null,
+                            "area_max_m2": null,
+                            "note_refs": [1, 2, 3, 6, 8, 9],
+                            "installations": {
+                                "fire_extinguisher": true,
+                                "first_aid_hose_reel": true,
+                                "down_comer": false,
+                                "wet_riser": true,
+                                "yard_hydrant": true,
+                                "automatic_sprinkler": false,
+                                "auto_detection_alarm": true,
+                                "public_address_voice_evacuation": true
+                            }
+                        }
+                    ]
+                }
+            },
+            "notes": {
+                "1": "Basement area or storage of oxygen/medical gases/gas fuel, laundry/linen/waste, transformer/HT rooms within building footprint or basement should be protected with sprinkler. Comply with CL-3.",
+                "2": "If the building has EV parks in podium or basements, comply with CL-5.",
+                "3": "If building height exceeds 60m, multi-level pumping. Pumps ≤12 bar shutoff.",
+                "4": "Protection should comply to supplementary protection per Table 9/10/11.",
+                "5": "Pump pressure and quantity supported by hydraulic calculations.",
+                "6": "Rate of rise heat sensor in EV parks. Smoke sensors in basements. CO sensors in ICE parks.",
+                "7": "3785/2500 lpm at 10 bar, 350000/255000 litre storage for cluster of max 5 buildings ≤45m.",
+                "8": "Multi-level pumping for cluster >45m.",
+                "9": "Cluster >5 buildings requires another set.",
+                "10": "If building height exceeds 30m, comply hydraulic calculations.",
+                "11": "Table 7K and Table 7M for water quantity calculations."
+            }
+        },
+        "7D": {
+            "title": "Requirements for Firefighting Installations – For Assembly Buildings",
+            "occupancy_group": "D",
+            "clause_refs": "Clauses 4.9(a), 4.9(c), 4.9(e), 5.1.1(a), 5.1.1(d), 5.1.2.1, 5.1.3(a), D-6.1, G-2(f) and Table 31",
+            "subdivisions": {
+                "D": {
+                    "label": "Assembly Buildings",
+                    "self_cert_threshold": {"max_area_m2": 500, "max_height_m": 9},
+                    "tiers": [
+                        {
+                            "tier_id": "D_HL3",
+                            "protection_level": "HL-3",
+                            "description": "9m+ but ≤15m OR <9m with area 501–1000 m²",
+                            "height_min_m": null,
+                            "height_max_m": 15,
+                            "area_min_m2": 501,
+                            "area_max_m2": 1000,
+                            "note_refs": [1, 2, 3, 5, 8],
+                            "installations": {
+                                "fire_extinguisher": true,
+                                "first_aid_hose_reel": true,
+                                "down_comer": false,
+                                "wet_riser": true,
+                                "yard_hydrant": false,
+                                "automatic_sprinkler": false,
+                                "auto_detection_alarm": true,
+                                "public_address_voice_evacuation": false
+                            }
+                        },
+                        {
+                            "tier_id": "D_CL4_area",
+                            "protection_level": "CL-4",
+                            "description": "Area 1001 m² and above (≤15m height)",
+                            "height_min_m": null,
+                            "height_max_m": 15,
+                            "area_min_m2": 1001,
+                            "area_max_m2": null,
+                            "note_refs": [2, 5, 8, 9],
+                            "installations": {
+                                "fire_extinguisher": true,
+                                "first_aid_hose_reel": true,
+                                "down_comer": false,
+                                "wet_riser": true,
+                                "yard_hydrant": true,
+                                "automatic_sprinkler": true,
+                                "auto_detection_alarm": true,
+                                "public_address_voice_evacuation": false
+                            }
+                        },
+                        {
+                            "tier_id": "D_CL4_height",
+                            "protection_level": "CL-4",
+                            "description": "Above 15m height",
+                            "height_min_m": 15,
+                            "height_max_m": null,
+                            "area_min_m2": null,
+                            "area_max_m2": null,
+                            "note_refs": [2, 5, 6, 7, 8, 9],
+                            "installations": {
+                                "fire_extinguisher": true,
+                                "first_aid_hose_reel": true,
+                                "down_comer": false,
+                                "wet_riser": true,
+                                "yard_hydrant": true,
+                                "automatic_sprinkler": true,
+                                "auto_detection_alarm": true,
+                                "public_address_voice_evacuation": false
+                            }
+                        }
+                    ]
+                }
+            },
+            "notes": {
+                "1": "If the building has basement to be protected with sprinklers, comply with CL-3.",
+                "2": "If the building has EV parks in podium or basements, comply with CL-5.",
+                "3": "Live cooking kitchens, boiler/furnace rooms, laundry/linen/waste, transformer/HT rooms — sprinkler protection, comply with CL-4.",
+                "4": "Pump pressure and quantity supported by hydraulic calculations.",
+                "5": "Rate of rise heat sensor in EV parks. Smoke sensors in basements. CO sensors in ICE parks.",
+                "6": "2500 lpm at 10 bar, 255000 litre storage for cluster of max 5 buildings.",
+                "7": "Multi-level pumping for cluster >45m.",
+                "8": "Cluster >5 buildings requires another set.",
+                "9": "Table 7K and Table 7M for water quantity calculations."
+            }
+        },
+        "7E": {
+            "title": "Requirements for Firefighting Installations – For Business Buildings",
+            "occupancy_group": "E",
+            "clause_refs": "Clauses 4.9(a), 4.9(c), 4.9(e), 5.1.1(a), 5.1.1(d), 5.1.2.1, 5.1.3(a), D-6.1, G-2(f) and Table 31",
+            "subdivisions": {
+                "E-I": {
+                    "label": "Business Buildings (Human Occupied)",
+                    "self_cert_threshold": {"max_area_m2": 500, "max_height_m": 15},
+                    "tiers": [
+                        {
+                            "tier_id": "E-I_CL2",
+                            "protection_level": "CL-3",
+                            "description": "15m+ but ≤45m OR <15m with area 500–1000 m²",
+                            "height_min_m": null,
+                            "height_max_m": 45,
+                            "area_min_m2": 500,
+                            "area_max_m2": 1000,
+                            "note_refs": [1, 2, 3, 6, 7, 9, 11],
+                            "installations": {
+                                "fire_extinguisher": true,
+                                "first_aid_hose_reel": true,
+                                "down_comer": true,
+                                "wet_riser": false,
+                                "yard_hydrant": false,
+                                "automatic_sprinkler": true,
+                                "auto_detection_alarm": true,
+                                "public_address_voice_evacuation": true
+                            }
+                        },
+                        {
+                            "tier_id": "E-I_CL3",
+                            "protection_level": "CL-3",
+                            "description": "≤45m height, area 1001–3000 m²",
+                            "height_min_m": null,
+                            "height_max_m": 45,
+                            "area_min_m2": 1001,
+                            "area_max_m2": 3000,
+                            "note_refs": [2, 3, 6, 7, 9, 11],
+                            "installations": {
+                                "fire_extinguisher": true,
+                                "first_aid_hose_reel": true,
+                                "down_comer": false,
+                                "wet_riser": true,
+                                "yard_hydrant": true,
+                                "automatic_sprinkler": true,
+                                "auto_detection_alarm": true,
+                                "public_address_voice_evacuation": true
+                            }
+                        },
+                        {
+                            "tier_id": "E-I_CL4",
+                            "protection_level": "CL-4",
+                            "description": "≤45m height, area 3001 m² and above",
+                            "height_min_m": null,
+                            "height_max_m": 45,
+                            "area_min_m2": 3001,
+                            "area_max_m2": null,
+                            "note_refs": [2, 3, 6, 7, 9, 11],
+                            "installations": {
+                                "fire_extinguisher": true,
+                                "first_aid_hose_reel": true,
+                                "down_comer": false,
+                                "wet_riser": true,
+                                "yard_hydrant": true,
+                                "automatic_sprinkler": true,
+                                "auto_detection_alarm": true,
+                                "public_address_voice_evacuation": true
+                            }
+                        },
+                        {
+                            "tier_id": "E-I_CL5",
+                            "protection_level": "CL-5",
+                            "description": "45m+ but ≤60m height",
+                            "height_min_m": 45,
+                            "height_max_m": 60,
+                            "area_min_m2": null,
+                            "area_max_m2": null,
+                            "note_refs": [3, 4, 6, 7, 8, 9, 11],
+                            "installations": {
+                                "fire_extinguisher": true,
+                                "first_aid_hose_reel": true,
+                                "down_comer": false,
+                                "wet_riser": true,
+                                "yard_hydrant": true,
+                                "automatic_sprinkler": true,
+                                "auto_detection_alarm": true,
+                                "public_address_voice_evacuation": true
+                            }
+                        }
+                    ]
+                },
+                "E-II": {
+                    "label": "Data Centres (Machine Environment)",
+                    "self_cert_threshold": null,
+                    "tiers": [
+                        {
+                            "tier_id": "E-II_lt15_lt1000",
+                            "protection_level": "CL-5",
+                            "description": "<15m height, floor area ≤1000 m²",
+                            "height_min_m": null,
+                            "height_max_m": 15,
+                            "area_min_m2": null,
+                            "area_max_m2": 1000,
+                            "note_refs": [3, 12, 13, 15],
+                            "installations": {
+                                "fire_extinguisher": true,
+                                "first_aid_hose_reel": true,
+                                "down_comer": false,
+                                "wet_riser": true,
+                                "yard_hydrant": true,
+                                "automatic_sprinkler": true,
+                                "auto_detection_alarm": true,
+                                "public_address_voice_evacuation": true
+                            }
+                        },
+                        {
+                            "tier_id": "E-II_lt15_gt1000",
+                            "protection_level": "CL-5",
+                            "description": "<15m height, floor area 1001 m² and above",
+                            "height_min_m": null,
+                            "height_max_m": 15,
+                            "area_min_m2": 1001,
+                            "area_max_m2": null,
+                            "note_refs": [3, 12, 13, 15],
+                            "installations": {
+                                "fire_extinguisher": true,
+                                "first_aid_hose_reel": true,
+                                "down_comer": false,
+                                "wet_riser": true,
+                                "yard_hydrant": true,
+                                "automatic_sprinkler": true,
+                                "auto_detection_alarm": true,
+                                "public_address_voice_evacuation": true
+                            }
+                        },
+                        {
+                            "tier_id": "E-II_gt15_lt1000",
+                            "protection_level": "CL-5",
+                            "description": "15m+ height, floor area ≤1000 m²",
+                            "height_min_m": 15,
+                            "height_max_m": null,
+                            "area_min_m2": null,
+                            "area_max_m2": 1000,
+                            "note_refs": [3, 12, 13, 15],
+                            "installations": {
+                                "fire_extinguisher": true,
+                                "first_aid_hose_reel": true,
+                                "down_comer": false,
+                                "wet_riser": true,
+                                "yard_hydrant": true,
+                                "automatic_sprinkler": true,
+                                "auto_detection_alarm": true,
+                                "public_address_voice_evacuation": true
+                            }
+                        },
+                        {
+                            "tier_id": "E-II_gt15_gt1000",
+                            "protection_level": "CL-5",
+                            "description": "15m+ height, floor area 1001 m² and above",
+                            "height_min_m": 15,
+                            "height_max_m": null,
+                            "area_min_m2": 1001,
+                            "area_max_m2": null,
+                            "note_refs": [3, 12, 13, 15],
+                            "installations": {
+                                "fire_extinguisher": true,
+                                "first_aid_hose_reel": true,
+                                "down_comer": false,
+                                "wet_riser": true,
+                                "yard_hydrant": true,
+                                "automatic_sprinkler": true,
+                                "auto_detection_alarm": true,
+                                "public_address_voice_evacuation": true
+                            }
+                        }
+                    ]
+                }
+            },
+            "notes": {
+                "1": "If the building has basement to be protected with sprinklers, comply with CL-3.",
+                "2": "If the building has EV parks in podium or basements, comply with CL-5.",
+                "3": "Protection should comply to supplementary protection per Table 9/10/11.",
+                "4": "If building height exceeds 60m, multi-level pumping. Pumps ≤12 bar shutoff.",
+                "5": "Pump pressure and quantity supported by hydraulic calculations.",
+                "6": "2500 lpm at 10 bar, 255000 litre storage for cluster of max 5 buildings.",
+                "7": "3785 lpm at 10 bar, 350000 litre storage for cluster of max 5 buildings.",
+                "8": "Multi-level pumping for cluster >45m.",
+                "9": "Cluster >5 buildings requires another set.",
+                "10": "Entire building protected with sprinkler, comply with CL-5. IT/Data Hall clean agent gas suppression if racks without BBU.",
+                "11": "All internet data centres or hyper scales or colocation data centres comply with CL-6.",
+                "12": "IT/data hall racks with Li-ion BBU ≤20kWh/rack: wet/dry sprinkler/pre-action/water mist. BBU >20kWh: no water mist.",
+                "13": "Cluster of max 3 DC buildings: common pumping with additional diesel pump, double water storage.",
+                "14": "Li-ion energy storage >600kWh/floor: comply with CL-6.",
+                "15": "Li-ion BESS room: wet/single interlock pre-action sprinkler, entire room as assumed area of operation.",
+                "16": "Table 7K and Table 7M for water quantity calculations."
+            }
+        },
+        "7F": {
+            "title": "Requirements for Firefighting Installations – For Mercantile Buildings",
+            "occupancy_group": "F",
+            "clause_refs": "Clauses 4.9(a), 4.9(c), 4.9(e), 5.1.1(a), 5.1.1(d), 5.1.2.1, 5.1.3(a), D-6.1, G-2(f) and Table 31",
+            "subdivisions": {
+                "F-I": {
+                    "label": "Mercantile Buildings",
+                    "self_cert_threshold": {"max_area_m2": 500, "max_height_m": 15},
+                    "tiers": [
+                        {
+                            "tier_id": "F-I_HL3",
+                            "protection_level": "HL-3",
+                            "description": "15m+ but ≤30m OR <15m with area 501–1000 m²",
+                            "height_min_m": null,
+                            "height_max_m": 30,
+                            "area_min_m2": 501,
+                            "area_max_m2": 1000,
+                            "note_refs": [1, 2, 3, 5, 6, 7],
+                            "installations": {
+                                "fire_extinguisher": true,
+                                "first_aid_hose_reel": true,
+                                "down_comer": true,
+                                "wet_riser": false,
+                                "yard_hydrant": false,
+                                "automatic_sprinkler": false,
+                                "auto_detection_alarm": true,
+                                "public_address_voice_evacuation": false
+                            }
+                        },
+                        {
+                            "tier_id": "F-I_CL4",
+                            "protection_level": "CL-4",
+                            "description": "Area 1001 m² and above",
+                            "height_min_m": null,
+                            "height_max_m": 30,
+                            "area_min_m2": 1001,
+                            "area_max_m2": null,
+                            "note_refs": [2, 3, 5, 6, 7, 8],
+                            "installations": {
+                                "fire_extinguisher": true,
+                                "first_aid_hose_reel": true,
+                                "down_comer": false,
+                                "wet_riser": true,
+                                "yard_hydrant": true,
+                                "automatic_sprinkler": true,
+                                "auto_detection_alarm": true,
+                                "public_address_voice_evacuation": false
+                            }
+                        }
+                    ]
+                }
+            },
+            "notes": {
+                "1": "Basement with sprinkler protection: comply with CL-3.",
+                "2": "EV parks in podium/basements: comply with CL-5.",
+                "3": "Rate of rise heat sensor in EV parks. Smoke/CO sensors in basements.",
+                "4": "Pump pressure and quantity supported by hydraulic calculations.",
+                "5": "2500 lpm at 10 bar, 255000 litre storage for cluster ≤5 buildings.",
+                "6": "Cluster >5 buildings requires another set.",
+                "7": "Multi-level pumping for cluster >45m.",
+                "8": "Table 7K and Table 7M for water quantity calculations."
+            }
+        },
+        "7G": {
+            "title": "Requirements for Firefighting Installations – For Industrial Buildings",
+            "occupancy_group": "G",
+            "clause_refs": "Clauses 4.9(a), 4.9(c), 4.9(e), 5.1.1(a), 5.1.1(d), 5.1.2.1, 5.1.3(a), D-6.1, G-2(f) and Table 31",
+            "subdivisions": {
+                "G-I": {
+                    "label": "Low Hazard Industrial",
+                    "self_cert_threshold": {"max_area_m2": 500, "max_height_m": 15},
+                    "tiers": [
+                        {
+                            "tier_id": "G-I_HL2",
+                            "protection_level": "HL-2",
+                            "description": "Area 501–1000 m²",
+                            "area_min_m2": 501,
+                            "area_max_m2": 1000,
+                            "note_refs": [1, 2, 3, 4],
+                            "installations": {
+                                "fire_extinguisher": true,
+                                "first_aid_hose_reel": true,
+                                "down_comer": true,
+                                "wet_riser": false,
+                                "yard_hydrant": false,
+                                "automatic_sprinkler": false,
+                                "auto_detection_alarm": true,
+                                "public_address_voice_evacuation": false
+                            }
+                        },
+                        {
+                            "tier_id": "G-I_HL3",
+                            "protection_level": "HL-3",
+                            "description": "Area 1001 m² and above",
+                            "area_min_m2": 1001,
+                            "area_max_m2": null,
+                            "note_refs": [2, 3, 4, 7],
+                            "installations": {
+                                "fire_extinguisher": true,
+                                "first_aid_hose_reel": true,
+                                "down_comer": false,
+                                "wet_riser": true,
+                                "yard_hydrant": true,
+                                "automatic_sprinkler": false,
+                                "auto_detection_alarm": true,
+                                "public_address_voice_evacuation": false
+                            }
+                        }
+                    ]
+                },
+                "G-II": {
+                    "label": "Moderate Hazard Industrial",
+                    "self_cert_threshold": {"max_area_m2": 500, "max_height_m": 15},
+                    "tiers": [
+                        {
+                            "tier_id": "G-II_CL3",
+                            "protection_level": "CL-3",
+                            "description": "Area 501–1000 m²",
+                            "area_min_m2": 501,
+                            "area_max_m2": 1000,
+                            "note_refs": [2, 3, 4, 7],
+                            "installations": {
+                                "fire_extinguisher": true,
+                                "first_aid_hose_reel": true,
+                                "down_comer": false,
+                                "wet_riser": true,
+                                "yard_hydrant": true,
+                                "automatic_sprinkler": true,
+                                "auto_detection_alarm": true,
+                                "public_address_voice_evacuation": false
+                            }
+                        },
+                        {
+                            "tier_id": "G-II_CL4",
+                            "protection_level": "CL-4",
+                            "description": "Area 1001 m² and above",
+                            "area_min_m2": 1001,
+                            "area_max_m2": null,
+                            "note_refs": [2, 3, 4, 7],
+                            "installations": {
+                                "fire_extinguisher": true,
+                                "first_aid_hose_reel": true,
+                                "down_comer": false,
+                                "wet_riser": true,
+                                "yard_hydrant": true,
+                                "automatic_sprinkler": true,
+                                "auto_detection_alarm": true,
+                                "public_address_voice_evacuation": true
+                            }
+                        }
+                    ]
+                },
+                "G-III": {
+                    "label": "High Hazard Industrial",
+                    "self_cert_threshold": null,
+                    "tiers": [
+                        {
+                            "tier_id": "G-III_CL5",
+                            "protection_level": "CL-5",
+                            "description": "Built up area above 1001 m²",
+                            "area_min_m2": 1001,
+                            "area_max_m2": null,
+                            "note_refs": [2, 3, 4, 7],
+                            "installations": {
+                                "fire_extinguisher": true,
+                                "first_aid_hose_reel": true,
+                                "down_comer": false,
+                                "wet_riser": true,
+                                "yard_hydrant": true,
+                                "automatic_sprinkler": true,
+                                "auto_detection_alarm": true,
+                                "public_address_voice_evacuation": true
+                            }
+                        }
+                    ]
+                }
+            },
+            "notes": {
+                "1": "If there is basement with sprinkler protection, comply with CL-3.",
+                "2": "EV parks in podium/basements: comply with CL-5.",
+                "3": "Rate of rise heat sensor in EV parks. Smoke/CO sensors in basements.",
+                "4": "Pump pressure and quantity supported by hydraulic calculations.",
+                "5": "Multi-level pumping for >45m.",
+                "6": "Cluster >5 buildings requires another set.",
+                "7": "Table 7K and Table 7M for water quantity calculations."
+            }
+        },
+        "7H": {
+            "title": "Requirements for Firefighting Installations – For Storage Buildings",
+            "occupancy_group": "H",
+            "clause_refs": "Clauses 4.9(a), 4.9(c), 4.9(e), 5.1.1(a), 5.1.1(d), 5.1.2.1, 5.1.3(a), D-6.1, G-2(f) and Table 31",
+            "subdivisions": {
+                "H": {
+                    "label": "Storage Buildings",
+                    "self_cert_threshold": {"max_area_m2": 500, "max_height_m": 15},
+                    "tiers": [
+                        {
+                            "tier_id": "H_HL2",
+                            "protection_level": "HL-2",
+                            "description": "Area 501–1000 m²",
+                            "area_min_m2": 501,
+                            "area_max_m2": 1000,
+                            "note_refs": [1, 2, 3],
+                            "installations": {
+                                "fire_extinguisher": true,
+                                "first_aid_hose_reel": true,
+                                "down_comer": true,
+                                "wet_riser": false,
+                                "yard_hydrant": false,
+                                "automatic_sprinkler": false,
+                                "auto_detection_alarm": true,
+                                "public_address_voice_evacuation": false
+                            }
+                        },
+                        {
+                            "tier_id": "H_HL3",
+                            "protection_level": "HL-3",
+                            "description": "Area 1001 m² and above",
+                            "area_min_m2": 1001,
+                            "area_max_m2": null,
+                            "note_refs": [2, 3, 4],
+                            "installations": {
+                                "fire_extinguisher": true,
+                                "first_aid_hose_reel": true,
+                                "down_comer": false,
+                                "wet_riser": true,
+                                "yard_hydrant": true,
+                                "automatic_sprinkler": false,
+                                "auto_detection_alarm": true,
+                                "public_address_voice_evacuation": false
+                            }
+                        }
+                    ]
+                }
+            },
+            "notes": {
+                "1": "Basement with sprinkler protection: comply with CL-3.",
+                "2": "EV parks: comply with CL-5.",
+                "3": "Rate of rise heat sensor in EV parks. Smoke/CO sensors in basements.",
+                "4": "Table 7K and Table 7M for water quantity calculations."
+            }
+        },
+        "7J": {
+            "title": "Requirements for Firefighting Installations – For Hazardous Buildings",
+            "occupancy_group": "J",
+            "clause_refs": "Clauses 4.9(a), 4.9(c), 4.9(e), 5.1.1(a), 5.1.1(d), 5.1.2.1, 5.1.3(a), D-6.1, G-2(f) and Table 31",
+            "subdivisions": {
+                "J": {
+                    "label": "Hazardous Buildings",
+                    "self_cert_threshold": null,
+                    "tiers": [
+                        {
+                            "tier_id": "J_CL5",
+                            "protection_level": "CL-5",
+                            "description": "All hazardous buildings",
+                            "area_min_m2": null,
+                            "area_max_m2": null,
+                            "note_refs": [1, 2],
+                            "installations": {
+                                "fire_extinguisher": true,
+                                "first_aid_hose_reel": true,
+                                "down_comer": false,
+                                "wet_riser": true,
+                                "yard_hydrant": true,
+                                "automatic_sprinkler": true,
+                                "auto_detection_alarm": true,
+                                "public_address_voice_evacuation": true
+                            }
+                        }
+                    ]
+                }
+            },
+            "notes": {
+                "1": "Protection should comply to supplementary protection per Table 9/10/11.",
+                "2": "Pump pressure and quantity supported by hydraulic calculations.",
+                "3": "Table 7K and Table 7M for water quantity calculations."
+            }
+        }
+    }
+}

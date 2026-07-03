@@ -107,6 +107,18 @@ def run_rule_engine(inp: BuildingInput) -> AnalysisResult:
                 height_threshold_m=thresholds.get("height_threshold_m"),
                 area_threshold_m2=thresholds.get("area_threshold_m2"),
             )
+            
+        if code_result.nbcs_firefighting_installations:
+            nbc_compliance.nbcs_firefighting_installations = code_result.nbcs_firefighting_installations
+            
+        if code_result.nbcs_occupant_load:
+            nbc_compliance.nbcs_occupant_load = code_result.nbcs_occupant_load
+            
+        if code_result.nbcs_exit_capacity:
+            nbc_compliance.nbcs_exit_capacity = code_result.nbcs_exit_capacity
+            
+        if code_result.nbcs_travel_distance:
+            nbc_compliance.nbcs_travel_distance = code_result.nbcs_travel_distance
 
     # ── Engine Layer 2: Standards Engine (BIS standards — stub) ──
 
@@ -147,4 +159,5 @@ def run_rule_engine(inp: BuildingInput) -> AnalysisResult:
         passed_rules=passed_rules,
         analysis_method="structured_input",
         nbc_compliance=nbc_compliance,
+        system_cards=_standards_result.system_cards,
     )

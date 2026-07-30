@@ -1,0 +1,153 @@
+{
+  "theme": "Light theme (Primary) with Dark mode support. For engineering and compliance tools, a high-contrast Light mode ensures dense table readability and clear blueprint-style hierarchy.",
+  "archetype": "Swiss & High-Contrast (Authority, Clarity, Truth)",
+  "typography": {
+    "fonts": {
+      "headings": "Cabinet Grotesk (sans-serif, structural, precise)",
+      "body": "IBM Plex Sans (sans-serif, highly legible for dense UI)",
+      "mono": "JetBrains Mono (monospace, critical for NBC clause references, measurements, and numerical data)"
+    },
+    "scale": {
+      "h1": "text-4xl tracking-tight font-bold text-slate-900",
+      "h2": "text-2xl tracking-tight font-semibold text-slate-800",
+      "h3": "text-lg tracking-tight font-medium text-slate-800",
+      "h4": "text-sm tracking-wider uppercase font-bold text-slate-500",
+      "body": "text-sm leading-relaxed text-slate-700",
+      "data_point": "font-mono text-sm font-medium text-slate-900",
+      "clause_ref": "font-mono text-xs text-blue-600 bg-blue-50 px-1 py-0.5 rounded-sm"
+    },
+    "rules": [
+      "Never use Inter, Roboto, or Open Sans.",
+      "Headings must use tight letter spacing.",
+      "Overlines and labels must be uppercase, tiny, wide spacing (tracking-[0.2em]).",
+      "Line height: tight for headers, loose for body."
+    ]
+  },
+  "colors": {
+    "background": {
+      "page": "#F8F9FA",
+      "surface": "#FFFFFF",
+      "surface_alt": "#F1F3F5"
+    },
+    "border": {
+      "default": "#E2E8F0",
+      "focus": "#0A192F"
+    },
+    "text": {
+      "primary": "#0F172A",
+      "secondary": "#475569",
+      "tertiary": "#94A3B8"
+    },
+    "brand": {
+      "primary": "#0A192F",
+      "accent": "#2962FF"
+    },
+    "status": {
+      "passed_compliant": "#00C853",
+      "passed_bg": "#E8F5E9",
+      "warning_conditional": "#FFD600",
+      "warning_bg": "#FFFDE7",
+      "alert_required": "#D50000",
+      "alert_bg": "#FFEBEE",
+      "info_standard": "#2962FF",
+      "info_bg": "#E3F2FD",
+      "not_required": "#9E9E9E",
+      "not_required_bg": "#F5F5F5"
+    },
+    "rules": [
+      "No full-screen gradients.",
+      "Use high-contrast monochrome base with functional accent colors.",
+      "Status colors must have matching tinted backgrounds for badges.",
+      "Never use pure black or pure gray; use slate (blue-tinted gray)."
+    ]
+  },
+  "visual_enhancers": {
+    "surfaces": "Grid Borders (The 'Technical' Look). Use border-collapse style layouts. Items should have border-r and border-b to expose the skeleton of the UI. Avoid soft UI and floating shadows.",
+    "borders": "Sharp edges or minimal rounded corners (max rounded-sm or 4px). Keep it architectural and crisp.",
+    "shadows": "Minimal. Use purely functional drop-shadows on tooltips or dropdown menus only. Cards should rely on borders, not shadows."
+  },
+  "layouts": {
+    "grid_strategy": "High Density Grid (Mode B) for Data-Heavy Dashboards.",
+    "spacing": "Dense but clear. Use p-4 to p-6 for card internals. gap-4 or gap-6 for grid. Avoid massive padding in data tables.",
+    "patterns": [
+      "Top Summary Card: Full width, highlighting Mixed Occupancy combinations via pill/chip list.",
+      "Building Parameters Wizard: Linear or stepped horizontal layout with distinct sections.",
+      "Compliance Blocks: Sectioned cards by NBC table/topic.",
+      "Fire-Fighting Installations Table: Dense table. Crucially, Wet Riser and Down Comer must be distinct, separate rows.",
+      "Expandable Rows: For NBC clause traceability, use accordion or expandable table rows to show the exact clauses.",
+      "Triggered BIS Standards: Small, dense grid of cards below the main compliance section."
+    ]
+  },
+  "components": {
+    "badges": "Square or very slightly rounded (rounded-sm). Font: JetBrains Mono text-xs. Color-coded by status (Required, Not Required, Conditional).",
+    "tables": "Shadcn Table component. border-b on rows, hover:bg-slate-50. Data aligned based on type (numbers right, text left).",
+    "buttons": "Sharp edges, flat design. Primary: bg-[#0A192F] text-white hover:bg-[#1E293B].",
+    "accordion": "For NBC Clause traceability. 1px border, subtle gray background on header hover.",
+    "cards": "Cardless or flat cards with 1px border-slate-200. No shadow.",
+    "forms": "Shadcn components. Input fields with sharp borders, clear focus rings (ring-1 ring-[#0A192F])."
+  },
+  "motion": {
+    "rules": [
+      "Minimalist and functional.",
+      "Use micro-interactions for hover states (e.g., border color darkens, slight background tint).",
+      "Smooth accordion open/close for NBC clauses.",
+      "No bounce or spring animations. Use precise linear or ease-out transitions."
+    ]
+  },
+  "accessibility": {
+    "rules": [
+      "Ensure text contrast meets WCAG AA standards (minimum 4.5:1).",
+      "Explicitly set text color on hover.",
+      "Focus rings must be high contrast.",
+      "Use data-testid attributes on all interactive elements (e.g., data-testid='occupancy-select', data-testid='pdf-export-button').",
+      "Status indicators must use both color and text/icon (e.g., a red icon AND the text 'Required')."
+    ]
+  },
+  "media": {
+    "icons": "Use Phosphor Icons (dense dashboards and developer tools). Regular or bold weight. Avoid cute or overly rounded icons."
+  },
+  "image_urls": {
+    "login_background": {
+      "url": "https://images.unsplash.com/photo-1488972685288-c3fd157d7c7a",
+      "description": "Low angle photography of gray building at daytime. Architectural facade representing structure and engineering. Use with a dark overlay for login/hero."
+    },
+    "blueprint_texture": {
+      "url": "https://images.pexels.com/photos/9615249/pexels-photo-9615249.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "description": "Close-up of architectural blueprints. Use at very low opacity (e.g., 5%) as a background texture for headers or summary cards."
+    }
+  },
+  "instructions_to_main_agent": {
+    "setup": [
+      "Install required fonts: Cabinet Grotesk, IBM Plex Sans, JetBrains Mono.",
+      "Install @phosphor-icons/react for iconography.",
+      "Install shadcn/ui components: table, badge, card, accordion, button, select, input."
+    ],
+    "implementation_steps": [
+      "1. Build the Page Layout: Top sticky header with app title and PDF export button.",
+      "2. Create the Building Parameters Wizard: Inputs for height, floors, area, basement, occupant load. Allow multi-select for occupancies.",
+      "3. Develop the Summary Section: Display entered parameters and mixed occupancy chips.",
+      "4. Build the Compliance Results Layout: Grid of cards for different NBC Part 4 topics.",
+      "5. Implement the Fire-Fighting Installations Table: Ensure 'Wet Riser' and 'Down Comer' are separate, explicit rows. Add status badges.",
+      "6. Add NBC Traceability: Use accordions inside table rows or cards to reveal specific table/clause notes.",
+      "7. Add BIS Standards & Missing Inputs: Sections at the bottom detailing required codes and next steps."
+    ],
+    "critical_requirements": [
+      "Wet riser and Down comer MUST be separate cards/rows.",
+      "PDF export logic MUST be server-side (add a loading state to the export button).",
+      "Use the 'safety-calc-india' style: top summary, sectioned compliance blocks, status badges, reason text, clause references.",
+      "The UI must feel like an engineering tool, not a consumer app. Prioritize data density and precise alignment."
+    ]
+  },
+  "UNIVERSAL_GUIDELINES_FOR_MAIN_AGENT": {
+    "rules": [
+      "Avoid generic, 'on distribution' AI slop outputs. No simplistic gradients, uniform styling, or generic centered layouts.",
+      "Never apply universal transitions (e.g., transition: all). Target specific properties.",
+      "Never center align the app container (.App { text-align: center; }).",
+      "Do not use AI assistant Emoji characters (🤖🧠💡) for icons.",
+      "Every interaction needs micro-animations (hover states, clear active states).",
+      "Use pre-existing components from src/components/ui when applicable.",
+      "Use sonner for toast notifications.",
+      "All interactive and key informational elements MUST include a data-testid attribute for testing."
+    ]
+  }
+}

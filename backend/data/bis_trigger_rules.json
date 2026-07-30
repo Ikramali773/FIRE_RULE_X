@@ -1,0 +1,71 @@
+{
+    "_metadata": {
+        "title": "BIS Standards Trigger Map — FireRuleX",
+        "description": "Maps NBC Part 4 fire-fighting installations to the primary BIS technical standards that become active when the system is required.",
+        "version": "1.0.0",
+        "updated": "2026-01"
+    },
+    "standards": {
+        "IS 2190": {
+            "title": "Selection, Installation & Maintenance of First-aid Fire Extinguishers",
+            "scope": "Fire extinguisher classes A/B/C/D/F, quantities, mounting, and inspection.",
+            "url": "https://www.services.bis.gov.in/tmp/WCIS02005.pdf",
+            "triggers": ["fire_extinguisher"]
+        },
+        "IS 884": {
+            "title": "First-aid Hose Reel for Fire Fighting",
+            "scope": "Design and performance of first-aid hose reel drums.",
+            "triggers": ["hose_reel"]
+        },
+        "IS 3844": {
+            "title": "Installation & Maintenance of Internal Fire Hydrants and Hose Reel Systems",
+            "scope": "Wet risers, down comers, internal hydrants, hose reels — pressure, spacing, testing.",
+            "triggers": ["wet_riser", "down_comer", "hose_reel"]
+        },
+        "IS 908": {
+            "title": "Fire Hydrant, Stand Post Type",
+            "scope": "Yard hydrant mechanical design.",
+            "triggers": ["yard_hydrant"]
+        },
+        "IS 13039": {
+            "title": "External Hydrant Systems — Provision and Maintenance",
+            "scope": "Yard hydrant ring main, hydrant locations, terminal pressures.",
+            "triggers": ["yard_hydrant"]
+        },
+        "IS 5290": {
+            "title": "Landing Valves for Fire Fighting Systems",
+            "scope": "Landing valves for wet risers / yard hydrants.",
+            "triggers": ["yard_hydrant", "wet_riser"]
+        },
+        "IS 9668": {
+            "title": "Provision of Water Supplies for Fire Fighting",
+            "scope": "Static water tanks, underground/terrace storage capacities.",
+            "triggers": ["underground_tank_litres", "terrace_tank_litres"]
+        },
+        "IS 15301": {
+            "title": "Installation and Maintenance of Fire Pumps",
+            "scope": "Electric + diesel fire pumps, jockey pump, capacities.",
+            "triggers": ["underground_pump_lpm", "terrace_pump_lpm", "wet_riser"]
+        },
+        "IS 15105": {
+            "title": "Automatic Sprinkler Systems — Code of Practice",
+            "scope": "Sprinkler hydraulic design, hazard classification, pipe sizing.",
+            "triggers": ["sprinkler_system"]
+        },
+        "IS 9972": {
+            "title": "Automatic Sprinkler Heads",
+            "scope": "Sprinkler head types, activation temperatures.",
+            "triggers": ["sprinkler_system"]
+        },
+        "IS 2189": {
+            "title": "Selection, Installation & Maintenance of Automatic Fire Detection and Alarm System",
+            "scope": "Smoke/heat detectors, MCPs, cabling, panel design.",
+            "triggers": ["manual_alarm", "auto_detection"]
+        },
+        "IS 15908": {
+            "title": "Control & Indicating Equipment for Fire Detection and Alarm Systems",
+            "scope": "Fire alarm control panel functional requirements.",
+            "triggers": ["auto_detection"]
+        }
+    }
+}

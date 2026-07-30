@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+:root {
+    --font-sans: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Consolas, monospace;
+
+    --page-bg: #F8F9FA;
+    --surface: #FFFFFF;
+    --border: #E2E8F0;
+    --text-primary: #0F172A;
+    --text-secondary: #475569;
+    --text-tertiary: #94A3B8;
+    --brand: #0A192F;
+    --accent: #2962FF;
+}
+
+@theme inline {
+    --color-background: var(--page-bg);
+    --color-foreground: var(--text-primary);
+    --font-sans: var(--font-sans);
+    --font-mono: var(--font-mono);
+}
+
+html, body {
+    background: var(--page-bg);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+::selection {
+    background: var(--brand);
+    color: white;
+}
+
+/* Focus rings — high-contrast, single-property transitions */
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    transition: outline-color 120ms ease-out;
+}
+
+/* Keep existing helper classes for legacy pages */
+.card { background: var(--surface); border: 1px solid var(--border); padding: 1.25rem; }
+.card-elevated { box-shadow: 0 1px 2px rgb(0 0 0 / 0.04); }
+.btn-primary { display: inline-flex; align-items: center; gap: .5rem; padding: .625rem 1.25rem; background: var(--brand); color: #fff; font-weight: 600; font-size: .8rem; text-transform: uppercase; letter-spacing: .15em; border: none; cursor: pointer; }
+.btn-primary:hover { background: #1E293B; }
+.btn-primary:disabled { opacity: .4; cursor: not-allowed; }
+.btn-secondary { display: inline-flex; align-items: center; gap: .5rem; padding: .625rem 1.25rem; background: transparent; color: var(--text-primary); font-weight: 600; font-size: .8rem; text-transform: uppercase; letter-spacing: .15em; border: 1px solid var(--border); cursor: pointer; }
+.btn-secondary:hover { border-color: var(--brand); }
+.badge { display: inline-flex; align-items: center; gap: .25rem; padding: .125rem .5rem; font-size: .625rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; font-family: var(--font-mono); }
+.badge-pass { background: #E8F5E9; color: #00C853; }
+.badge-fail { background: #FFEBEE; color: #D50000; }
+.badge-warning { background: #FFFDE7; color: #F9A825; }
+.badge-info { background: #E3F2FD; color: #2962FF; }
+.spinner { width: 1.25rem; height: 1.25rem; border: 2px solid var(--border); border-top-color: var(--brand); border-radius: 50%; animation: spin .8s linear infinite; }
+.spinner-lg { width: 3rem; height: 3rem; border-width: 3px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Micro-hover for table rows in results */
+tr[data-testid^='row-']:hover { background: #F1F5F9; transition: background 120ms ease-out; }

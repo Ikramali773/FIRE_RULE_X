@@ -98,6 +98,82 @@ class BuildingInput(BaseModel):
                     "NBCS 2026 Part F, Section 4.4.2.2(c).",
     )
 
+    # Mixed-occupancy structure (NBC Part 4 upgrade)
+    occupancy_selection: Optional["OccupancySelection"] = Field(
+        alias="occupancySelection", default=None,
+        description="Structured single-or-mixed occupancy selection with optional zones.",
+    )
+
+
+# ── Mixed-occupancy models ────────────────────────────────────────────
+
+
+class OccupancyZone(BaseModel):
+    """One occupancy zone within a mixed-occupancy building."""
+    model_config = {"populate_by_name": True}
+
+    occupancy_code: str = Field(alias="occupancyCode", description="NBC subdivision code, e.g. 'A-5', 'D-3'.")
+    label: str = Field(default="", description="Human-readable label, e.g. 'Hotel', 'Banquet Hall'.")
+    floor_range: Optional[str] = Field(alias="floorRange", default=None, description="Floors this zone covers, e.g. 'Ground', '1-3'.")
+    area_m2: Optional[float] = Field(alias="areaM2", default=None, description="Area allocated to this zone in m².")
+
+
+class OccupancySelection(BaseModel):
+    """Structured single-or-mixed occupancy selection."""
+    model_config = {"populate_by_name": True}
+
+    mode: Literal["single", "mixed"] = Field(default="single")
+    primary_occupancy: Optional[str] = Field(alias="primaryOccupancy", default=None)
+    secondary_occupancies: list[str] = Field(alias="secondaryOccupancies", default_factory=list)
+    occupancy_zones: list[OccupancyZone] = Field(alias="occupancyZones", default_factory=list)
+
+
+# ── Normalised compliance-result item (safety-calc-india style) ───────
+
+
+ComplianceStatus = Literal["required", "not_required", "conditional", "insufficient_data"]
+
+
+class ComplianceResultItem(BaseModel):
+    """Normalised output for a single compliance check (system / rule).
+
+    This is the safety-calc-india style output used in UI tables and PDF
+    reports. Every fire-system check (wet riser, down comer, sprinkler, …)
+    is emitted as one ComplianceResultItem.
+    """
+    model_config = {"populate_by_name": True}
+
+    id: str = Field(description="Machine-readable id, e.g. 'wet_riser'.")
+    title: str = Field(description="Display title, e.g. 'Wet Riser'.")
+    status: ComplianceStatus = Field(default="not_required")
+    reason: str = Field(default="", description="Human-readable reason.")
+    clause_refs: list[str] = Field(alias="clauseRefs", default_factory=list)
+    triggered_by: list[str] = Field(alias="triggeredBy", default_factory=list, description="Occupancy codes that required this system.")
+    bis_standards: list[str] = Field(alias="bisStandards", default_factory=list)
+    input_dependencies: list[str] = Field(alias="inputDependencies", default_factory=list)
+    missing_inputs: list[str] = Field(alias="missingInputs", default_factory=list)
+    next_steps: list[str] = Field(alias="nextSteps", default_factory=list)
+    notes: list[str] = Field(default_factory=list)
+
+
+class MixedOccupancySummary(BaseModel):
+    """Summary of the aggregated mixed-occupancy resolution."""
+    model_config = {"populate_by_name": True}
+
+    mode: str = Field(default="single")
+    occupancy_codes: list[str] = Field(alias="occupancyCodes", default_factory=list)
+    occupancy_labels: dict[str, str] = Field(alias="occupancyLabels", default_factory=dict)
+    height_tier_labels: dict[str, str] = Field(alias="heightTierLabels", default_factory=dict)
+
+
+class AggregatedQuantity(BaseModel):
+    """Aggregated numeric requirement (e.g. tank litres, pump LPM)."""
+    model_config = {"populate_by_name": True}
+
+    value: int
+    unit: str = Field(default="")
+    triggered_by: list[str] = Field(alias="triggeredBy", default_factory=list)
+
 
 # ── Rule Engine Output Models ──────────────────────────────────────────
 
@@ -392,6 +468,14 @@ class AnalysisResult(BaseModel):
     analysis_method: AnalysisMethod = Field(alias="analysisMethod")
     nbc_compliance: Optional[NBCComplianceData] = Field(alias="nbcCompliance", default=None)
     system_cards: list[SystemCard] = Field(alias="systemCards", default_factory=list)
+
+    # Normalised safety-calc-india style output (NEW)
+    compliance_items: list[ComplianceResultItem] = Field(alias="complianceItems", default_factory=list)
+    aggregated_quantities: dict[str, AggregatedQuantity] = Field(alias="aggregatedQuantities", default_factory=dict)
+    mixed_occupancy_summary: Optional[MixedOccupancySummary] = Field(alias="mixedOccupancySummary", default=None)
+    passed_checks: list[str] = Field(alias="passedChecks", default_factory=list)
+    missing_inputs: list[str] = Field(alias="missingInputs", default_factory=list)
+    next_steps: list[str] = Field(alias="nextSteps", default_factory=list)
 
 
 # ── Extraction & API Response ──────────────────────────────────────────

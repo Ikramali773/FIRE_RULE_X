@@ -19,6 +19,9 @@ from models import (
     ExtinguisherRequirement,
     NBCComplianceData,
     NBCSApplicabilityResult,
+    ComplianceResultItem,
+    MixedOccupancySummary,
+    AggregatedQuantity,
 )
 from hazard_classifier import determine_hazard_type
 from class_a_checker import check_class_a
@@ -26,6 +29,7 @@ from class_bc_checker import check_class_bc
 from class_f_checker import check_class_f
 from electrical_checker import check_electrical
 from engines import code_engine, standards_engine, jurisdiction_engine
+from mixed_occupancy_resolver import resolve as resolve_mixed_occupancy
 
 
 def run_rule_engine(inp: BuildingInput) -> AnalysisResult:
@@ -138,6 +142,53 @@ def run_rule_engine(inp: BuildingInput) -> AnalysisResult:
     # Jurisdiction violations will be merged here once the engine
     # is implemented in Phase 4.
 
+    # ── Mixed-occupancy resolution (safety-calc-india style output) ──
+
+    compliance_items: list[ComplianceResultItem] = []
+    aggregated_qty: dict[str, AggregatedQuantity] = {}
+    mixed_summary: MixedOccupancySummary | None = None
+    extra_passed: list[str] = []
+    extra_missing: list[str] = []
+
+    if inp.occupancy_selection and (
+        inp.occupancy_selection.primary_occupancy
+        or inp.occupancy_selection.occupancy_zones
+    ):
+        resolver_out = resolve_mixed_occupancy(inp)
+        compliance_items = resolver_out["compliance_items"]
+
+        for field, entry in resolver_out["aggregated_quantities"].items():
+            unit_map = {
+                "underground_tank_litres": "litres",
+                "terrace_tank_litres": "litres",
+                "underground_pump_lpm": "L/min",
+                "terrace_pump_lpm": "L/min",
+            }
+            aggregated_qty[field] = AggregatedQuantity(
+                value=entry["value"],
+                unit=unit_map.get(field, ""),
+                triggeredBy=entry["triggered_by"],
+            )
+
+        selection = inp.occupancy_selection
+        occ_codes = list(resolver_out["occupancy_labels"].keys())
+        mixed_summary = MixedOccupancySummary(
+            mode=selection.mode,
+            occupancyCodes=occ_codes,
+            occupancyLabels=resolver_out["occupancy_labels"],
+            heightTierLabels=resolver_out["height_tier_labels"],
+        )
+        extra_passed = resolver_out["passed_checks"]
+        extra_missing = resolver_out["missing_inputs"]
+
+    # Aggregate next_steps from compliance_items where required
+    aggregated_next_steps: list[str] = []
+    for item in compliance_items:
+        for ns in item.next_steps:
+            label = f"{item.title}: {ns}"
+            if label not in aggregated_next_steps:
+                aggregated_next_steps.append(label)
+
     # ── Compliance Scoring ──
 
     penalty_points = sum(
@@ -160,4 +211,10 @@ def run_rule_engine(inp: BuildingInput) -> AnalysisResult:
         analysis_method="structured_input",
         nbc_compliance=nbc_compliance,
         system_cards=_standards_result.system_cards,
+        complianceItems=compliance_items,
+        aggregatedQuantities=aggregated_qty,
+        mixedOccupancySummary=mixed_summary,
+        passedChecks=passed_rules + extra_passed,
+        missingInputs=extra_missing,
+        nextSteps=aggregated_next_steps,
     )

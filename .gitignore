@@ -67,3 +67,9 @@ backend/.pytest_cache/
 *.log
 test-errors.log
 ts_errors.txt
+.env
+.env.*
+*.env
+credentials.json
+*.key
+.credentials

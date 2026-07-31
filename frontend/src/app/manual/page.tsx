@@ -6,7 +6,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import type { OccupancyGroupInfo, OccupancyZone } from '@/types';
 
-const API_URL = ''; // Same-origin — proxied by ingress to backend
+const API_URL = '/api';
 
 interface Preset {
     id: string;
@@ -48,11 +48,24 @@ export default function ManualPage() {
     const [occSearch, setOccSearch] = useState('');
 
     useEffect(() => {
-        // Diagnostic: force UI out of loading state even if fetch fails
         const timer = setTimeout(() => setLoading(false), 8000);
+
+        const parseJsonResponse = async (response: Response, label: string) => {
+            const contentType = response.headers.get('content-type') || '';
+            if (!response.ok) {
+                const text = await response.text();
+                throw new Error(`${label} request failed (${response.status}): ${text.slice(0, 200)}`);
+            }
+            if (contentType.includes('application/json')) {
+                return response.json();
+            }
+            const text = await response.text();
+            throw new Error(`${label} returned non-JSON content: ${text.slice(0, 200)}`);
+        };
+
         Promise.all([
-            fetch(`${API_URL}/api/occupancies`).then((r) => r.json()),
-            fetch(`${API_URL}/api/occupancy-presets`).then((r) => r.json()),
+            fetch(`${API_URL}/api/occupancies`).then((r) => parseJsonResponse(r, 'Occupancy catalogue')),
+            fetch(`${API_URL}/api/occupancy-presets`).then((r) => parseJsonResponse(r, 'Occupancy presets')),
         ])
             .then(([occ, pres]) => {
                 clearTimeout(timer);
@@ -63,7 +76,7 @@ export default function ManualPage() {
             .catch((e) => {
                 clearTimeout(timer);
                 setLoading(false);
-                setError(`Could not load occupancy catalogue: ${String(e)}`);
+                setError(`Could not load occupancy catalogue: ${e instanceof Error ? e.message : String(e)}`);
             });
         return () => clearTimeout(timer);
     }, []);

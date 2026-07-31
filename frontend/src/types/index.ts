@@ -200,6 +200,50 @@ export interface DetectorCountData {
     floorWise: FloorDetectorCount[];
 }
 
+export interface NBCSApplicabilityData {
+    isApplicable: boolean;
+    reason: string;
+    occupancyLabel: string;
+    clauseRef: string;
+}
+
+export interface NBCSOccupantLoadData {
+    note: string;
+    totalOccupants: number;
+    loadFactorNet?: number | null;
+    loadFactorGross?: number | null;
+}
+
+export interface NBCSExitCapacityData {
+    note: string;
+    stairwayMmPerPerson: number;
+    levelMmPerPerson: number;
+    maxStairwayWidthMm: number;
+    maxLevelWidthMm: number;
+    deadEndLimitM?: number | null;
+}
+
+export interface NBCSTravelDistanceData {
+    note: string;
+    maxDistanceM: number | null;
+}
+
+export interface NBCSFirefightingInstallationsData {
+    note: string;
+    nbcsTableRef: string;
+    protectionLevel: string;
+    differsFromNbc: boolean;
+    fireExtinguisher: boolean;
+    firstAidHoseReel: boolean;
+    wetRiser: boolean;
+    downComer: boolean;
+    yardHydrant: boolean;
+    automaticSprinkler: boolean;
+    autoDetectionAlarm: boolean;
+    publicAddressVoiceEvacuation: boolean;
+    triggeredNotes?: string[];
+}
+
 export interface NBCComplianceData {
     occupantLoad?: {
         totalOccupants: number;
@@ -227,6 +271,11 @@ export interface NBCComplianceData {
     };
     firefightingInstallations?: FirefightingInstallationRequirement;
     detectorCounts?: DetectorCountData;
+    nbcsApplicability?: NBCSApplicabilityData;
+    nbcsOccupantLoad?: NBCSOccupantLoadData;
+    nbcsExitCapacity?: NBCSExitCapacityData;
+    nbcsTravelDistance?: NBCSTravelDistanceData;
+    nbcsFirefightingInstallations?: NBCSFirefightingInstallationsData;
 }
 
 export interface SystemCard {

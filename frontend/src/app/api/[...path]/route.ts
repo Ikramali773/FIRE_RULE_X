@@ -2,10 +2,17 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || process.env.API_URL || 'http://127.0.0.1:8000';
 
-async function proxyRequest(request: NextRequest, params: { path?: string[] }) {
+function getTargetUrl(request: NextRequest, params: { path?: string[] }) {
     const pathSegments = params.path ?? [];
-    const targetPath = pathSegments.length > 0 ? `/api/${pathSegments.join('/')}` : '/api';
-    const targetUrl = new URL(`${targetPath}${request.nextUrl.search}`, API_BASE_URL);
+    const pathname = pathSegments.length > 0 ? `/api/${pathSegments.join('/')}` : request.nextUrl.pathname;
+    const url = new URL(API_BASE_URL);
+    url.pathname = pathname;
+    url.search = request.nextUrl.search;
+    return url;
+}
+
+async function proxyRequest(request: NextRequest, params: { path?: string[] }) {
+    const targetUrl = getTargetUrl(request, params);
 
     const headers = new Headers(request.headers);
     headers.delete('host');

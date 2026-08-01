@@ -6,7 +6,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import type { AnalyzeResponse, ComplianceResultItem } from '@/types';
 
-const API_URL = '/api';
+const API_URL = '';
 
 const STATUS_STYLES: Record<
     string,

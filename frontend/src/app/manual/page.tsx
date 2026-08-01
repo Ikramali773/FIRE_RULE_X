@@ -6,7 +6,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import type { OccupancyGroupInfo, OccupancyZone } from '@/types';
 
-const API_URL = '/api';
+const API_URL = '';
 
 interface Preset {
     id: string;
